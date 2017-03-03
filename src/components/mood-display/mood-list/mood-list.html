@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mood list</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list padding>
+    <button ion-item *ngFor="let item of moods" (click)="moodClicked($event, item)">
+      <mood-view [mood]="item"></mood-view>
+    </button>
+  </ion-list>
+
+</ion-content>
+
