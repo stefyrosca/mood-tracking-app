@@ -1,6 +1,7 @@
 export interface Mood {
+  id: string;
   title: string;
-  text: string;
+  body: string;
   rating: number;
   recording?: any;
   username: string;

@@ -9,4 +9,9 @@
 
 <ion-content>
   <mood-view [mood]="mood"></mood-view>
+  <ion-list padding>
+    <button ion-item text-wrap *ngFor="let item of comments">
+      {{item.body}}
+    </button>
+  </ion-list>
 </ion-content>

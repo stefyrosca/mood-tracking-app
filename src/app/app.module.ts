@@ -6,6 +6,7 @@ import {MoodView} from "../shared/mood-view/mood-view";
 import {HttpModule} from "@angular/http";
 import {MoodService} from "../services/mood-service";
 import {MoodComment} from "../components/mood-display/mood-comment/mood-comment";
+import {CommentService} from "../services/comment-service";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,6 @@ import {MoodComment} from "../components/mood-display/mood-comment/mood-comment"
     MoodView,
     MoodComment
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MoodService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MoodService, CommentService]
 })
 export class AppModule {}

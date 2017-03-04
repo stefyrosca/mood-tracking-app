@@ -1,6 +1,7 @@
 import {Component, Input} from "@angular/core";
 import {Mood} from "../../../model/mood";
 import {NavParams, NavController} from "ionic-angular";
+import {CommentService} from "../../../services/comment-service";
 
 
 @Component({
@@ -10,16 +11,17 @@ import {NavParams, NavController} from "ionic-angular";
 export class MoodComment {
 
   private mood: Mood;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private comments: any[] = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private commentService: CommentService) {
     this.mood = navParams.get("mood");
   }
 
   ngOnInit() {
-    console.log('onInit', this.mood);
+    this.commentService.getByPostId(this.mood.id).subscribe(
+      comment => this.comments.push(comment),
+      error => console.log('error', error)
+    )
   }
 
-  moodClicked(event, mood) {
-    // this.navCtrl.push(MoodView, {mood});
-
-  }
 }
