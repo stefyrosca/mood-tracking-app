@@ -1,10 +1,10 @@
-<div>
-  <h2>
-    {{mood.title}}
-  </h2>
-  <!--<ion-note no-lines text-wrap item-left>-->
-  {{mood.text}}
-  <!--</ion-note>-->
-  {{mood.rating}}
-  {{mood.username}}
+<div class="title">
+  <strong>{{mood.title}}</strong>
 </div>
+<!--<ion-note no-lines text-wrap item-left>-->
+<div class="comment">
+  {{mood.body}}
+</div>
+<!--</ion-note>-->
+{{mood.rating}}
+{{mood.username}}
