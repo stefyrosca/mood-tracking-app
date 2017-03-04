@@ -50,12 +50,18 @@ export class UserService {
   removeLocalUser() {
     return this._db.get(LOCAL_USER_ID)
       .then(result => {
-        console.log('result!!!!  ', result);
+        console.log('result!!!!', result);
         result._deleted = true;
         return this._db.put(result)
           .then(after => console.log('after', after))
           .catch(error => console.log('error', error));
       })
       .catch(error => console.log("geterror", error));
+  }
+
+  getByUsername() {
+    return this._db.get("_design/user/_view/getByUsername?key=\"test\"")
+      .then(result => console.log('result', result))
+      .catch(error => console.log('error', error))
   }
 }

@@ -10,6 +10,7 @@ import {CommentService} from "../services/comment-service";
 import {Database} from "../persistence/database";
 import {UserService} from "../services/user-service";
 import {CreateUser} from "../pages/create-profile/create-user/create-user";
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {CreateUser} from "../pages/create-profile/create-user/create-user";
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    FormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

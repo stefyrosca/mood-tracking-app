@@ -21,6 +21,12 @@ export class MoodList {
   }
 
   ngOnInit() {
+    console.log('ngOnInit')
+    // this.userService.removeLocalUser().then(
+    //   result => console.log('result', result),
+    // ).catch(error => console.log('error', error));
+    // this.navCtrl.setRoot(CreateUser);
+
     this.userService.getLocalUser().subscribe(
       result => {
         console.log('result', result);
@@ -28,12 +34,11 @@ export class MoodList {
       },
       error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
     );
-    //
-    // this.userService.removeLocalUser().then(
-    //   result => console.log('result', result),
-    // ).catch(error => console.log('error', error))
-    // ;
-    // this.navCtrl.setRoot(CreateUser);
+
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
   }
 
   getAllMoods() {
