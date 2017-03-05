@@ -8,10 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <mood-view [mood]="mood"></mood-view>
   <ion-list padding>
+    <mood-view [mood]="mood"></mood-view>
     <button ion-item text-wrap *ngFor="let item of comments">
       {{item.body}}
     </button>
+    <ion-item>
+      <ion-label stacked>Comment</ion-label>
+      <ion-input [(ngModel)]="currentComment" type="text"></ion-input>
+    </ion-item>
   </ion-list>
+  <button ion-button class="submit-button" [disabled]="currentComment == ''" (click)="postComment()">Submit</button>
 </ion-content>

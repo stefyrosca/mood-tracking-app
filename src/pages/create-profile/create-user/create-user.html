@@ -19,7 +19,7 @@
       <ion-label stacked>Name</ion-label>
       <ion-input required [(ngModel)]="user.name" type="text" (ngModelChange)="submitted=false"></ion-input>
     </ion-item>
+    <button ion-button item-right [disabled]="user.username == ''" (click)="createUser()">Submit</button>
   </ion-list>
-  <button ion-button [disabled]="user.username == ''" (click)="createUser()">Submit!</button>
 </ion-content>
 

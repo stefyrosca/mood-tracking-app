@@ -11,6 +11,8 @@ import {Database} from "../persistence/database";
 import {UserService} from "../services/user-service";
 import {CreateUser} from "../pages/create-profile/create-user/create-user";
 import { FormsModule } from '@angular/forms';
+import {AddMood} from "../pages/add-mood/add-mood";
+import {UserProfile} from "../pages/user-profile/user-profile";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { FormsModule } from '@angular/forms';
     MoodList,
     MoodView,
     MoodComment,
-    CreateUser
+    CreateUser,
+    AddMood,
+    UserProfile
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -30,7 +34,9 @@ import { FormsModule } from '@angular/forms';
     MyApp,
     MoodList,
     MoodComment,
-    CreateUser
+    CreateUser,
+    AddMood,
+    UserProfile
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MenuController,
     Database, MoodService, CommentService, UserService]

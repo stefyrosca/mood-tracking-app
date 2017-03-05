@@ -2,6 +2,7 @@ import {Component, ViewChild} from "@angular/core";
 import {Platform, MenuController, Nav} from "ionic-angular";
 import {StatusBar, Splashscreen} from "ionic-native";
 import {MoodList} from "../pages/mood-display/mood-list/mood-list";
+import {UserProfile} from "../pages/user-profile/user-profile";
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +18,8 @@ export class MyApp {
 
     // set our app's pages
     this.pages = [
-      {title: 'Mood list', component: MoodList}
+      {title: 'Mood list', component: MoodList},
+      {title: 'User profile', component: UserProfile}
     ];
 
   }
@@ -28,7 +30,6 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
-      // this.nav.setRoot(this.rootPage);
     });
   }
 

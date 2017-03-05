@@ -23,6 +23,5 @@ export class MoodService {
       .get(this._url)
       .map(data => data.json())
       .flatMap(result => result)
-      .catch(error => error);
   }
 }

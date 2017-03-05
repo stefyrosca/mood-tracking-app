@@ -12,6 +12,7 @@ export class MoodComment {
 
   private mood: Mood;
   private comments: any[] = [];
+  private currentComment: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private commentService: CommentService) {
     this.mood = navParams.get("mood");
@@ -22,6 +23,10 @@ export class MoodComment {
       comment => this.comments.push(comment),
       error => console.log('error', error)
     )
+  }
+
+  postComment() {
+    console.log('this.currentComment', this.currentComment);
   }
 
 }
