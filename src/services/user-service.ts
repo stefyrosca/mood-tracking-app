@@ -20,7 +20,7 @@ export class UserService {
     return this._db.post(user)
       .then(result => {
         console.log('result', result);
-        return this.createLocalUser(result.id);
+        return this.createLocalUser(user, result.id);
       })
       .catch(error => {
           console.log('error', error);
@@ -29,14 +29,13 @@ export class UserService {
       );
   }
 
-  createLocalUser(id: string) {
+  createLocalUser(user: User, id: string) {
     return this._db.put({
       _id: LOCAL_USER_ID,
-      username: "bob",
+      username: user.username,
+      name: user.name,
       userId: id
-    }).then(localOk => {
-      console.log("localOk", localOk);
-    })
+    }).then(localOk => console.log("localOk", localOk))
       .catch(localNotOk => {
         console.log('localNotOk', localNotOk);
         return Promise.reject(new Error("SORRY, no can do"));
@@ -57,7 +56,7 @@ export class UserService {
   }
 
   getByUsername(username: string) {
-    return this._db.query("user/getByUsername",{key: username})
+    return this._db.query("user/getByUsername", {key: username})
       .then(result => {
         if (result.rows.length == 0) {
           return Promise.resolve("username is ok");
