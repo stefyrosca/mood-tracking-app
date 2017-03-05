@@ -20,15 +20,13 @@ export class CreateUser {
   }
 
   createUser() {
-    // this.navCtrl.setRoot(MoodList)
-
-    // this.userService.getByUsername();
-    this.userService.createUser(this.user)
-      .then(user=> {
-        console.log("after create user ....", user)
+    this.userService.getByUsername(this.user.username)
+      .then(ok => this.userService.createUser(this.user))
+      .then(user => {
+        this.menuController.enable(true);
         this.navCtrl.setRoot(MoodList)
       })
-      .catch(error => console.log('error', error));
+      .catch(error => console.log('no can do', error));
   }
 
 }

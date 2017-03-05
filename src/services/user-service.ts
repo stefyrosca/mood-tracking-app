@@ -50,18 +50,25 @@ export class UserService {
   removeLocalUser() {
     return this._db.get(LOCAL_USER_ID)
       .then(result => {
-        console.log('result!!!!', result);
         result._deleted = true;
         return this._db.put(result)
-          .then(after => console.log('after', after))
-          .catch(error => console.log('error', error));
       })
       .catch(error => console.log("geterror", error));
   }
 
-  getByUsername() {
-    return this._db.get("_design/user/_view/getByUsername?key=\"test\"")
-      .then(result => console.log('result', result))
-      .catch(error => console.log('error', error))
+  getByUsername(username: string) {
+    return this._db.query("user/getByUsername",{key: username})
+      .then(result => {
+        if (result.rows.length == 0) {
+          return Promise.resolve("username is ok");
+        }
+        return Promise.reject("username already exists");
+      });
+  }
+
+  getAllDocs() {
+    return this._db.allDocs({include_docs: true})
+      .then(result => console.log('result on all docs', result))
+      .catch(error => console.log('error on all docs', error))
   }
 }
