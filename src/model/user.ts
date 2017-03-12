@@ -3,3 +3,7 @@ export interface User {
   name: string;
   _id?: string;
 }
+
+export interface LocalUser extends User{
+  userId: string;
+}

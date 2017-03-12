@@ -54,15 +54,6 @@ export class MoodList {
       )
   }
 
-  presentLoadingDefault() {
-    LoadingController
-    // let loader = new Loading();
-    // loader.present();
-    // setTimeout(() => {
-    //   loader.dismiss();
-    // }, 5000);
-  }
-
   moodClicked(event, mood) {
     this.navCtrl.push(MoodComment, {mood});
   }

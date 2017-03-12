@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content>
+  <ion-list padding>
+    <button ion-item text-wrap *ngFor="let item of moods">
+      <mood-view [mood]="item"></mood-view>
+    </button>
+  </ion-list>
   <ion-fab bottom right>
     <button ion-fab (click)="goToAddMood()">
       <ion-icon name="add"></ion-icon>

@@ -8,5 +8,22 @@
 </ion-header>
 
 <ion-content>
-  <h3> ASDSADASDKKAJSFFH</h3>
+  <div style="padding-top: 30px; text-align: center">
+    <ion-title> How do you feel today?</ion-title>
+  </div>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Title</ion-label>
+      <ion-input [(ngModel)]="title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Mood</ion-label>
+      <ion-textarea [(ngModel)]="body" rows="6" maxlength="250"></ion-textarea>
+    </ion-item>
+    <ion-item no-lines>
+      <ion-label item-right>{{body.length}}/250</ion-label>
+    </ion-item>
+    <button ion-button class="submit-button" [disabled]="body == '' || title == ''" (click)="postMood()">Submit
+    </button>
+  </ion-list>
 </ion-content>

@@ -10,7 +10,7 @@ import {UserProfile} from "../pages/user-profile/user-profile";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = MoodList;
+  rootPage: any = UserProfile;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public menu: MenuController) {

@@ -1,8 +1,9 @@
 export interface Mood {
-  id: string;
+  id?: string;
   title: string;
   body: string;
-  rating: number;
+  emotion: any; // ? img id
   recording?: any;
-  username: string;
+  userId: string;
+  resourceType: string;
 }
