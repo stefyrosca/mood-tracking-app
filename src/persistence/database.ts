@@ -8,6 +8,10 @@ export class Database {
 
   constructor() {
     this._db = new PouchDB(DATABASE_URL);
+    this._db.changes().on('change',
+      (change) => {}
+    );
+    this._db.allDocs().then((value) => console.log('allDocs', value));
   }
 
   public getDB() {

@@ -21,7 +21,7 @@ export class AddMood {
 
   postMood() {
     // this.navCtrl.setRoot(UserProfile);
-    let mood: Mood = {
+    let mood: Mood = <Mood>{
       title: this.title,
       body: this.body,
       emotion: 1,

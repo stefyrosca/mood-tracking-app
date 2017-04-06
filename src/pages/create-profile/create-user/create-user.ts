@@ -10,9 +10,12 @@ import {User} from "../../../model/user";
 })
 export class CreateUser {
 
-  private user: User = {username: '', name: null};
+  private user: User;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService, private menuController: MenuController) {
+    this.user = new User();
+    this.user.username =  '';
+    this.user.name = '';
   }
 
   ngOnInit() {

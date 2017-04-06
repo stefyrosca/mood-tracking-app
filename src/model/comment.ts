@@ -1,5 +1,8 @@
-import {User} from "./user";
-export interface Comment {
+import {ResourceTypes} from "./resource-types";
+
+export class Comment {
   text: string;
-  user: User;
+  userId: string;
+  postId: string;
+  resourceType: string = ResourceTypes.COMMENT;
 }

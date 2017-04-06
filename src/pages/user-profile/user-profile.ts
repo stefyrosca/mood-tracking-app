@@ -5,6 +5,8 @@ import {UserService} from "../../services/user-service";
 import {MoodService} from "../../services/mood-service";
 import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
+import {HttpErrors} from "../../shared/constants";
+import {CreateUser} from "../create-profile/create-user/create-user";
 
 @Component({
   selector: "user-profile",
@@ -28,7 +30,7 @@ export class UserProfile {
           console.log('local user', user);
           this.getMyMoods(user.userId);
         },
-        (error) => console.log('error ', error)
+        error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
       );
   }
 

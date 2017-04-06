@@ -25,21 +25,24 @@ export class MoodService {
   }
 
   public getAll() {
-    return this.http
-      .get(this._url)
-      .map(data => data.json())
-      .flatMap(result => result)
+    return Observable
+      .fromPromise(this._db.query("mood/getAllMoods", {include_docs: true}))
+      .map((result: any) => result.rows)
+      .flatMap(row => row)
+      .map((result: any) => result.doc);
   }
 
+  // return this.http
+  //   .get(this._url)
+  //   .map(data => data.json())
+  //   .flatMap(result => result)
+
   public postMood(mood: Mood) {
-    console.log('postMood', mood);
     return this._db.post(mood)
       .then(result => {
-        console.log('result', result);
         return result;
       })
       .catch(error => {
-          console.log('error', error);
           return Promise.reject(new Error("SORRY, no can do"));
         }
       );
@@ -47,7 +50,7 @@ export class MoodService {
 
   public getMyMoods(userId: string) {
     return Observable
-      .fromPromise(this._db.query("post/getByUser", {key: userId, include_docs: true}))
+      .fromPromise(this._db.query("mood/getByUser", {key: userId, include_docs: true}))
       .map((result: any) => result.rows)
       .flatMap(row => row)
       .map((result: any) => result.doc);

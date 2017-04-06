@@ -4,7 +4,7 @@ import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import {Database} from "../persistence/database";
-import {User} from "../model/user";
+import {User, LocalUser} from "../model/user";
 import {Observable} from "rxjs";
 import {LOCAL_USER_ID} from "../shared/constants";
 
