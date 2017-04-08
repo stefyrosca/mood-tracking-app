@@ -15,6 +15,7 @@ import {HttpErrors} from "../../../shared/constants";
 export class MoodList {
 
   moods: Mood[];
+  private user;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -29,10 +30,16 @@ export class MoodList {
     //   result => console.log('result', result),
     // ).catch(error => console.log('error', error));
     // this.navCtrl.setRoot(CreateUser);
-    this.userService.getLocalUser().subscribe(
-      result => this.getAllMoods(),
-      error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
-    );
+    try {
+      this.userService.getUser()
+        .then(user => {
+          this.user = user;
+          this.getAllMoods();
+        })
+        .catch(error =>  error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+    } catch (error) {
+      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
+    }
   }
 
   ngOnDestroy() {

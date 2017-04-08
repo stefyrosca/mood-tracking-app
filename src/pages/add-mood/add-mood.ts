@@ -6,6 +6,8 @@ import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
 import {NavController} from "ionic-angular";
 import {UserProfile} from "../user-profile/user-profile";
+import {CreateUser} from "../create-profile/create-user/create-user";
+import {HttpErrors} from "../../shared/constants";
 
 @Component({
   selector: 'add-mood',
@@ -14,9 +16,12 @@ import {UserProfile} from "../user-profile/user-profile";
 export class AddMood {
   private title: string = "";
   private body: string = "";
+  private user;
 
   constructor(private navCtrl: NavController, private moodService: MoodService, private userService: UserService) {
-
+  this.userService.getUser()
+      .then(user => this.user = user)
+      .catch(error =>  error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
   }
 
   postMood() {
@@ -26,16 +31,11 @@ export class AddMood {
       body: this.body,
       emotion: 1,
       resourceType: ResourceTypes.MOOD,
-      userId: ""
+      userId: this.user.userId,
+      timestamp: new Date()
     };
-    this.userService.getLocalUser().subscribe(
-      (user: LocalUser) => {
-        mood.userId = user.userId;
-        this.moodService.postMood(mood)
-          .then(result => this.navCtrl.setRoot(UserProfile))
-          .catch(error => console.log('error on post', error));
-      },
-      (error) => console.log('error', error)
-    );
+    this.moodService.postMood(mood)
+      .then(result => this.navCtrl.setRoot(UserProfile))
+      .catch(error => console.log('error on post', error));
   }
 }

@@ -7,6 +7,7 @@ import {UserService} from "../../../services/user-service";
 import {LocalUser} from "../../../model/user";
 import {HttpErrors} from "../../../shared/constants";
 import {CreateUser} from "../../create-profile/create-user/create-user";
+import {MoodService} from "../../../services/mood-service";
 
 
 @Component({
@@ -23,16 +24,20 @@ export class MoodComment {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private commentService: CommentService,
-              private userService: UserService) {
+              private userService: UserService,
+              private moodService: MoodService,) {
     this.mood = navParams.get("mood");
-    this.userService.getLocalUser().subscribe(
-      (user: LocalUser) => this.user = user,
-      error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
-    );
+    this.userService.getUser()
+      .then(user => this.user = user)
+      .catch(error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+    // this.userService.getLocalUser().subscribe(
+    //   (user: LocalUser) => this.user = user,
+    //   error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
+    // );
   }
 
   ngOnInit() {
-    this.commentService.getCommentsByPost(this.mood.id).subscribe(
+    this.commentService.getCommentsByPost(this.mood._id).subscribe(
       comment => this.comments.push(comment),
       error => console.log('error', error)
     )
@@ -40,7 +45,7 @@ export class MoodComment {
 
   postComment() {
     let comment = new Comment();
-    comment.postId = this.mood.id;
+    comment.moodId = this.mood._id;
     comment.text = this.currentCommentText;
     comment.userId = this.user.userId;
     this.commentService
@@ -50,6 +55,16 @@ export class MoodComment {
         this.currentCommentText = '';
       })
       .catch(error => console.log('no comment', error));
+  }
+
+  deleteMood() {
+    this.moodService.deleteMood(this.mood)
+      .subscribe(
+        result => {
+          console.log('ok deleted', result)
+        },
+        error => console.log('nu e ok', error)
+      )
   }
 
 }

@@ -4,6 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Comment</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="deleteMood()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -18,5 +23,5 @@
       <ion-input [(ngModel)]="currentCommentText" type="text"></ion-input>
     </ion-item>
   </ion-list>
-  <button ion-button class="submit-button" [disabled]="currentComment == ''" (click)="postComment()">Submit</button>
+  <button ion-button class="submit-button" [disabled]="currentCommentText == ''" (click)="postComment()">Submit</button>
 </ion-content>

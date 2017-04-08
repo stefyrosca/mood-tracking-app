@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list padding>
-    <button ion-item text-wrap *ngFor="let item of moods">
+    <button ion-item text-wrap *ngFor="let item of moods" (click)="goToComments($event, item)">
       <mood-view [mood]="item"></mood-view>
     </button>
   </ion-list>

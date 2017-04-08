@@ -4,3 +4,4 @@ export const DATABASE_URL = "http://localhost:5984/moods";
 export const HttpErrors = {
   NOT_FOUND: 404
 }
+

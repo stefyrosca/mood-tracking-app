@@ -7,6 +7,7 @@ import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
 import {HttpErrors} from "../../shared/constants";
 import {CreateUser} from "../create-profile/create-user/create-user";
+import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 
 @Component({
   selector: "user-profile",
@@ -15,23 +16,25 @@ import {CreateUser} from "../create-profile/create-user/create-user";
 export class UserProfile {
 
   private moods: Mood[] = [];
+  private user;
+  private deleted;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private userService: UserService, private moodService: MoodService,
               private loader: LoadingController) {
-
   }
 
   ngOnInit() {
     console.log('ngOnInit');
-    this.userService.getLocalUser()
-      .subscribe(
-        (user: LocalUser) => {
+    this.userService.getUser()
+      .then((user: LocalUser) => {
           console.log('local user', user);
+          this.user = user;
           this.getMyMoods(user.userId);
         },
-        error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
-      );
+      ).catch(error =>
+      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+    this.deleted = this.navParams.get('deleted');
   }
 
   getMyMoods(userId: string) {
@@ -52,6 +55,10 @@ export class UserProfile {
 
   goToAddMood() {
     this.navCtrl.push(AddMood);
+  }
+
+  goToComments(event, mood) {
+    this.navCtrl.push(MoodComment, {mood});
   }
 
   ngOnDestroy() {

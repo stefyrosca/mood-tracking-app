@@ -6,11 +6,14 @@ import "rxjs/add/operator/mergeMap";
 import {Database} from "../persistence/database";
 import {User, LocalUser} from "../model/user";
 import {Observable} from "rxjs";
-import {LOCAL_USER_ID} from "../shared/constants";
+import {LOCAL_USER_ID, HttpErrors} from "../shared/constants";
+import {CreateUser} from "../pages/create-profile/create-user/create-user";
+import {NavController} from "ionic-angular";
 
 @Injectable()
 export class UserService {
   private _db;
+  private user = null;
 
   constructor(private http: Http, db: Database) {
     this._db = db.getDB();
@@ -19,7 +22,6 @@ export class UserService {
   createUser(user: User) {
     return this._db.post(user)
       .then(result => {
-        console.log('result', result);
         return this.createLocalUser(user, result.id);
       })
       .catch(error => {
@@ -30,6 +32,7 @@ export class UserService {
   }
 
   createLocalUser(user: User, id: string) {
+    this.user = user;
     return this._db.put({
       _id: LOCAL_USER_ID,
       username: user.username,
@@ -40,10 +43,6 @@ export class UserService {
         console.log('localNotOk', localNotOk);
         return Promise.reject(new Error("SORRY, no can do"));
       });
-  }
-
-  getLocalUser() {
-    return Observable.fromPromise(this._db.get(LOCAL_USER_ID));
   }
 
   removeLocalUser() {
@@ -69,5 +68,20 @@ export class UserService {
     return this._db.allDocs({include_docs: true})
       .then(result => console.log('result on all docs', result))
       .catch(error => console.log('error on all docs', error))
+  }
+
+  getUser() {
+    if (this.user == null) {
+      return this._db.get(LOCAL_USER_ID)
+        .then(result => {
+          this.user = result;
+          return this.user;
+        })
+        .catch(error => {
+          console.log('error', error);
+          return Promise.reject(error);
+        });
+    }
+    return new Promise((resolve) => resolve(this.user));
   }
 }
