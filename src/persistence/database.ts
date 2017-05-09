@@ -15,7 +15,6 @@ export class Database {
       (change) => {
       }
     );
-    this._db.allDocs().then((value) => console.log('allDocs', value));
   }
 
   public getDB() {

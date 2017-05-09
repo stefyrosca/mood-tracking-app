@@ -1,4 +1,4 @@
-import {RequestMethod, RequestOptionsArgs, Headers, Http, Response} from "@angular/http";
+import {RequestOptionsArgs, Headers, Http, Response} from "@angular/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {TOKEN, USER} from "../shared/constants";
@@ -9,37 +9,38 @@ export class AuthService {
   token: string = null;
   user: any = null;
 
-  constructor(private http: Http, private storage: Storage) {}
-
-  _request(req: any, additionalOptions?: RequestOptionsArgs) {
-    let reqOpts = req || {};
-    if (!reqOpts.headers) {
-      reqOpts.headers = new Headers();
-    }
-    reqOpts.headers.set('Content-Type', 'application/json');
-    reqOpts.headers.set('Accept', 'application/json');
-    reqOpts.headers.set('Authorization', 'Bearer ' + this.token);
-    return this.http.request(reqOpts);
+  constructor(private http: Http, private storage: Storage) {
+    this.getLocalUser();
   }
 
-  setToken(token: string) {
-    this.token = token;
+  mergeOptions(options: any) {
+    let commonHeaders = {
+      ['Authorization']: 'Bearer ' + this.token,
+      ['Content-Type']: 'application/json',
+      ['Accept']: 'application/json',
+    };
+    if (!options)
+      return {headers: commonHeaders};
+    if (options.headers)
+      options.headers = Object.assign(options.headers, commonHeaders)
+    return options;
+
   }
 
   get(url: string, options?: any): Observable<Response> {
-    return this.http.get(url, options);
+    return this.http.get(url, this.mergeOptions(options));
   }
 
   post(url: string, body: any, options?: any): Observable<Response> {
-    return this.http.post(url, body, options);
+    return this.http.post(url, body, this.mergeOptions(options));
   }
 
   put(url: string, body: any, options ?: any): Observable<Response> {
-    return this.http.put(url, body, options);
+    return this.http.put(url, body, this.mergeOptions(options));
   }
 
   delete(url: string, options ?: any): Observable<Response> {
-    return this.http.delete(url, options);
+    return this.http.delete(url, this.mergeOptions(options));
   }
 
   setLocalUser(user: any, token: string) {
@@ -51,8 +52,8 @@ export class AuthService {
 
   getLocalUser() {
     if (this.user == null) {
-      var newVar = this.storage.get(USER);
-      return newVar
+      this.storage.get(TOKEN).then(token => this.token = token);
+      return this.storage.get(USER)
         .then(user => {
           if (user) {
             this.user = user;

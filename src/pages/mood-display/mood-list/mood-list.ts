@@ -38,7 +38,7 @@ export class MoodList {
           this.user = user;
           this.getAllMoods();
         })
-        .catch(error =>  this.navCtrl.setRoot(AuthenticationComponent));
+        .catch(error => this.navCtrl.setRoot(AuthenticationComponent));
     } catch (error) {
       error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(AuthenticationComponent) : console.log('error', error)
     }
@@ -48,13 +48,17 @@ export class MoodList {
   }
 
   getAllMoods() {
+    console.log('getAllMoods')
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
     loadingIndicator.present();
-    this.moodService.getAll()
-      .subscribe(
-        (result: any) => this.moods.push(result),
+    console.log('getAllMoods 2')
+    this.moodService.getAll(
+        (result: any) => {
+          console.log('result??', result);
+          this.moods.push(result)
+        },
         (error) => {
           console.log('error', error);
           loadingIndicator.dismiss();

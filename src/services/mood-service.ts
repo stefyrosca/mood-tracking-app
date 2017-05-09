@@ -10,6 +10,7 @@ import {Observable} from "rxjs";
 import {CommentService} from "./comment-service";
 import {TOKEN} from "../shared/constants";
 import {Storage} from "@ionic/storage";
+import {AuthService} from "./auth-service";
 
 @Injectable()
 export class MoodService {
@@ -17,39 +18,23 @@ export class MoodService {
   private _db: any;
   private TOKEN: string = null;
 
-  constructor(private http: Http, db: Database, private commentService: CommentService) {
+  constructor(private authHttp: AuthService, db: Database, private commentService: CommentService) {
     this._db = db.getDB();
   }
 
   public getById(id: number) {
-    return this.http
+    return this.authHttp
       .get(this._url + "/" + id)
       .map(data => data.json())
       .catch(error => error);
   }
 
-  public getAll() {
-    // var headers = this._db.getHeaders();
-    // console.log('headers', headers);
-    // return this.http.get('http://localhost:3000/Mood', headers);
-    //   .subscribe(
-    //   result => console.log('yey', result),
-    //   error => console.log('not yey', error),
-    //   () => console.log('done')
-    // )
-    return Observable
-      .fromPromise(this._db.query("mood/getAllMoods", {include_docs: true, descending: true}))
-      .map((result: any) => {
-        return result.rows
-      })
-      .flatMap(row => row)
-      .map((result: any) => result.doc);
+  public getAll(next: (mood)=>any, error: (error)=>any, done?:()=>void) {
+    return this.authHttp.get('http://localhost:3000/Mood')
+      .map(result => result.json())
+      .flatMap(mood => mood)
+      .subscribe(next, error, done);
   }
-
-  // return this.http
-  //   .get(this._url)
-  //   .map(data => data.json())
-  //   .flatMap(result => result)
 
   public postMood(mood: Mood) {
     // return this.http.post('http://localhost:2')
