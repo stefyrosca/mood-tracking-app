@@ -4,11 +4,12 @@ import {ResourceTypes} from "../../model/resource-types";
 import {UserService} from "../../services/user-service";
 import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
-import {NavController} from "ionic-angular";
+import {NavController, NavParams} from "ionic-angular";
 import {UserProfile} from "../user-profile/user-profile";
 import {CreateUserComponent} from "../auth/create-user/create-user";
 import {HttpErrors} from "../../shared/constants";
 import {EmotionTypes} from "../../model/emotion-types";
+import {AuthenticationComponent} from "../auth/authentication/authentication";
 
 @Component({
   selector: 'add-mood',
@@ -21,10 +22,14 @@ export class AddMood {
   private selectedEmotion = null;//EmotionTypes.ANGRY;
   private EmotionTypes = EmotionTypes;
 
-  constructor(private navCtrl: NavController, private moodService: MoodService, private userService: UserService) {
-  this.userService.getLocalUser()
-      .then(user => this.user = user)
-      .catch(error =>  error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error));
+  constructor(private navCtrl: NavController, private navParams: NavParams,
+              private moodService: MoodService, private userService: UserService) {
+
+  }
+
+  ngOnInit() {
+    this.user = this.navParams.get('user');
+    console.log('this.user', this.user)
   }
 
   postMood() {
@@ -32,14 +37,18 @@ export class AddMood {
     let mood: Mood = <Mood>{
       title: this.title,
       body: this.body,
-      emotion: 1,
-      resourceType: ResourceTypes.MOOD,
-      userId: this.user.userId,
+      emotion: this.selectedEmotion,
+      user: this.user.id,
       timestamp: new Date()
     };
-    this.moodService.postMood(mood)
-      // .then(result => this.navCtrl.setRoot(UserProfile))
-      // .catch(error => console.log('error on post', error));
+    console.log('ok, before add', mood);
+    this.moodService.postMood(mood, (m) => {
+        console.log('after', m)
+        this.navCtrl.setRoot(UserProfile)
+      },
+      (error) => console.log('error on post', error))
+    // .then(result => this.navCtrl.setRoot(UserProfile))
+    // .catch(error => console.log('error on post', error));
   }
 
   selectEmotion(emotion) {

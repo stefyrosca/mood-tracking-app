@@ -42,9 +42,9 @@ export class UserProfile {
       content: 'Getting latest entries...',
     });
     loadingIndicator.present();
-    this.moodService.getMyMoods(userId)
-      .subscribe(
-        (result: Mood) => this.moods.push(result),
+    console.log('get my moods', userId);
+    this.moodService.getMyMoods(userId,
+        (result: any) => this.moods.push(result),
         (error) => {
           console.log('error', error);
           loadingIndicator.dismiss();
@@ -54,11 +54,11 @@ export class UserProfile {
   }
 
   goToAddMood() {
-    this.navCtrl.push(AddMood);
+    this.navCtrl.push(AddMood, {user:this.user});
   }
 
   goToComments(event, mood) {
-    this.navCtrl.push(MoodComment, {mood});
+    this.navCtrl.push(MoodComment, {mood, user:this.user});
   }
 
   ngOnDestroy() {

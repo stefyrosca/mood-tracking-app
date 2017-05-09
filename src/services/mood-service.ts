@@ -29,36 +29,38 @@ export class MoodService {
       .catch(error => error);
   }
 
-  public getAll(next: (mood)=>any, error: (error)=>any, done?:()=>void) {
+  public getAll(next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
     return this.authHttp.get('http://localhost:3000/Mood')
       .map(result => result.json())
       .flatMap(mood => mood)
       .subscribe(next, error, done);
   }
 
-  public postMood(mood: Mood) {
-    // return this.http.post('http://localhost:2')
-    return this._db.post(mood)
-      .then(result => {
-        return result;
-      })
-      .catch(error => {
-          return Promise.reject(new Error("SORRY, no can do"));
-        }
-      );
+  public postMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
+    console.log('service', mood)
+    return this.authHttp.post('http://localhost:3000/Mood', mood)
+      .subscribe(mood => {
+        console.log('here!', mood)
+        mood = mood.json();
+        next(mood);
+      }, error);
   }
 
-  public getMyMoods(userId: string) {
-    return Observable
-      .fromPromise(this._db.query("mood/getByUser",
-        {
-          key: userId,
-          include_docs: true,
-          descending: true
-        }))
-      .map((result: any) => result.rows)
-      .flatMap(row => row)
-      .map((result: any) => result.doc);
+  public getMyMoods(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+    return this.authHttp.get('http://localhost:3000/Mood?user=' + userId)
+      .map(result => result.json())
+      .flatMap(mood => mood)
+      .subscribe(next, error, done);
+    // return Observable
+    //   .fromPromise(this._db.query("mood/getByUser",
+    //     {
+    //       key: userId,
+    //       include_docs: true,
+    //       descending: true
+    //     }))
+    //   .map((result: any) => result.rows)
+    //   .flatMap(row => row)
+    //   .map((result: any) => result.doc);
   }
 
   public deleteMood(mood: Mood) {

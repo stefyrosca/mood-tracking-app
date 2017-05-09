@@ -5,7 +5,7 @@ export class Mood {
   body: string;
   emotion: any; // ? img id
   recording?: any;
-  userId: string;
-  resourceType: string = ResourceTypes.MOOD;
+  user: string;
+  // resourceType: string = ResourceTypes.MOOD;
   timestamp: Date;
 }
