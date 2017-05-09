@@ -8,11 +8,14 @@ import {Mood} from "../model/mood";
 import {ResourceTypes} from "../model/resource-types";
 import {Observable} from "rxjs";
 import {CommentService} from "./comment-service";
+import {TOKEN} from "../shared/constants";
+import {Storage} from "@ionic/storage";
 
 @Injectable()
 export class MoodService {
   private _url = 'http://jsonplaceholder.typicode.com/posts';
   private _db: any;
+  private TOKEN: string = null;
 
   constructor(private http: Http, db: Database, private commentService: CommentService) {
     this._db = db.getDB();
@@ -26,8 +29,16 @@ export class MoodService {
   }
 
   public getAll() {
+    // var headers = this._db.getHeaders();
+    // console.log('headers', headers);
+    // return this.http.get('http://localhost:3000/Mood', headers);
+    //   .subscribe(
+    //   result => console.log('yey', result),
+    //   error => console.log('not yey', error),
+    //   () => console.log('done')
+    // )
     return Observable
-      .fromPromise(this._db.query("mood/getAllMoods", {include_docs: true, desccending: true}))
+      .fromPromise(this._db.query("mood/getAllMoods", {include_docs: true, descending: true}))
       .map((result: any) => {
         return result.rows
       })
@@ -41,6 +52,7 @@ export class MoodService {
   //   .flatMap(result => result)
 
   public postMood(mood: Mood) {
+    // return this.http.post('http://localhost:2')
     return this._db.post(mood)
       .then(result => {
         return result;
@@ -55,8 +67,7 @@ export class MoodService {
     return Observable
       .fromPromise(this._db.query("mood/getByUser",
         {
-          startKeys: [userId, {}],
-          endKey: userId,
+          key: userId,
           include_docs: true,
           descending: true
         }))

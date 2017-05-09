@@ -1,0 +1,20 @@
+<ion-content>
+  <h3>Login</h3>
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Username</ion-label>
+      <ion-input required [(ngModel)]="user.username" type="text" (ngModelChange)="submitted=false"></ion-input>
+    </ion-item>
+    <p ion-text [hidden]="user.username !== ''" color="danger" padding-left>
+      Username is required
+    </p>
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input required [(ngModel)]="user.password" type="password" (ngModelChange)="submitted=false"></ion-input>
+    </ion-item>
+    <p ion-text [hidden]="user.password !== ''" color="danger" padding-left>
+      Password is required
+    </p>
+    <button ion-button item-right [disabled]="user.username == '' || user.password == ''" (click)="login()">Login</button>
+  </ion-list>
+</ion-content>

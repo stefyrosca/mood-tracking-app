@@ -3,6 +3,7 @@ import {Platform, MenuController, Nav} from "ionic-angular";
 import {StatusBar, Splashscreen} from "ionic-native";
 import {MoodList} from "../pages/mood-display/mood-list/mood-list";
 import {UserProfile} from "../pages/user-profile/user-profile";
+import {AuthenticationComponent} from "../pages/auth/authentication/authentication";
 
 @Component({
   templateUrl: 'app.html'
@@ -10,7 +11,7 @@ import {UserProfile} from "../pages/user-profile/user-profile";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = UserProfile;
+  rootPage: any = MoodList;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public menu: MenuController) {

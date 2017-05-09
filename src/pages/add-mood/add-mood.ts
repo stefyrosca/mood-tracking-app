@@ -6,8 +6,9 @@ import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
 import {NavController} from "ionic-angular";
 import {UserProfile} from "../user-profile/user-profile";
-import {CreateUser} from "../create-profile/create-user/create-user";
+import {CreateUserComponent} from "../auth/create-user/create-user";
 import {HttpErrors} from "../../shared/constants";
+import {EmotionTypes} from "../../model/emotion-types";
 
 @Component({
   selector: 'add-mood',
@@ -17,11 +18,13 @@ export class AddMood {
   private title: string = "";
   private body: string = "";
   private user;
+  private selectedEmotion = null;//EmotionTypes.ANGRY;
+  private EmotionTypes = EmotionTypes;
 
   constructor(private navCtrl: NavController, private moodService: MoodService, private userService: UserService) {
-  this.userService.getUser()
+  this.userService.getLocalUser()
       .then(user => this.user = user)
-      .catch(error =>  error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+      .catch(error =>  error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error));
   }
 
   postMood() {
@@ -35,7 +38,11 @@ export class AddMood {
       timestamp: new Date()
     };
     this.moodService.postMood(mood)
-      .then(result => this.navCtrl.setRoot(UserProfile))
-      .catch(error => console.log('error on post', error));
+      // .then(result => this.navCtrl.setRoot(UserProfile))
+      // .catch(error => console.log('error on post', error));
+  }
+
+  selectEmotion(emotion) {
+    this.selectedEmotion = emotion;
   }
 }

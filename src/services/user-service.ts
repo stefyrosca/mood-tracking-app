@@ -1,48 +1,29 @@
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import {Database} from "../persistence/database";
-import {User, LocalUser} from "../model/user";
-import {Observable} from "rxjs";
-import {LOCAL_USER_ID, HttpErrors} from "../shared/constants";
-import {CreateUser} from "../pages/create-profile/create-user/create-user";
-import {NavController} from "ionic-angular";
+import {User} from "../model/user";
+import {LOCAL_USER_ID} from "../shared/constants";
+import {AuthService} from "./auth-service";
 
 @Injectable()
 export class UserService {
   private _db;
   private user = null;
 
-  constructor(private http: Http, db: Database) {
+  constructor(private authHttp: AuthService, private db: Database) {
     this._db = db.getDB();
   }
 
-  createUser(user: User) {
-    return this._db.post(user)
-      .then(result => {
-        return this.createLocalUser(user, result.id);
-      })
-      .catch(error => {
-          console.log('error', error);
-          return Promise.reject(new Error("SORRY, no can do"));
-        }
-      );
-  }
-
-  createLocalUser(user: User, id: string) {
-    this.user = user;
-    return this._db.put({
-      _id: LOCAL_USER_ID,
-      username: user.username,
-      name: user.name,
-      userId: id
-    }).then(localOk => console.log("localOk", localOk))
-      .catch(localNotOk => {
-        console.log('localNotOk', localNotOk);
-        return Promise.reject(new Error("SORRY, no can do"));
-      });
+  createUser(user: User, next: (user)=>any, error: (error: any)=>any) {
+    return this.authHttp.post("http://localhost:3000/auth/signup", user).subscribe(
+      (result: any) => {
+        this.authHttp.setLocalUser(result.user, result.token);
+        next(result);
+      },
+      error
+    );
   }
 
   removeLocalUser() {
@@ -70,18 +51,19 @@ export class UserService {
       .catch(error => console.log('error on all docs', error))
   }
 
-  getUser() {
-    if (this.user == null) {
-      return this._db.get(LOCAL_USER_ID)
-        .then(result => {
-          this.user = result;
-          return this.user;
-        })
-        .catch(error => {
-          console.log('error', error);
-          return Promise.reject(error);
-        });
-    }
-    return new Promise((resolve) => resolve(this.user));
+  getLocalUser() {
+    return this.authHttp.getLocalUser();
   }
+
+  login(user: User, next: (result)=>any, error: (error: any)=>any) {
+    return this.authHttp.post("http://localhost:3000/auth/login", user)
+      .map(result => result.json())
+      .subscribe((result) => {
+          this.authHttp.setLocalUser(result.user, result.token);
+          next(result);
+        }
+        , error
+      );
+  }
+
 }

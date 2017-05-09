@@ -1,5 +1,6 @@
 import {NgModule, ErrorHandler} from "@angular/core";
-import {IonicApp, IonicModule, IonicErrorHandler, MenuController} from "ionic-angular";
+import { IonicStorageModule, Storage } from '@ionic/storage'
+import {IonicApp, IonicModule, IonicErrorHandler, MenuController, AlertController} from "ionic-angular";
 import {MyApp} from "./app.component";
 import {MoodList} from "../pages/mood-display/mood-list/mood-list";
 import {MoodView} from "../shared/mood-view/mood-view";
@@ -9,10 +10,14 @@ import {MoodComment} from "../pages/mood-display/mood-comment/mood-comment";
 import {CommentService} from "../services/comment-service";
 import {Database} from "../persistence/database";
 import {UserService} from "../services/user-service";
-import {CreateUser} from "../pages/create-profile/create-user/create-user";
-import { FormsModule } from '@angular/forms';
+import {CreateUserComponent} from "../pages/auth/create-user/create-user";
+import {FormsModule} from '@angular/forms';
 import {AddMood} from "../pages/add-mood/add-mood";
 import {UserProfile} from "../pages/user-profile/user-profile";
+import {LoginComponent} from "../pages/auth/login/login";
+import {AuthenticationComponent} from "../pages/auth/authentication/authentication";
+import {ErrorController} from "../services/error-controller";
+import {AuthService} from "../services/auth-service";
 
 @NgModule({
   declarations: [
@@ -20,12 +25,15 @@ import {UserProfile} from "../pages/user-profile/user-profile";
     MoodList,
     MoodView,
     MoodComment,
-    CreateUser,
+    CreateUserComponent,
     AddMood,
-    UserProfile
+    UserProfile,
+    LoginComponent,
+    AuthenticationComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     HttpModule,
     FormsModule
   ],
@@ -34,11 +42,14 @@ import {UserProfile} from "../pages/user-profile/user-profile";
     MyApp,
     MoodList,
     MoodComment,
-    CreateUser,
+    CreateUserComponent,
     AddMood,
-    UserProfile
+    UserProfile,
+    LoginComponent,
+    AuthenticationComponent
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MenuController,
-    Database, MoodService, CommentService, UserService]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MenuController, AlertController, ErrorController,
+    Database, MoodService, CommentService, UserService, AuthService]
 })
-export class AppModule {}
+export class AppModule {
+}

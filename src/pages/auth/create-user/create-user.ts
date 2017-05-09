@@ -3,19 +3,19 @@ import {UserService} from "../../../services/user-service";
 import {MenuController, NavController, NavParams} from "ionic-angular";
 import {MoodList} from "../../mood-display/mood-list/mood-list";
 import {User} from "../../../model/user";
+import {ErrorController} from "../../../services/error-controller";
 
 @Component({
   selector: 'create-user',
   templateUrl: 'create-user.html',
 })
-export class CreateUser {
+export class CreateUserComponent {
 
   private user: User;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService, private menuController: MenuController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService,
+              private menuController: MenuController, private errorCtrl: ErrorController) {
     this.user = new User();
-    this.user.username =  '';
-    this.user.name = '';
   }
 
   ngOnInit() {
@@ -23,13 +23,9 @@ export class CreateUser {
   }
 
   createUser() {
-    this.userService.getByUsername(this.user.username)
-      .then(ok => this.userService.createUser(this.user))
-      .then(user => {
+    this.userService.createUser(this.user, () => {
         this.menuController.enable(true);
         this.navCtrl.setRoot(MoodList)
-      })
-      .catch(error => console.log('no can do', error));
+      }, (error) => this.errorCtrl.handleResponse(error));
   }
-
 }

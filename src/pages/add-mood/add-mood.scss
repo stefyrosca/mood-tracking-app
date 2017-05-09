@@ -1,0 +1,9 @@
+add-mood {
+  ion-img {
+    width: 40px;
+    height: 40px;
+  }
+  [selected=true] {
+    border: solid 1px #32db64;
+  }
+}

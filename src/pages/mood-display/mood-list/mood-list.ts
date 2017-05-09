@@ -4,8 +4,9 @@ import {Mood} from "../../../model/mood";
 import {MoodService} from "../../../services/mood-service";
 import {MoodComment} from "../mood-comment/mood-comment";
 import {UserService} from "../../../services/user-service";
-import {CreateUser} from "../../create-profile/create-user/create-user";
 import {HttpErrors} from "../../../shared/constants";
+import {CreateUserComponent} from "../../auth/create-user/create-user";
+import {AuthenticationComponent} from "../../auth/authentication/authentication";
 
 
 @Component({
@@ -29,16 +30,17 @@ export class MoodList {
     // this.userService.removeLocalUser().then(
     //   result => console.log('result', result),
     // ).catch(error => console.log('error', error));
-    // this.navCtrl.setRoot(CreateUser);
+    // this.navCtrl.setRoot(CreateUserComponent);
+    console.log('ngonInit')
     try {
-      this.userService.getUser()
+      this.userService.getLocalUser()
         .then(user => {
           this.user = user;
           this.getAllMoods();
         })
-        .catch(error =>  error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+        .catch(error =>  this.navCtrl.setRoot(AuthenticationComponent));
     } catch (error) {
-      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
+      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(AuthenticationComponent) : console.log('error', error)
     }
   }
 
@@ -52,7 +54,7 @@ export class MoodList {
     loadingIndicator.present();
     this.moodService.getAll()
       .subscribe(
-        (result: Mood) => this.moods.push(result),
+        (result: any) => this.moods.push(result),
         (error) => {
           console.log('error', error);
           loadingIndicator.dismiss();

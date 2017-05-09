@@ -6,7 +6,7 @@ import {MoodService} from "../../services/mood-service";
 import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
 import {HttpErrors} from "../../shared/constants";
-import {CreateUser} from "../create-profile/create-user/create-user";
+import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 
 @Component({
@@ -26,14 +26,14 @@ export class UserProfile {
 
   ngOnInit() {
     console.log('ngOnInit');
-    this.userService.getUser()
-      .then((user: LocalUser) => {
+    this.userService.getLocalUser()
+      .then((user: any) => {
           console.log('local user', user);
           this.user = user;
-          this.getMyMoods(user.userId);
+          this.getMyMoods(user.id);
         },
       ).catch(error =>
-      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error));
     this.deleted = this.navParams.get('deleted');
   }
 

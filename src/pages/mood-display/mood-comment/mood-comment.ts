@@ -6,7 +6,7 @@ import {Comment} from "../../../model/comment";
 import {UserService} from "../../../services/user-service";
 import {LocalUser} from "../../../model/user";
 import {HttpErrors} from "../../../shared/constants";
-import {CreateUser} from "../../create-profile/create-user/create-user";
+import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {MoodService} from "../../../services/mood-service";
 
 
@@ -27,12 +27,12 @@ export class MoodComment {
               private userService: UserService,
               private moodService: MoodService,) {
     this.mood = navParams.get("mood");
-    this.userService.getUser()
-      .then(user => this.user = user)
-      .catch(error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error));
+    this.userService.getLocalUser()
+      .then((user: any) => this.user = user)
+      .catch(error => this.navCtrl.setRoot(CreateUserComponent));
     // this.userService.getLocalUser().subscribe(
     //   (user: LocalUser) => this.user = user,
-    //   error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUser) : console.log('error', error)
+    //   error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error)
     // );
   }
 
