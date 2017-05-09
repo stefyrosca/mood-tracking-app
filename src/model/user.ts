@@ -4,6 +4,7 @@ export class User {
   username: string;
   password: string;
   name: string;
+  id?: string;
   _id?: string;
   resourceType: string = ResourceTypes.USER;
 

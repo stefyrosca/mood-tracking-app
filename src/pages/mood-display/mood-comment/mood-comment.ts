@@ -4,7 +4,7 @@ import {NavParams, NavController} from "ionic-angular";
 import {CommentService} from "../../../services/comment-service";
 import {Comment} from "../../../model/comment";
 import {UserService} from "../../../services/user-service";
-import {LocalUser} from "../../../model/user";
+import {LocalUser, User} from "../../../model/user";
 import {HttpErrors} from "../../../shared/constants";
 import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {MoodService} from "../../../services/mood-service";
@@ -19,17 +19,13 @@ export class MoodComment {
   private mood: Mood;
   private comments: any[] = [];
   private currentCommentText: string = '';
-  private user: LocalUser = null;
+  private user: User = null;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private commentService: CommentService,
               private userService: UserService,
               private moodService: MoodService,) {
-    this.mood = navParams.get("mood");
-    this.userService.getLocalUser()
-      .then((user: any) => this.user = user)
-      .catch(error => this.navCtrl.setRoot(CreateUserComponent));
     // this.userService.getLocalUser().subscribe(
     //   (user: LocalUser) => this.user = user,
     //   error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error)
@@ -37,6 +33,11 @@ export class MoodComment {
   }
 
   ngOnInit() {
+    this.mood = this.navParams.get("mood");
+    this.userService.getLocalUser()
+      .then((user: any) => this.user = user)
+      .catch(error => this.navCtrl.setRoot(CreateUserComponent));
+
     this.commentService.getCommentsByPost(this.mood._id).subscribe(
       comment => this.comments.push(comment),
       error => console.log('error', error)
@@ -45,16 +46,15 @@ export class MoodComment {
 
   postComment() {
     let comment = new Comment();
-    comment.moodId = this.mood._id;
+    comment.mood = this.mood._id;
     comment.text = this.currentCommentText;
-    comment.userId = this.user.userId;
+    comment.user = this.user.id;
     this.commentService
       .addCommentToPost(comment)
-      .then(result => {
+      .subscribe(result => {
         this.comments.push(comment);
         this.currentCommentText = '';
-      })
-      .catch(error => console.log('no comment', error));
+      }, error => console.log('no comment', error));
   }
 
   deleteMood() {

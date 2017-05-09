@@ -1,12 +1,17 @@
-<div class="title">
-  <strong>{{mood.title}}</strong>
-</div>
-<!--<ion-note no-lines text-wrap item-left>-->
-<div class="comment">
-  {{mood.body}}
-</div>
-<div style="float: right">
-  <!--{{mood.userId}}-->
-  username
-</div>
+<ion-item>
+  <ion-title class="title">
+    {{mood.title}}
+  </ion-title>
+  <!--<ion-note no-lines text-wrap item-left>-->
+  <div class="comment">
+    {{mood.body}}
+  </div>
+  <div style="float: right; bottom: 0">
+    <!--{{mood.userId}}-->
+    username
+  </div>
+  <ion-avatar item-right>
+    <img src="assets/img/emotions/{{mood.emotion}}.png">
+  </ion-avatar>
+</ion-item>
 <!--</ion-note>-->
