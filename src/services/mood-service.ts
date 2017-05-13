@@ -44,7 +44,7 @@ export class MoodService {
       }, error);
   }
 
-  public getMyMoods(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+  public getMoodsByUser(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
     return this.authHttp.get('http://localhost:3000/Mood?user=' + userId)
       .map(result => result.json())
       .flatMap(mood => mood)

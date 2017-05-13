@@ -20,12 +20,12 @@ export class MoodView {
   ngOnInit() {
     const defaultStyles = {
       heart: {
-        color: "light" 
+        color: "primary"
       }
     }
     console.log('buttonStyles', this.buttonStyles)
     this.timestamp = formatTimestamp(this.mood.timestamp);
-    // this.buttonStyles = Object.assign(defaultStyles, this.buttonStyles)
+    this.buttonStyles = Object.assign(defaultStyles, this.buttonStyles)
   }
 
   clicked(message: string, payload: any) {

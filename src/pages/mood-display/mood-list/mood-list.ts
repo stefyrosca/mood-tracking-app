@@ -7,6 +7,7 @@ import {UserService} from "../../../services/user-service";
 import {HttpErrors} from "../../../shared/constants";
 import {AuthenticationComponent} from "../../auth/authentication/authentication";
 import {UserActions} from "../../../shared/utils";
+import {UserProfile} from "../../user-profile/user-profile";
 
 
 @Component({
@@ -67,7 +68,7 @@ export class MoodList {
       }
       case UserActions.USER: {
         console.log('user profile!', event.payload);
-        // this.navCtrl.push(UserProfile, {user: event.payload.user});
+        this.navCtrl.push(UserProfile, {user: event.payload.user});
         break;
       }
       case UserActions.LOVE: {

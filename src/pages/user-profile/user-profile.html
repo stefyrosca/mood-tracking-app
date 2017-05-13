@@ -16,7 +16,7 @@
       ></mood-view>
     </div>
   </ion-list>
-  <ion-fab bottom right>
+  <ion-fab bottom right *ngIf="myUser && myUser.id == userId">
     <button ion-fab (click)="goToAddMood()">
       <ion-icon name="add"></ion-icon>
     </button>

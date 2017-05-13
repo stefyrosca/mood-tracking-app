@@ -16,49 +16,52 @@ import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 export class UserProfile {
 
   private moods: Mood[] = [];
-  private user;
+  private myUser;
+  private userId;
   private deleted;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private userService: UserService, private moodService: MoodService,
               private loader: LoadingController) {
+
   }
 
   ngOnInit() {
     console.log('ngOnInit');
+    this.userId = this.navParams.get("user");
     this.userService.getLocalUser()
       .then((user: any) => {
-          console.log('local user', user);
-          this.user = user;
-          this.getMyMoods(user.id);
+          this.myUser = user;
+          if (!this.userId)
+            this.userId = this.myUser.id;
+          this.getMoods(this.userId);
         },
       ).catch(error =>
-      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error));
+      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.warn('error', error));
     this.deleted = this.navParams.get('deleted');
   }
 
-  getMyMoods(userId: string) {
+  getMoods(userId: string) {
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
     loadingIndicator.present();
-    console.log('get my moods', userId);
-    this.moodService.getMyMoods(userId,
-        (result: any) => this.moods.push(result),
-        (error) => {
-          console.log('error', error);
-          loadingIndicator.dismiss();
-        },
-        () => loadingIndicator.dismiss()
-      )
+    this.moodService.getMoodsByUser(userId,
+      (result: any) => this.moods.push(result),
+      (error) => {
+        console.warn('error', error);
+        loadingIndicator.dismiss();
+      },
+      () => loadingIndicator.dismiss()
+    )
   }
 
   goToAddMood() {
-    this.navCtrl.push(AddMood, {user:this.user});
+    this.navCtrl.push(AddMood, {user: this.myUser});
   }
 
   goToComments(mood) {
-    this.navCtrl.push(MoodComment, {mood, user:this.user});
+    this.navCtrl.push(MoodComment, {mood, user: this.myUser});
   }
 
   notify(event) {
