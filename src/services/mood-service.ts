@@ -37,10 +37,8 @@ export class MoodService {
   }
 
   public postMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
-    console.log('service', mood)
     return this.authHttp.post('http://localhost:3000/Mood', mood)
       .subscribe(mood => {
-        console.log('here!', mood)
         mood = mood.json();
         next(mood);
       }, error);
@@ -51,16 +49,14 @@ export class MoodService {
       .map(result => result.json())
       .flatMap(mood => mood)
       .subscribe(next, error, done);
-    // return Observable
-    //   .fromPromise(this._db.query("mood/getByUser",
-    //     {
-    //       key: userId,
-    //       include_docs: true,
-    //       descending: true
-    //     }))
-    //   .map((result: any) => result.rows)
-    //   .flatMap(row => row)
-    //   .map((result: any) => result.doc);
+  }
+
+  public putMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
+    return this.authHttp.put('http://localhost:3000/Mood/'+mood._id, mood)
+      .subscribe(mood => {
+        mood = mood.json();
+        next(mood);
+      }, error);
   }
 
   public deleteMood(mood: Mood) {

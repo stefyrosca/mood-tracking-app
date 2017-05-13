@@ -1,12 +1,12 @@
 import {Component} from "@angular/core";
-import {NavParams, NavController, Loading, LoadingController} from "ionic-angular";
+import {NavParams, NavController, LoadingController} from "ionic-angular";
 import {Mood} from "../../../model/mood";
 import {MoodService} from "../../../services/mood-service";
 import {MoodComment} from "../mood-comment/mood-comment";
 import {UserService} from "../../../services/user-service";
 import {HttpErrors} from "../../../shared/constants";
-import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {AuthenticationComponent} from "../../auth/authentication/authentication";
+import {UserActions} from "../../../shared/utils";
 
 
 @Component({
@@ -15,7 +15,7 @@ import {AuthenticationComponent} from "../../auth/authentication/authentication"
 })
 export class MoodList {
 
-  moods: Mood[];
+  moods: {[id: string]: {data: Mood, liked: boolean}};
   private user;
 
   constructor(public navCtrl: NavController,
@@ -23,7 +23,7 @@ export class MoodList {
               private moodService: MoodService,
               private userService: UserService,
               public loader: LoadingController) {
-    this.moods = [];
+    this.moods = {};
   }
 
   ngOnInit() {
@@ -44,27 +44,69 @@ export class MoodList {
     }
   }
 
+  getMoodList() {
+    return Object.keys(this.moods).map(id => this.moods[id].data);
+  }
+
+  getButtonStyles(mood: Mood) {
+    return {
+      heart: {
+        color: this.moods[mood._id].liked ? "danger" : "primary"
+      }
+    }
+  }
+
   ngOnDestroy() {
   }
 
+  onNotify(event) {
+    switch (event.message) {
+      case UserActions.COMMENT: {
+        this.navCtrl.push(MoodComment, {mood: event.payload.mood});
+        break;
+      }
+      case UserActions.USER: {
+        console.log('user profile!', event.payload);
+        // this.navCtrl.push(UserProfile, {user: event.payload.user});
+        break;
+      }
+      case UserActions.LOVE: {
+        let newMood: Mood = Object.assign({}, this.moods[event.payload.mood.id].data);
+        if (this.moods[newMood._id].liked) {
+          newMood.likes = newMood.likes.filter(id => id !== this.user.id)
+        } else {
+          newMood.likes.push(this.user.id);
+        }
+        this.moodService.putMood(newMood, (mood) => {
+          this.moods[mood.id].data.likes = mood.likes;
+          this.moods[mood.id].liked = !this.moods[mood.id].liked;
+        }, (error) => console.log('smth went wrong', error));
+        // this.navCtrl.push(MoodComment, {mood: event.payload.mood});
+        break;
+      }
+    }
+  }
+
   getAllMoods() {
-    console.log('getAllMoods')
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
     loadingIndicator.present();
-    console.log('getAllMoods 2')
     this.moodService.getAll(
-        (result: any) => {
-          console.log('result??', result);
-          this.moods.push(result)
+      (result: any) =>
+        this.moods[result.id] = {
+          data: result,
+          liked: result.likes.find(userId => this.user.id == userId) !== undefined
         },
-        (error) => {
-          console.log('error', error);
-          loadingIndicator.dismiss();
-        },
-        () => loadingIndicator.dismiss()
-      )
+      (error) => {
+        console.log('error', error);
+        loadingIndicator.dismiss();
+      },
+      () => {
+        console.log('moods', this.moods);
+        loadingIndicator.dismiss()
+      }
+    )
   }
 
   moodClicked(event, mood) {

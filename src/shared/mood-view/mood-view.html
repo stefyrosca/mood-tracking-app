@@ -1,17 +1,41 @@
-<ion-item>
-  <ion-title class="title">
-    {{mood.title}}
-  </ion-title>
-  <!--<ion-note no-lines text-wrap item-left>-->
-  <div class="comment">
-    {{mood.body}}
-  </div>
-  <div style="float: right; bottom: 0">
-    <!--{{mood.userId}}-->
-    username
-  </div>
-  <ion-avatar item-right>
-    <img src="assets/img/emotions/{{mood.emotion}}.png">
-  </ion-avatar>
-</ion-item>
-<!--</ion-note>-->
+
+<ion-card>
+
+  <ion-item>
+    <ion-avatar item-right>
+      <img src="assets/img/emotions/{{mood.emotion}}.png">
+    </ion-avatar>
+    <h2>{{mood.title}}</h2>
+  </ion-item>
+
+  <ion-card-content>
+    <p>{{mood.body}}</p>
+  </ion-card-content>
+
+  <ion-row>
+    <ion-col>
+      <button color="{{buttonStyles.heart.color}}" ion-button icon-left clear small (click)="clicked(UserActions.LOVE)">
+        <ion-icon name="heart"></ion-icon>
+        <div>{{mood.likes ? mood.likes.length : 0}}</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small (click)="clicked(UserActions.COMMENT)">
+        <ion-icon name="text"></ion-icon>
+        <div>{{mood.comments ? mood.comments.length : 0}}</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small (click)="clicked(UserActions.USER, {user: mood.user.id})">
+        <ion-icon name="contact"></ion-icon>
+        <div>{{mood.user.username}}</div>
+      </button>
+    </ion-col>
+    <ion-col center text-center>
+      <ion-note>
+        {{timestamp}}
+      </ion-note>
+    </ion-col>
+  </ion-row>
+
+</ion-card>

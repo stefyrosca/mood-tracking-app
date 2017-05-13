@@ -8,6 +8,7 @@ import {LocalUser, User} from "../../../model/user";
 import {HttpErrors} from "../../../shared/constants";
 import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {MoodService} from "../../../services/mood-service";
+import {formatTimestamp} from '../../../shared/utils'
 
 
 @Component({
@@ -32,6 +33,10 @@ export class MoodComment {
     // );
   }
 
+  formatTimestamp(timestamp) {
+    return formatTimestamp(timestamp);
+  }
+
   ngOnInit() {
     this.mood = this.navParams.get("mood");
     this.userService.getLocalUser()
@@ -45,13 +50,17 @@ export class MoodComment {
   }
 
   postComment() {
-    let comment = new Comment();
-    comment.mood = this.mood._id;
-    comment.text = this.currentCommentText;
-    comment.user = this.user.id;
+    let comment: Comment = {
+      mood: this.mood._id,
+      text: this.currentCommentText,
+      user: this.user.id,
+      timestamp: new Date()
+    };
+    console.log('post comment', comment);
     this.commentService
       .addCommentToPost(comment)
       .subscribe(result => {
+        comment.user = this.user;
         this.comments.push(comment);
         this.currentCommentText = '';
       }, error => console.log('no comment', error));

@@ -15,9 +15,31 @@
 <ion-content>
   <ion-list padding>
     <mood-view [mood]="mood"></mood-view>
-    <button ion-item text-wrap *ngFor="let item of comments">
-      {{item.text}}
-    </button>
+    <ion-card text-wrap *ngFor="let item of comments">
+      <ion-card-content>
+        <p>{{item.text}}</p>
+      </ion-card-content>
+      <!--<ion-label item-left>-->
+      <!--{{item.text}}-->
+      <!--</ion-label>-->
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-left clear small>
+            <ion-icon name="contact"></ion-icon>
+            <div>{{item.user.username}}</div>
+          </button>
+        </ion-col>
+        <ion-col></ion-col>
+        <ion-col center text-center>
+          <ion-note>
+            {{formatTimestamp(item.timestamp)}}
+          </ion-note>
+        </ion-col>
+      </ion-row>
+      <!--<ion-label item-right>-->
+        <!--{{item.user.username}}-->
+      <!--</ion-label>-->
+    </ion-card>
     <ion-item>
       <ion-label stacked>Comment</ion-label>
       <ion-input [(ngModel)]="currentCommentText" type="text"></ion-input>

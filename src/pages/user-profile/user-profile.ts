@@ -57,8 +57,18 @@ export class UserProfile {
     this.navCtrl.push(AddMood, {user:this.user});
   }
 
-  goToComments(event, mood) {
+  goToComments(mood) {
     this.navCtrl.push(MoodComment, {mood, user:this.user});
+  }
+
+  notify(event) {
+    console.log('event', event)
+    switch (event.message) {
+      case 'comment': {
+        this.goToComments(event.payload.mood);
+        break;
+      }
+    }
   }
 
   ngOnDestroy() {

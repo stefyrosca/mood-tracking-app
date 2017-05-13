@@ -29,7 +29,7 @@ export class CommentService {
     //   .map((result: any) => result.doc);
   }
 
-  public addCommentToPost(comment: Comment) {
+  public addCommentToPost(comment: any) {
     return this.authHttp.post('http://localhost:3000/Comment', comment)
       .map(result => result.json)
     // return this._db.post(comment)
