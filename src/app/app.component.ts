@@ -4,6 +4,7 @@ import {StatusBar, Splashscreen} from "ionic-native";
 import {MoodList} from "../pages/mood-display/mood-list/mood-list";
 import {UserProfile} from "../pages/user-profile/user-profile";
 import {AuthenticationComponent} from "../pages/auth/authentication/authentication";
+import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 
 @Component({
   templateUrl: 'app.html'
@@ -11,7 +12,7 @@ import {AuthenticationComponent} from "../pages/auth/authentication/authenticati
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = MoodList;
+  rootPage: any = BrowseMoods;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public menu: MenuController) {
@@ -19,10 +20,9 @@ export class MyApp {
 
     // set our app's pages
     this.pages = [
-      {title: 'Mood list', component: MoodList},
+      {title: 'Browse', component: BrowseMoods},
       {title: 'User profile', component: UserProfile}
     ];
-
   }
 
   initializeApp() {

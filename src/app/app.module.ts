@@ -18,6 +18,7 @@ import {LoginComponent} from "../pages/auth/login/login";
 import {AuthenticationComponent} from "../pages/auth/authentication/authentication";
 import {ErrorController} from "../services/error-controller";
 import {AuthService} from "../services/auth-service";
+import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {AuthService} from "../services/auth-service";
     AddMood,
     UserProfile,
     LoginComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    BrowseMoods
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -46,10 +48,12 @@ import {AuthService} from "../services/auth-service";
     AddMood,
     UserProfile,
     LoginComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    BrowseMoods
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MenuController, AlertController, ErrorController,
     Database, MoodService, CommentService, UserService, AuthService]
 })
 export class AppModule {
 }
+

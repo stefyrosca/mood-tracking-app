@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {NavParams, NavController, LoadingController} from "ionic-angular";
 import {Mood} from "../../../model/mood";
 import {MoodService} from "../../../services/mood-service";
@@ -16,7 +16,9 @@ import {UserProfile} from "../../user-profile/user-profile";
 })
 export class MoodList {
 
-  moods: {[id: string]: {data: Mood, liked: boolean}};
+  @Input()
+  private moods: {[id: string]: {data: Mood, liked: boolean}};
+  @Input()
   private user;
 
   constructor(public navCtrl: NavController,
@@ -32,17 +34,16 @@ export class MoodList {
     //   result => console.log('result', result),
     // ).catch(error => console.log('error', error));
     // this.navCtrl.setRoot(CreateUserComponent);
-    console.log('ngonInit')
-    try {
-      this.userService.getLocalUser()
-        .then(user => {
-          this.user = user;
-          this.getAllMoods();
-        })
-        .catch(error => this.navCtrl.setRoot(AuthenticationComponent));
-    } catch (error) {
-      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(AuthenticationComponent) : console.log('error', error)
-    }
+    // try {
+    //   this.userService.getLocalUser()
+    //     .then(user => {
+    //       this.user = user;
+    //       this.getAllMoods();
+    //     })
+    //     .catch(error => this.navCtrl.setRoot(AuthenticationComponent));
+    // } catch (error) {
+    //   error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(AuthenticationComponent) : console.log('error', error)
+    // }
   }
 
   getMoodList() {
@@ -110,7 +111,4 @@ export class MoodList {
     )
   }
 
-  moodClicked(event, mood) {
-    this.navCtrl.push(MoodComment, {mood});
-  }
 }

@@ -22,8 +22,7 @@ export class MoodView {
       heart: {
         color: "primary"
       }
-    }
-    console.log('buttonStyles', this.buttonStyles)
+    };
     this.timestamp = formatTimestamp(this.mood.timestamp);
     this.buttonStyles = Object.assign(defaultStyles, this.buttonStyles)
   }

@@ -8,14 +8,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-list padding>
-    <div text-wrap *ngFor="let item of getMoodList()">
-      <mood-view
-        [mood]="item"
-        (notify)="notify($event)"
-      ></mood-view>
-    </div>
-  </ion-list>
+  <mood-list
+    [moods]="moods"
+    [user]="myUser"
+  ></mood-list>
   <ion-fab bottom right *ngIf="myUser && myUser.id == currentUser.id">
     <button ion-fab (click)="goToAddMood()">
       <ion-icon name="add"></ion-icon>
