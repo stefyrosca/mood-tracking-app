@@ -14,7 +14,9 @@
       <ion-label>Theme</ion-label>
       <ion-select (ionChange)="setTheme($event)">
         <ion-option *ngFor='let theme of availableThemes'
-                    [value]="theme.className">
+                    [value]="theme.className"
+                    [selected]="theme.className == userPreferences.theme"
+        >
           {{theme.display}}
         </ion-option>
       </ion-select>

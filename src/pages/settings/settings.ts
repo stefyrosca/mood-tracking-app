@@ -14,7 +14,6 @@ import {UserService} from "../../services/user-service";
 })
 export class SettingsPage {
   private availableThemes;
-  private selectedTheme;
   private userPreferences;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService) {
@@ -26,7 +25,6 @@ export class SettingsPage {
 
   ngOnInit() {
     this.userPreferences = this.userService.getUserPreferences();
-    this.selectedTheme = this.userPreferences.theme;
   }
 
   setTheme(theme) {

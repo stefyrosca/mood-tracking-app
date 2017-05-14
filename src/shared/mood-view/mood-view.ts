@@ -16,7 +16,6 @@ export class MoodView {
   private UserActions: any = UserActions;
 
   constructor(private config: Config) {
-    console.log('settings', config.settings())
   }
 
   ngOnInit() {
