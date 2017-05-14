@@ -12,6 +12,7 @@ import {HttpErrors} from "../../shared/constants";
 export class BrowseMoods {
   private moods: {[id: string]: {data: Mood, liked: boolean}};
   private user;
+  private userPreferences;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -22,6 +23,7 @@ export class BrowseMoods {
   }
 
   ngOnInit() {
+    this.userPreferences = this.userService.getUserPreferences();
     try {
       this.userService.getLocalUser()
         .then(user => {

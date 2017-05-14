@@ -5,6 +5,8 @@ import {MoodList} from "../pages/mood-display/mood-list/mood-list";
 import {UserProfile} from "../pages/user-profile/user-profile";
 import {AuthenticationComponent} from "../pages/auth/authentication/authentication";
 import {BrowseMoods} from "../pages/browse-moods/browse-moods";
+import {SettingsPage} from "../pages/settings/settings";
+import {UserService} from "../services/user-service";
 
 @Component({
   templateUrl: 'app.html'
@@ -14,15 +16,23 @@ export class MyApp {
 
   rootPage: any = BrowseMoods;
   pages: Array<{title: string, component: any}>;
+  private userPreferences:any;
 
-  constructor(public platform: Platform, public menu: MenuController) {
+  constructor(public platform: Platform, public menu: MenuController, private userService: UserService) {
     this.initializeApp();
-
     // set our app's pages
     this.pages = [
       {title: 'Browse', component: BrowseMoods},
-      {title: 'User profile', component: UserProfile}
+      {title: 'User profile', component: UserProfile},
+      {title: 'Settings', component: SettingsPage}
     ];
+    console.log('ok ready', this.userService);
+    this.userPreferences = this.userService.getUserPreferences();
+    console.log('preferences', this.userPreferences);
+  }
+
+  ngOnInit() {
+
   }
 
   initializeApp() {
@@ -31,6 +41,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+
     });
   }
 

@@ -1,6 +1,7 @@
 import {Component, Input, EventEmitter, Output} from "@angular/core";
 import {Mood} from "../../model/mood";
 import {formatTimestamp, UserActions} from "../utils";
+import {Config} from "ionic-angular";
 
 @Component({
   selector: 'mood-view',
@@ -14,7 +15,8 @@ export class MoodView {
   private timestamp: string;
   private UserActions: any = UserActions;
 
-  constructor() {
+  constructor(private config: Config) {
+    console.log('settings', config.settings())
   }
 
   ngOnInit() {

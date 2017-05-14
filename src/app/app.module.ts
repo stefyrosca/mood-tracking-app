@@ -19,6 +19,7 @@ import {AuthenticationComponent} from "../pages/auth/authentication/authenticati
 import {ErrorController} from "../services/error-controller";
 import {AuthService} from "../services/auth-service";
 import {BrowseMoods} from "../pages/browse-moods/browse-moods";
+import {SettingsPage} from "../pages/settings/settings";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {BrowseMoods} from "../pages/browse-moods/browse-moods";
     UserProfile,
     LoginComponent,
     AuthenticationComponent,
-    BrowseMoods
+    BrowseMoods,
+    SettingsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -49,7 +51,8 @@ import {BrowseMoods} from "../pages/browse-moods/browse-moods";
     UserProfile,
     LoginComponent,
     AuthenticationComponent,
-    BrowseMoods
+    BrowseMoods,
+    SettingsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, MenuController, AlertController, ErrorController,
     Database, MoodService, CommentService, UserService, AuthService]

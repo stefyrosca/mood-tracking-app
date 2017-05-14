@@ -31,6 +31,16 @@ $colors: (
   dark:       #222
 );
 
+// take the red pill
+$red-background: #fff6f6;
+$red-light: #ffa99c;
+$red-dark: #74000e;
+// take the blue pill
+$blue-background: #f6f6ff;
+$blue-light: #53e1ff;
+$blue-dark: #0034a7;
+
+
 
 // App iOS Variables
 // --------------------------------------------------
@@ -56,19 +66,14 @@ $colors: (
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can
-// then be future customized. This import comes last
-// so that the above variables are used and Ionic's
-// default are overridden.
-
-@import "ionic.theme.default";
-
-
-// Ionicons
-// --------------------------------------------------
+// then be future customized. This import comes w
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
+
+@import "blue.theme";
+@import "red.theme";
 
 
 // Fonts

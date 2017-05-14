@@ -7,10 +7,15 @@ import {User} from "../model/user";
 import {LOCAL_USER_ID} from "../shared/constants";
 import {AuthService} from "./auth-service";
 
+const defaultUserPreferences = {
+  theme: "red-theme"
+};
+
 @Injectable()
 export class UserService {
   private _db;
   private user = null;
+  private userPreferences: any = defaultUserPreferences;
 
   constructor(private authHttp: AuthService, private db: Database) {
     this._db = db.getDB();
@@ -26,29 +31,12 @@ export class UserService {
     );
   }
 
-  removeLocalUser() {
-    return this._db.get(LOCAL_USER_ID)
-      .then(result => {
-        result._deleted = true;
-        return this._db.put(result)
-      })
-      .catch(error => console.log("geterror", error));
+  getUserPreferences() {
+    return this.userPreferences;
   }
 
-  getByUsername(username: string) {
-    return this._db.query("user/getByUsername", {key: username})
-      .then(result => {
-        if (result.rows.length == 0) {
-          return Promise.resolve("username is ok");
-        }
-        return Promise.reject("username already exists");
-      });
-  }
-
-  getAllDocs() {
-    return this._db.allDocs({include_docs: true})
-      .then(result => console.log('result on all docs', result))
-      .catch(error => console.log('error on all docs', error))
+  setUserPreference(key: string, value: any) {
+    this.userPreferences[key] = value;
   }
 
   getLocalUser() {
