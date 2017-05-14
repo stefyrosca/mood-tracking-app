@@ -15,9 +15,9 @@ import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 })
 export class UserProfile {
 
-  private moods: Mood[] = [];
+  moods: {[id: string]: {data: Mood, liked: boolean}} = {};
   private myUser;
-  private userId;
+  private currentUser;
   private deleted;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -28,13 +28,13 @@ export class UserProfile {
 
   ngOnInit() {
     console.log('ngOnInit');
-    this.userId = this.navParams.get("user");
+    this.currentUser = this.navParams.get("user");
     this.userService.getLocalUser()
       .then((user: any) => {
           this.myUser = user;
-          if (!this.userId)
-            this.userId = this.myUser.id;
-          this.getMoods(this.userId);
+          if (!this.currentUser)
+            this.currentUser = this.myUser;
+          this.getMoods(this.currentUser.id);
         },
       ).catch(error =>
       error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.warn('error', error));
@@ -47,14 +47,23 @@ export class UserProfile {
     });
     loadingIndicator.present();
     this.moodService.getMoodsByUser(userId,
-      (result: any) => this.moods.push(result),
+      (result: any) =>
+        this.moods[result.id] = {
+          data: result,
+          liked: result.likes.find(userId => this.myUser.id == userId) !== undefined
+        },
       (error) => {
-        console.warn('error', error);
+        console.log('error', error);
         loadingIndicator.dismiss();
       },
-      () => loadingIndicator.dismiss()
+      () => {
+        console.log('moods', this.moods);
+        loadingIndicator.dismiss()
+      }
     )
   }
+
+
 
   goToAddMood() {
     this.navCtrl.push(AddMood, {user: this.myUser});
@@ -72,6 +81,10 @@ export class UserProfile {
         break;
       }
     }
+  }
+
+  getMoodList() {
+    return Object.keys(this.moods).map(id => this.moods[id].data);
   }
 
   ngOnDestroy() {

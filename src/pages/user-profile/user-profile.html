@@ -3,20 +3,20 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>User profile</ion-title>
+    <ion-title>{{currentUser && currentUser.username ? currentUser.username : "User"}}'s profile</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list padding>
-    <div ion-item text-wrap *ngFor="let item of moods">
+    <div text-wrap *ngFor="let item of getMoodList()">
       <mood-view
         [mood]="item"
         (notify)="notify($event)"
       ></mood-view>
     </div>
   </ion-list>
-  <ion-fab bottom right *ngIf="myUser && myUser.id == userId">
+  <ion-fab bottom right *ngIf="myUser && myUser.id == currentUser.id">
     <button ion-fab (click)="goToAddMood()">
       <ion-icon name="add"></ion-icon>
     </button>
