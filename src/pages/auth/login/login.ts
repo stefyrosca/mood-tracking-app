@@ -22,7 +22,7 @@ export class LoginComponent {
       this.userService.login(this.user, (result) => {
           this.navCtrl.setRoot(MoodList);
         }, (error: any) => {
-          this.errorCtrl.handleResponse(error);
+          this.errorCtrl.handleError(error);
         }
       );
     } catch (error) {

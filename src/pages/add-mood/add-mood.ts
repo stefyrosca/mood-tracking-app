@@ -10,6 +10,7 @@ import {CreateUserComponent} from "../auth/create-user/create-user";
 import {HttpErrors} from "../../shared/constants";
 import {EmotionTypes} from "../../model/emotion-types";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
+import {ApiAiService} from "../../services/api.ai-service";
 
 @Component({
   selector: 'add-mood',
@@ -23,13 +24,15 @@ export class AddMood {
   private EmotionTypes = EmotionTypes;
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
-              private moodService: MoodService, private userService: UserService) {
+              private moodService: MoodService, private userService: UserService,
+              private apiAiService: ApiAiService) {
 
   }
 
   ngOnInit() {
     this.user = this.navParams.get('user');
     console.log('this.user', this.user)
+    this.apiAiService.textRequest();
   }
 
   postMood() {

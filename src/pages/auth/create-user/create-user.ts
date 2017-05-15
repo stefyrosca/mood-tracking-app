@@ -26,6 +26,6 @@ export class CreateUserComponent {
     this.userService.createUser(this.user, () => {
         this.menuController.enable(true);
         this.navCtrl.setRoot(MoodList)
-      }, (error) => this.errorCtrl.handleResponse(error));
+      }, (error) => this.errorCtrl.handleError(error));
   }
 }

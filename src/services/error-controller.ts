@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, ErrorHandler} from "@angular/core";
 import {AlertController} from "ionic-angular";
 // import {ResponseType} from "@angular/http";
 
@@ -32,23 +32,23 @@ const CustomMessages = {
 }
 
 @Injectable()
-export class ErrorController {
+export class ErrorController implements ErrorHandler {
 
   constructor(private alertCtrl: AlertController) {}
 
-  handleResponse(response) {
-    console.log('response', response);
+  handleError(error) {
+    console.log('error', error);
     let status;
     try {
-      status = response.status;
-      response = response.json();
+      status = error.status;
+      error = error.json();
     } catch (e) {
       console.log('not .json', e)
     }
     let customMessage = CustomMessages[status];
     if (!customMessage)
       customMessage = CustomMessages[HttpErrors.UNKNOWN];
-    let body = response.message ? response.message : customMessage.body;
+    let body = error.message ? error.message : customMessage.body;
     this.setAlert(customMessage.title, body);
   }
 

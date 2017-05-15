@@ -50,6 +50,7 @@ export class BrowseMoods {
       (error) => {
         console.log('error', error);
         loadingIndicator.dismiss();
+        throw error;
       },
       () => {
         console.log('moods', this.moods);

@@ -67,13 +67,7 @@ export class MoodComment {
   }
 
   deleteMood() {
-    this.moodService.deleteMood(this.mood)
-      .subscribe(
-        result => {
-          console.log('ok deleted', result)
-        },
-        error => console.log('nu e ok', error)
-      )
+    this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=>console.log('error'));
   }
 
 }
