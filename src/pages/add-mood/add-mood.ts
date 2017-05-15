@@ -31,12 +31,12 @@ export class AddMood {
 
   ngOnInit() {
     this.user = this.navParams.get('user');
-    console.log('this.user', this.user)
-    this.apiAiService.textRequest();
+    this.apiAiService.streamRequest();
   }
 
   postMood() {
     // this.navCtrl.setRoot(UserProfile);
+    this.apiAiService.textRequest(this.body);
     let mood: Mood = <Mood>{
       title: this.title,
       body: this.body,
@@ -44,12 +44,12 @@ export class AddMood {
       user: this.user.id,
       timestamp: new Date()
     };
-    console.log('ok, before add', mood);
     this.moodService.postMood(mood, (m) => {
-        console.log('after', m)
         this.navCtrl.setRoot(UserProfile)
       },
-      (error) => console.log('error on post', error))
+      (error) => {
+        throw error
+      });
     // .then(result => this.navCtrl.setRoot(UserProfile))
     // .catch(error => console.log('error on post', error));
   }

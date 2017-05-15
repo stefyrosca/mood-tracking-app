@@ -15,7 +15,7 @@ const HttpErrors = {
 const CustomMessages = {
   [HttpErrors.NO_CONNECTIVITY]: {
     title: "Connectivity problems",
-    body: "Operation could not be completed, please check you internet connection"
+    body: "Operation could not be completed, please check your internet connection"
   },
   [HttpErrors.UNAUTHORIZED]: {
     title: "Unauthorized",
