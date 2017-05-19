@@ -2,14 +2,14 @@ import {RequestOptionsArgs, Headers, Http, Response} from "@angular/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {TOKEN, USER} from "../shared/constants";
-import {Storage} from "@ionic/storage";
+import { NativeStorage } from '@ionic-native/native-storage';
 
 @Injectable()
 export class AuthService {
   token: string = null;
   user: any = null;
 
-  constructor(private http: Http, private storage: Storage) {
+  constructor(private http: Http, private storage: NativeStorage) {
     this.getLocalUser();
   }
 
@@ -46,15 +46,19 @@ export class AuthService {
   setLocalUser(user: any, token: string) {
     this.token = token;
     this.user = user;
-    this.storage.set(TOKEN, token);
-    this.storage.set(USER, user);
+    this.storage.setItem(TOKEN, token);
+    this.storage.setItem(USER, user);
   }
 
   getLocalUser() {
     if (this.user == null) {
-      this.storage.get(TOKEN).then(token => this.token = token);
-      return this.storage.get(USER)
+      this.storage.getItem(TOKEN).then(token => {
+        console.log('get token!', token);
+        this.token = token
+      });
+      return this.storage.getItem(USER)
         .then(user => {
+          console.log('get user!', user)
           if (user) {
             this.user = user;
             return Promise.resolve(this.user);

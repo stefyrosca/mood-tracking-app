@@ -24,11 +24,11 @@ export class MyApp {
     this.pages = [
       {title: 'Browse', component: BrowseMoods},
       {title: 'User profile', component: UserProfile},
-      {title: 'Settings', component: SettingsPage}
+      {title: 'Settings', component: SettingsPage},
+      {title: 'Logout', component: AuthenticationComponent}
     ];
     console.log('ok ready', this.userService);
     this.userPreferences = this.userService.getUserPreferences();
-    console.log('preferences', this.userPreferences);
   }
 
   ngOnInit() {

@@ -9,6 +9,9 @@ import {HttpErrors} from "../../shared/constants";
 import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 
+
+declare var cordova:any;
+
 @Component({
   selector: "user-profile",
   templateUrl: "user-profile.html"
@@ -27,7 +30,16 @@ export class UserProfile {
   }
 
   ngOnInit() {
-    console.log('ngOnInit');
+    // let media = new MediaPlugin()
+    // console.log('wtf', cordova.plugins.diagnostic);
+    cordova.plugins.diagnostic.requestMicrophoneAuthorization(function(status){
+      console.log('STATUS', status);
+      if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
+        console.log("Microphone use is authorized");
+      }
+    }, function(error){
+      console.error(error);
+    });
     this.currentUser = this.navParams.get("user");
     this.userService.getLocalUser()
       .then((user: any) => {
@@ -55,9 +67,9 @@ export class UserProfile {
       (error) => {
         console.log('error', error);
         loadingIndicator.dismiss();
+        throw error;
       },
       () => {
-        console.log('moods', this.moods);
         loadingIndicator.dismiss()
       }
     )

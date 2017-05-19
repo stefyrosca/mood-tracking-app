@@ -16,13 +16,14 @@ export class UserService {
   private _db;
   private user = null;
   private userPreferences: any = defaultUserPreferences;
+  private url = "http://192.168.137.1:3000";
 
   constructor(private authHttp: AuthService, private db: Database) {
     this._db = db.getDB();
   }
 
   createUser(user: User, next: (user)=>any, error: (error: any)=>any) {
-    return this.authHttp.post("http://localhost:3000/auth/signup", user).subscribe(
+    return this.authHttp.post(this.url + "/auth/signup", user).subscribe(
       (result: any) => {
         this.authHttp.setLocalUser(result.user, result.token);
         next(result);
@@ -44,7 +45,7 @@ export class UserService {
   }
 
   login(user: User, next: (result)=>any, error: (error: any)=>any) {
-    return this.authHttp.post("http://localhost:3000/auth/login", user)
+    return this.authHttp.post(this.url + "/auth/login", user)
       .map(result => result.json())
       .subscribe((result) => {
           this.authHttp.setLocalUser(result.user, result.token);

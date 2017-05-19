@@ -11,17 +11,41 @@ export class ApiAiService {
   constructor() {
     this.textClient = new ApiAiClient({accessToken: this.accessToken});
 
-    var options: IStreamClientOptions = {token: this.accessToken,
-      onInit: ()=>{console.log('init')},
-      onOpen: ()=>{console.log('open', event)},
-      onClose: ()=>{console.log('close', event)},
-      onStartListening: ()=>{console.log('start', event)},
-      onStopListening: ()=>{console.log('stop', event)},
-      onResults: (event)=>{console.log('results', event)},
-      onEvent: (event, message)=>{console.log('event', event, 'message', message)},
-      onError: (event, message)=>{console.log('error', event, 'message', message)},
+    var options: IStreamClientOptions = {
+      token: this.accessToken,
+      server: "wss://api-ws.api.ai:4435/v1/ws/query",
+      sessionId: '1234',
+      readingInterval: '100',
+      onInit: ()=> {
+        // console.log('init')
+        this.streamClient.open();
+      },
+      onOpen: ()=> {
+        // console.log('open', event)
+      },
+      onClose: ()=> {
+        // console.log('close', event)
+      },
+      onStartListening: ()=> {
+        // console.log('start', event)
+      },
+      onStopListening: ()=> {
+        // console.log('stop', event)
+      },
+      onResults: (event)=> {
+        console.log('results', event)
+      },
+      onEvent: (event, message)=> {
+        // console.log('event', event, 'message', message)
+        // console.log(JSON.stringify(message))
+      },
+      onError: (event, message)=> {
+        console.error('error', event, 'message', message);
+        // console.log(JSON.stringify(message));
+      },
     };
     this.streamClient = new StreamClient(options);
+    this.streamClient.init();
   }
 
   textRequest(text: string) {
@@ -32,15 +56,26 @@ export class ApiAiService {
       .catch(handleError);
 
     function handleResponse(serverResponse) {
-      console.log('serverResponse',serverResponse);
+      // console.log('serverResponse', serverResponse);
     }
+
     function handleError(serverError) {
-      console.log('serverError',serverError);
+      // console.log('serverError', serverError);
     }
   }
 
-  streamRequest() {
 
-    this.streamClient.init();
+  startStreaming() {
+
+    console.log('startStreaming')
+    // this.streamClient.init();
+    // this.streamClient.open();
+    this.streamClient.startListening();
+  }
+
+  stopStreaming() {
+    console.log('stopStreaming')
+    this.streamClient.stopListening();
+    // this.streamClient.close();
   }
 }

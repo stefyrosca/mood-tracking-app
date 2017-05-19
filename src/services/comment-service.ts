@@ -11,6 +11,7 @@ import {AuthService} from "./auth-service";
 @Injectable()
 export class CommentService {
   private _db;
+  private url = 'http://192.168.137.1:3000';
 
   constructor(private authHttp: AuthService, db: Database) {
     this._db = db.getDB();
@@ -18,7 +19,7 @@ export class CommentService {
 
   // public getCommentsByPost(id: string, next: (result)=>any, error:(err)=>any, done?:()=>void) {
   public getCommentsByPost(id: string) {
-    return this.authHttp.get('http://localhost:3000/Comment?mood='+id)
+    return this.authHttp.get(this.url + '/Comment?mood='+id)
       .map(result => result.json())
       .flatMap(comment => comment)
       // .subscribe(next, error, done);
@@ -30,7 +31,7 @@ export class CommentService {
   }
 
   public addCommentToPost(comment: any) {
-    return this.authHttp.post('http://localhost:3000/Comment', comment)
+    return this.authHttp.post(this.url + '/Comment', comment)
       .map(result => result.json)
     // return this._db.post(comment)
     //   .then(result => {

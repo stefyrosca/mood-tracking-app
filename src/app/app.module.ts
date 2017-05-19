@@ -21,6 +21,8 @@ import {AuthService} from "../services/auth-service";
 import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 import {SettingsPage} from "../pages/settings/settings";
 import {ApiAiService} from "../services/api.ai-service";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {MediaObject, MediaPlugin} from "@ionic-native/media";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,7 @@ import {ApiAiService} from "../services/api.ai-service";
     SettingsPage
   ],
   providers: [{provide: ErrorHandler, useClass: ErrorController}, MenuController, AlertController, ErrorController,
-    Database, MoodService, CommentService, UserService, AuthService, ApiAiService]
+    Database, MoodService, CommentService, UserService, AuthService, ApiAiService, NativeStorage, MediaPlugin]
 })
 export class AppModule {
 }

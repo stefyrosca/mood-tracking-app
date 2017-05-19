@@ -16,6 +16,15 @@
       <ion-label floating>Title</ion-label>
       <ion-input [(ngModel)]="title"></ion-input>
     </ion-item>
+    <button ion-button icon-left clear small color="primary" *ngIf="streaming.title == false" (click)="recordTitle()">
+      <ion-icon name="mic"></ion-icon>
+    </button>
+    <button ion-button icon-left clear small color="danger" *ngIf="streaming.title" (click)="recordTitle()">
+      <ion-icon name="mic"></ion-icon>
+    </button>
+    <button ion-button icon-left clear small color="danger" (click)="play()">
+      <ion-icon name="play"></ion-icon>
+    </button>
     <ion-item>
       <ion-label floating>Mood</ion-label>
       <ion-textarea [(ngModel)]="body" rows="6" maxlength="250"></ion-textarea>
@@ -25,38 +34,36 @@
     </ion-item>
     <ion-grid>
       <ion-row>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.HAPPY ? true : false" (click)="selectEmotion(EmotionTypes.HAPPY)">
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.HAPPY ? true : false"
+                 (click)="selectEmotion(EmotionTypes.HAPPY)">
           <ion-img src="assets/img/emotions/happy.png"></ion-img>
         </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.SAD ? true : false" (click)="selectEmotion(EmotionTypes.SAD)">
-          <ion-img  src="assets/img/emotions/sad.png"></ion-img>
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.SAD ? true : false"
+                 (click)="selectEmotion(EmotionTypes.SAD)">
+          <ion-img src="assets/img/emotions/sad.png"></ion-img>
         </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.BORED ? true : false" (click)="selectEmotion(EmotionTypes.BORED)">
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.BORED ? true : false"
+                 (click)="selectEmotion(EmotionTypes.BORED)">
           <ion-img src="assets/img/emotions/bored.png"></ion-img>
         </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.EXCITED ? true : false" (click)="selectEmotion(EmotionTypes.EXCITED)">
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.EXCITED ? true : false"
+                 (click)="selectEmotion(EmotionTypes.EXCITED)">
           <ion-img src="assets/img/emotions/excited.png"></ion-img>
         </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.WORRIED ? true : false" (click)="selectEmotion(EmotionTypes.WORRIED)">
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.WORRIED ? true : false"
+                 (click)="selectEmotion(EmotionTypes.WORRIED)">
           <ion-img src="assets/img/emotions/worried.png"></ion-img>
         </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.ANGRY ? true : false" (click)="selectEmotion(EmotionTypes.ANGRY)">
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.ANGRY ? true : false"
+                 (click)="selectEmotion(EmotionTypes.ANGRY)">
           <ion-img src="assets/img/emotions/angry.png"></ion-img>
         </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.CRYING ? true : false" (click)="selectEmotion(EmotionTypes.CRYING)">
+        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.CRYING ? true : false"
+                 (click)="selectEmotion(EmotionTypes.CRYING)">
           <ion-img src="assets/img/emotions/crying.png"></ion-img>
         </ion-col>
       </ion-row>
     </ion-grid>
-    <!--<div style="display: flex; flex: 1; flex-direction: row; min-height: 50px">-->
-    <!--<ion-img src="assets/img/emotions/happy.png"></ion-img>-->
-    <!--<ion-img src="assets/img/emotions/sad.png"></ion-img>-->
-    <!--<ion-img src="assets/img/emotions/excited.png"></ion-img>-->
-    <!--<ion-img src="assets/img/emotions/crying.png"></ion-img>-->
-    <!--<ion-img src="assets/img/emotions/worried.png"></ion-img>-->
-    <!--<ion-img src="assets/img/emotions/bored.png"></ion-img>-->
-    <!--<ion-img src="assets/img/emotions/angry.png"></ion-img>-->
-    <!--</div>-->
     <button ion-button class="submit-button" [disabled]="body == '' || title == ''" (click)="postMood()">
       Submit
     </button>

@@ -36,6 +36,7 @@ export class BrowseMoods {
     }
   }
 
+
   getAllMoods() {
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
@@ -53,7 +54,6 @@ export class BrowseMoods {
         throw error;
       },
       () => {
-        console.log('moods', this.moods);
         loadingIndicator.dismiss()
       }
     )

@@ -15,7 +15,7 @@ import {AuthService} from "./auth-service";
 
 @Injectable()
 export class MoodService {
-  private _url = 'http://jsonplaceholder.typicode.com/posts';
+  private url = 'http://192.168.137.1:3000';
   private _db: any;
   private TOKEN: string = null;
 
@@ -24,22 +24,15 @@ export class MoodService {
     this._db = db.getDB();
   }
 
-  public getById(id: number) {
-    return this.authHttp
-      .get(this._url + "/" + id)
-      .map(data => data.json())
-      .catch(error => error);
-  }
-
   public getAll(next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
-    return this.authHttp.get('http://localhost:3000/Mood')
+    return this.authHttp.get(this.url + '/Mood')
       .map(result => result.json())
       .flatMap(mood => mood)
       .subscribe(next, error, done);
   }
 
   public postMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
-    return this.authHttp.post('http://localhost:3000/Mood', mood)
+    return this.authHttp.post(this.url + '/Mood', mood)
       .subscribe(mood => {
         mood = mood.json();
         next(mood);
@@ -47,14 +40,14 @@ export class MoodService {
   }
 
   public getMoodsByUser(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
-    return this.authHttp.get('http://localhost:3000/Mood?user=' + userId)
+    return this.authHttp.get(this.url + '/Mood?user=' + userId)
       .map(result => result.json())
       .flatMap(mood => mood)
       .subscribe(next, error, done);
   }
 
   public putMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
-    return this.authHttp.put('http://localhost:3000/Mood/' + mood._id, mood)
+    return this.authHttp.put(this.url + '/Mood/' + mood._id, mood)
       .subscribe(mood => {
         mood = mood.json();
         next(mood);
@@ -62,7 +55,7 @@ export class MoodService {
   }
 
   public deleteMood(mood: Mood, next: ()=>any, error: (error)=>any) {
-    return this.authHttp.put('http://localhost:3000/Mood/' + mood._id, mood)
+    return this.authHttp.put(this.url + '/Mood/' + mood._id, mood)
       .subscribe(next, error);
   }
 
