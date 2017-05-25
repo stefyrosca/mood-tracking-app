@@ -11,11 +11,12 @@ import {CommentService} from "./comment-service";
 import {TOKEN} from "../shared/constants";
 import {Storage} from "@ionic/storage";
 import {AuthService} from "./auth-service";
+import {serverConfig} from "./server-config";
 
 
 @Injectable()
 export class MoodService {
-  private url = 'http://192.168.137.1:3000';
+  private url = serverConfig.getBaseUrl();
   private _db: any;
   private TOKEN: string = null;
 

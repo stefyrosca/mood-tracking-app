@@ -7,11 +7,12 @@ import {Observable} from "rxjs";
 import {Database} from "../persistence/database";
 import {Comment} from '../model/comment'
 import {AuthService} from "./auth-service";
+import {serverConfig} from "./server-config";
 
 @Injectable()
 export class CommentService {
   private _db;
-  private url = 'http://192.168.137.1:3000';
+  private url = serverConfig.getBaseUrl();
 
   constructor(private authHttp: AuthService, db: Database) {
     this._db = db.getDB();

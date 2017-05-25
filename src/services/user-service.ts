@@ -6,6 +6,7 @@ import {Database} from "../persistence/database";
 import {User} from "../model/user";
 import {LOCAL_USER_ID} from "../shared/constants";
 import {AuthService} from "./auth-service";
+import {serverConfig} from "./server-config";
 
 const defaultUserPreferences = {
   theme: "red-theme"
@@ -16,7 +17,7 @@ export class UserService {
   private _db;
   private user = null;
   private userPreferences: any = defaultUserPreferences;
-  private url = "http://192.168.137.1:3000";
+  private url = serverConfig.getBaseUrl();
 
   constructor(private authHttp: AuthService, private db: Database) {
     this._db = db.getDB();
