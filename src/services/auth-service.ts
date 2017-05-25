@@ -58,7 +58,6 @@ export class AuthService {
       });
       return this.storage.getItem(USER)
         .then(user => {
-          console.log('get user!', user)
           if (user) {
             this.user = user;
             return Promise.resolve(this.user);

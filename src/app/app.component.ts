@@ -14,7 +14,7 @@ import {UserService} from "../services/user-service";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = BrowseMoods;
+  rootPage: any = UserProfile;
   pages: Array<{title: string, component: any}>;
   private userPreferences:any;
 
@@ -27,7 +27,6 @@ export class MyApp {
       {title: 'Settings', component: SettingsPage},
       {title: 'Logout', component: AuthenticationComponent}
     ];
-    console.log('ok ready', this.userService);
     this.userPreferences = this.userService.getUserPreferences();
   }
 

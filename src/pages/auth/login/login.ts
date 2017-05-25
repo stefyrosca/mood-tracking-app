@@ -27,6 +27,7 @@ export class LoginComponent {
       );
     } catch (error) {
       console.log('on catch', error);
+      throw error;
     }
   }
 }

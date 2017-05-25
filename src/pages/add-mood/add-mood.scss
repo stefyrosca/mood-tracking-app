@@ -6,4 +6,11 @@ add-mood {
   [selected=true] {
     border: solid 1px #32db64;
   }
+  [recording=true], [playing=true] {
+    color: color($colors, danger)
+  }
+  [recording=false], [playing=false] {
+    color: color($colors, primary)
+  }
+
 }

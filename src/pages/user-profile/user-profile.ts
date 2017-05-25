@@ -10,7 +10,7 @@ import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 
 
-declare var cordova:any;
+declare var cordova: any;
 
 @Component({
   selector: "user-profile",
@@ -32,12 +32,12 @@ export class UserProfile {
   ngOnInit() {
     // let media = new MediaPlugin()
     // console.log('wtf', cordova.plugins.diagnostic);
-    cordova.plugins.diagnostic.requestMicrophoneAuthorization(function(status){
+    cordova.plugins && cordova.plugins.diagnostic && cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
       console.log('STATUS', status);
-      if(status === cordova.plugins.diagnostic.permissionStatus.GRANTED){
+      if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
         console.log("Microphone use is authorized");
       }
-    }, function(error){
+    }, function (error) {
       console.error(error);
     });
     this.currentUser = this.navParams.get("user");
@@ -74,7 +74,6 @@ export class UserProfile {
       }
     )
   }
-
 
 
   goToAddMood() {

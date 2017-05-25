@@ -23,6 +23,8 @@ import {SettingsPage} from "../pages/settings/settings";
 import {ApiAiService} from "../services/api.ai-service";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {MediaObject, MediaPlugin} from "@ionic-native/media";
+import {CustomLoadingController} from "../services/loading-controller";
+import {File} from "@ionic-native/file"
 
 @NgModule({
   declarations: [
@@ -57,8 +59,8 @@ import {MediaObject, MediaPlugin} from "@ionic-native/media";
     BrowseMoods,
     SettingsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: ErrorController}, MenuController, AlertController, ErrorController,
-    Database, MoodService, CommentService, UserService, AuthService, ApiAiService, NativeStorage, MediaPlugin]
+  providers: [{provide: ErrorHandler, useClass: ErrorController}, MenuController, AlertController, ErrorController, File,
+    Database, MoodService, CommentService, UserService, AuthService, ApiAiService, NativeStorage, MediaPlugin, CustomLoadingController]
 })
 export class AppModule {
 }
