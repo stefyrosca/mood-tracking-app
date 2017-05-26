@@ -2,9 +2,8 @@ import {Injectable} from "@angular/core";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
-import {Database} from "../persistence/database";
 import {User} from "../model/user";
-import {LOCAL_USER_ID} from "../shared/constants";
+import {LOCAL_USER_ID} from "../shared/storage";
 import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
 
@@ -14,13 +13,11 @@ const defaultUserPreferences = {
 
 @Injectable()
 export class UserService {
-  private _db;
   private user = null;
   private userPreferences: any = defaultUserPreferences;
   private url = serverConfig.getBaseUrl();
 
-  constructor(private authHttp: AuthService, private db: Database) {
-    this._db = db.getDB();
+  constructor(private authHttp: AuthService) {
   }
 
   createUser(user: User, next: (user)=>any, error: (error: any)=>any) {

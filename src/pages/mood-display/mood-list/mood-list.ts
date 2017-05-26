@@ -7,9 +7,8 @@ import {UserService} from "../../../services/user-service";
 import {UserActions} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
 import {CustomLoadingController} from "../../../services/loading-controller";
-import {AuthenticationComponent} from "../../auth/authentication/authentication";
-import {HttpErrors} from "../../../shared/constants";
-
+import {User} from "../../../model/user";
+import {MoodDisplayOptions, AllowedActions} from "../../../shared/mood-display-options";
 
 @Component({
   selector: 'mood-list',
@@ -20,7 +19,9 @@ export class MoodList {
   @Input()
   private moods: {[id: string]: {data: Mood, liked: boolean}};
   @Input()
-  private user;
+  private user: User;
+  @Input()
+  private options: MoodDisplayOptions;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -28,23 +29,6 @@ export class MoodList {
               private userService: UserService,
               public loadingController: CustomLoadingController) {
     this.moods = {};
-  }
-
-  ngOnInit() {
-    // console.log('MOODLIST');
-    // try {
-    //   this.userService.getLocalUser()
-    //     .then(user => {
-    //       this.user = user;
-    //       this.getAllMoods();
-    //     })
-    //     .catch(error => {
-    //       console.log(JSON.stringify(error));
-    //       this.navCtrl.setRoot(AuthenticationComponent)
-    //     });
-    // } catch (error) {
-    //   error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(AuthenticationComponent) : console.log('error', error)
-    // }
   }
 
   getMoodList() {
@@ -65,12 +49,28 @@ export class MoodList {
   onNotify(event) {
     switch (event.message) {
       case UserActions.COMMENT: {
-        this.navCtrl.push(MoodComment, {mood: event.payload.mood});
+        let commentOptions = this.options.comment;
+        if (commentOptions.allowRedirect)
+          if (commentOptions.action == AllowedActions.PUSH)
+            this.navCtrl.push(MoodComment, {mood: event.payload.mood});
+          else {
+            let length = this.navCtrl.length();
+            this.navCtrl.push(MoodComment, {mood: event.payload.mood})
+              .then(() => this.navCtrl.remove(length - 1, 1));
+          }
         break;
       }
       case UserActions.USER: {
-        console.log('user profile!', event.payload);
-        this.navCtrl.push(UserProfile, {user: event.payload.user});
+        let userOptions = this.options.userProfile;
+        if (userOptions.allowRedirect) {
+          if (userOptions.action == AllowedActions.PUSH) {
+            this.navCtrl.push(UserProfile, {user: event.payload.user});
+          } else { // replace
+            let length = this.navCtrl.length();
+            this.navCtrl.push(UserProfile, {user: event.payload.user})
+              .then(() => this.navCtrl.remove(length - 1, 1));
+          }
+        }
         break;
       }
       case UserActions.LOVE: {
@@ -83,8 +83,10 @@ export class MoodList {
         this.moodService.putMood(newMood, (mood) => {
           this.moods[mood.id].data.likes = mood.likes;
           this.moods[mood.id].liked = !this.moods[mood.id].liked;
-        }, (error) => console.log('smth went wrong', error));
-        // this.navCtrl.push(MoodComment, {mood: event.payload.mood});
+        }, (error) => {
+          console.log('smth went wrong', error);
+          throw error;
+        });
         break;
       }
     }
@@ -101,11 +103,10 @@ export class MoodList {
           liked: result.likes.find(userId => this.user.id == userId) !== undefined
         },
       (error) => {
-        console.log('error', error);
         this.loadingController.dismiss();
+        throw error;
       },
       () => {
-        console.log('moods', this.moods);
         this.loadingController.dismiss();
       }
     )

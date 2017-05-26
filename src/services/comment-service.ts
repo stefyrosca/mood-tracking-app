@@ -4,18 +4,15 @@ import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import {Observable} from "rxjs";
-import {Database} from "../persistence/database";
 import {Comment} from '../model/comment'
 import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
 
 @Injectable()
 export class CommentService {
-  private _db;
   private url = serverConfig.getBaseUrl();
 
-  constructor(private authHttp: AuthService, db: Database) {
-    this._db = db.getDB();
+  constructor(private authHttp: AuthService) {
   }
 
   // public getCommentsByPost(id: string, next: (result)=>any, error:(err)=>any, done?:()=>void) {

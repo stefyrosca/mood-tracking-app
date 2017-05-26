@@ -7,7 +7,7 @@ import {Mood} from "../../model/mood";
 import {NavController, NavParams, Platform, LoadingController} from "ionic-angular";
 import {UserProfile} from "../user-profile/user-profile";
 import {CreateUserComponent} from "../auth/create-user/create-user";
-import {HttpErrors} from "../../shared/constants";
+import {HttpErrors} from "../../shared/storage";
 import {EmotionTypes} from "../../model/emotion-types";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
 import {ApiAiService} from "../../services/api.ai-service";

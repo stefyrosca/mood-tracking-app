@@ -3,12 +3,11 @@ import {Http} from "@angular/http";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
-import {Database} from "../persistence/database";
 import {Mood} from "../model/mood";
 import {ResourceTypes} from "../model/resource-types";
 import {Observable} from "rxjs";
 import {CommentService} from "./comment-service";
-import {TOKEN} from "../shared/constants";
+import {TOKEN} from "../shared/storage";
 import {Storage} from "@ionic/storage";
 import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
@@ -17,12 +16,10 @@ import {serverConfig} from "./server-config";
 @Injectable()
 export class MoodService {
   private url = serverConfig.getBaseUrl();
-  private _db: any;
   private TOKEN: string = null;
 
 
-  constructor(private authHttp: AuthService, db: Database, private commentService: CommentService) {
-    this._db = db.getDB();
+  constructor(private authHttp: AuthService, private commentService: CommentService) {
   }
 
   public getAll(next: (mood)=>any, error: (error)=>any, done?: ()=>void) {

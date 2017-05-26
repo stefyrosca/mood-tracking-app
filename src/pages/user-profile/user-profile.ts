@@ -5,9 +5,11 @@ import {UserService} from "../../services/user-service";
 import {MoodService} from "../../services/mood-service";
 import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
-import {HttpErrors} from "../../shared/constants";
+import {HttpErrors} from "../../shared/storage";
 import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
+import {UserActions} from "../../shared/utils";
+import {MoodDisplayOptions, AllowedActions, defaultOptions} from "../../shared/mood-display-options";
 
 
 declare var cordova: any;
@@ -21,12 +23,17 @@ export class UserProfile {
   moods: {[id: string]: {data: Mood, liked: boolean}} = {};
   private myUser;
   private currentUser;
-  private deleted;
+  private moodListOptions: MoodDisplayOptions;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private userService: UserService, private moodService: MoodService,
               private loader: LoadingController) {
-
+    let options = {
+      userProfile: {
+        allowRedirect: false
+      }
+    };
+    this.moodListOptions = Object.assign({}, defaultOptions, options);
   }
 
   ionViewDidLoad() {
@@ -49,7 +56,6 @@ export class UserProfile {
         },
       ).catch(error =>
       error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.warn('error', error));
-    this.deleted = this.navParams.get('deleted');
   }
 
   getMoods(userId: string) {
@@ -83,15 +89,22 @@ export class UserProfile {
     this.navCtrl.push(MoodComment, {mood, user: this.myUser});
   }
 
-  notify(event) {
-    console.log('event', event)
-    switch (event.message) {
-      case 'comment': {
-        this.goToComments(event.payload.mood);
-        break;
-      }
-    }
-  }
+  //
+  // notify(event) {
+  //   console.log('event', event)
+  //   switch (event.message) {
+  //     case UserActions.COMMENT: {
+  //       this.goToComments(event.payload.mood);
+  //       break;
+  //     }
+  //     case UserActions.USER: {
+  //       if (this.navCtrl.length() != 1)
+  //         this.navCtrl.pop();
+  //       this.navCtrl.push(UserProfile, {user: event.payload.user});
+  //       break;
+  //     }
+  //   }
+  // }
 
   getMoodList() {
     return Object.keys(this.moods).map(id => this.moods[id].data);

@@ -1,5 +1,5 @@
 import {NgModule, ErrorHandler} from "@angular/core";
-import { IonicStorageModule, Storage } from '@ionic/storage'
+import {IonicStorageModule, Storage} from '@ionic/storage'
 import {IonicApp, IonicModule, IonicErrorHandler, MenuController, AlertController} from "ionic-angular";
 import {MyApp} from "./app.component";
 import {MoodList} from "../pages/mood-display/mood-list/mood-list";
@@ -8,7 +8,6 @@ import {HttpModule} from "@angular/http";
 import {MoodService} from "../services/mood-service";
 import {MoodComment} from "../pages/mood-display/mood-comment/mood-comment";
 import {CommentService} from "../services/comment-service";
-import {Database} from "../persistence/database";
 import {UserService} from "../services/user-service";
 import {CreateUserComponent} from "../pages/auth/create-user/create-user";
 import {FormsModule} from '@angular/forms';
@@ -59,8 +58,11 @@ import {File} from "@ionic-native/file"
     BrowseMoods,
     SettingsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: ErrorController}, MenuController, AlertController, ErrorController, File,
-    Database, MoodService, CommentService, UserService, AuthService, ApiAiService, NativeStorage, MediaPlugin, CustomLoadingController]
+  providers: [{
+    provide: ErrorHandler,
+    useClass: ErrorController
+  }, MenuController, AlertController, ErrorController, File,
+    MoodService, CommentService, UserService, AuthService, ApiAiService, NativeStorage, MediaPlugin, CustomLoadingController]
 })
 export class AppModule {
 }

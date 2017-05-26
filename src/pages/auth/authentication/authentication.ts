@@ -3,7 +3,7 @@ import {LoginComponent} from "../login/login";
 import {Component} from "@angular/core/src/metadata/directives";
 import {Nav} from "ionic-angular";
 import {ViewChild} from "@angular/core";
-import {TOKEN, USER} from "../../../shared/constants";
+import {TOKEN, USER} from "../../../shared/storage";
 import {NativeStorage} from "@ionic-native/native-storage";
 
 @Component({

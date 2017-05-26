@@ -1,23 +1,12 @@
-<!--<ion-header>-->
-  <!--<ion-navbar>-->
-    <!--<button ion-button menuToggle>-->
-      <!--<ion-icon name="menu"></ion-icon>-->
-    <!--</button>-->
-    <!--<ion-title>Mood list</ion-title>-->
-  <!--</ion-navbar>-->
-<!--</ion-header>-->
-
-<!--<ion-content>-->
-  <ion-list padding>
-    <div text-wrap *ngFor="let mood of getMoodList()">
-      <mood-view
-        [mood]="mood"
-        [buttonStyles]="getButtonStyles(mood)"
-        (notify)="onNotify($event)"
-      ></mood-view>
-    </div>
-    <h3 ion-item text-wrap *ngIf="getMoodList().length == 0">
-      There is nothing to show!
-    </h3>
-  </ion-list>
-<!--</ion-content>-->
+<ion-list padding>
+  <div text-wrap *ngFor="let mood of getMoodList()">
+    <mood-view
+      [mood]="mood"
+      [buttonStyles]="getButtonStyles(mood)"
+      (notify)="onNotify($event)"
+    ></mood-view>
+  </div>
+  <h3 ion-item text-wrap *ngIf="getMoodList().length == 0">
+    There is nothing to show!
+  </h3>
+</ion-list>

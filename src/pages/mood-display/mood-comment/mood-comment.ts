@@ -5,10 +5,11 @@ import {CommentService} from "../../../services/comment-service";
 import {Comment} from "../../../model/comment";
 import {UserService} from "../../../services/user-service";
 import {LocalUser, User} from "../../../model/user";
-import {HttpErrors} from "../../../shared/constants";
+import {HttpErrors} from "../../../shared/storage";
 import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {MoodService} from "../../../services/mood-service";
 import {formatTimestamp} from '../../../shared/utils'
+import {UserProfile} from "../../user-profile/user-profile";
 
 
 @Component({
@@ -69,5 +70,11 @@ export class MoodComment {
   deleteMood() {
     this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=>console.log('error'));
   }
+
+  navigateToUser(user: any) {
+    // push, set root?
+    this.navCtrl.push(UserProfile, {user})
+  }
+
 
 }

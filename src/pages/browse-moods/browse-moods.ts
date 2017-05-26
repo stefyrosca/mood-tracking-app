@@ -4,15 +4,17 @@ import {LoadingController, NavParams, NavController} from "ionic-angular";
 import {UserService} from "../../services/user-service";
 import {MoodService} from "../../services/mood-service";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
-import {HttpErrors} from "../../shared/constants";
+import {HttpErrors} from "../../shared/storage";
+import {User} from "../../model/user";
+import {MoodDisplayOptions, defaultOptions, AllowedActions} from "../../shared/mood-display-options";
 @Component({
   selector: 'browse-moods',
   templateUrl: 'browse-moods.html',
 })
 export class BrowseMoods {
   private moods: {[id: string]: {data: Mood, liked: boolean}};
-  private user;
-  private userPreferences;
+  private user: User;
+  private moodListOptions: MoodDisplayOptions;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -20,10 +22,16 @@ export class BrowseMoods {
               private userService: UserService,
               public loader: LoadingController) {
     this.moods = {};
+    let options = {
+      userProfile: {
+        allowRedirect: true,
+        action: AllowedActions.PUSH
+      }
+    };
+    this.moodListOptions = Object.assign({}, defaultOptions, options);
   }
 
-  ngOnInit() {
-    this.userPreferences = this.userService.getUserPreferences();
+  ionViewDidLoad() {
     try {
       this.userService.getLocalUser()
         .then(user => {
