@@ -1,9 +1,9 @@
 import {Component} from "@angular/core/src/metadata/directives";
 import {UserService} from "../../../services/user-service";
 import {MenuController, NavController, NavParams} from "ionic-angular";
-import {MoodList} from "../../mood-display/mood-list/mood-list";
 import {User} from "../../../model/user";
 import {ErrorController} from "../../../services/error-controller";
+import {BrowseMoods} from "../../browse-moods/browse-moods";
 
 @Component({
   selector: 'create-user',
@@ -25,7 +25,7 @@ export class CreateUserComponent {
   createUser() {
     this.userService.createUser(this.user, () => {
         this.menuController.enable(true);
-        this.navCtrl.parent.parent.setRoot(MoodList)
+        this.navCtrl.parent.parent.setRoot(BrowseMoods)
       }, (error) => this.errorCtrl.handleError(error));
   }
 }

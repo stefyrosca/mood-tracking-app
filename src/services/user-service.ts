@@ -24,7 +24,9 @@ export class UserService {
   }
 
   createUser(user: User, next: (user)=>any, error: (error: any)=>any) {
-    return this.authHttp.post(this.url + "/auth/signup", user).subscribe(
+    return this.authHttp.post(this.url + "/auth/signup", user)
+      .map(result => result.json())
+      .subscribe(
       (result: any) => {
         this.authHttp.setLocalUser(result.user, result.token);
         next(result);

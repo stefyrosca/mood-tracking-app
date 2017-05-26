@@ -13,7 +13,6 @@ class ServerConfig {
   public getBaseUrl() {
     return `${this._protocol}://${this._url}:${this._port}`;
   }
-
 }
 
 export const serverConfig = new ServerConfig("http", "localhost", "3000");

@@ -16,8 +16,8 @@
         (notify)="onNotify($event)"
       ></mood-view>
     </div>
-    <button ion-item text-wrap *ngIf="moods.length == 0">
+    <h3 ion-item text-wrap *ngIf="getMoodList().length == 0">
       There is nothing to show!
-    </button>
+    </h3>
   </ion-list>
 <!--</ion-content>-->
