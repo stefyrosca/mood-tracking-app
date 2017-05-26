@@ -29,11 +29,10 @@ export class UserProfile {
 
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     // let media = new MediaPlugin()
     // console.log('wtf', cordova.plugins.diagnostic);
     cordova.plugins && cordova.plugins.diagnostic && cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
-      console.log('STATUS', status);
       if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
         console.log("Microphone use is authorized");
       }

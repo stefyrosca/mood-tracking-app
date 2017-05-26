@@ -15,6 +15,6 @@
     <p ion-text [hidden]="user.password !== ''" color="danger" padding-left>
       Password is required
     </p>
-    <button ion-button item-right [disabled]="user.username == '' || user.password == ''" (click)="login()">Login</button>
+    <button ion-button class="submit-button" [disabled]="user.username == '' || user.password == ''" (click)="login()">Login</button>
   </ion-list>
 </ion-content>

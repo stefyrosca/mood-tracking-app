@@ -2,8 +2,8 @@ import {MenuController, NavParams, NavController} from "ionic-angular";
 import {UserService} from "../../../services/user-service";
 import {Component} from "@angular/core/src/metadata/directives";
 import {User} from "../../../model/user";
-import {MoodList} from "../../mood-display/mood-list/mood-list";
 import {ErrorController} from "../../../services/error-controller";
+import {UserProfile} from "../../user-profile/user-profile";
 
 @Component({
   selector: 'login',
@@ -20,14 +20,14 @@ export class LoginComponent {
   login() {
     try {
       this.userService.login(this.user, (result) => {
-          this.navCtrl.setRoot(MoodList);
+          this.navCtrl.parent.parent.setRoot(UserProfile)
         }, (error: any) => {
           this.errorCtrl.handleError(error);
         }
       );
     } catch (error) {
       console.log('on catch', error);
-      throw error;
+      this.errorCtrl.handleError(error);
     }
   }
 }
