@@ -1,0 +1,17 @@
+.yellow-theme {
+  h1, h2, h3, h4, h5, h6,
+  .toolbar-title {
+    color: $yellow-dark;
+  }
+  .toolbar-background {
+    background-color: lighten($yellow-light, 10%);
+  }
+  ion-content {
+    background-color: $yellow-background;
+  }
+  ion-list {
+    .item {
+      background-color: darken($yellow-background, 1.5%);
+    }
+  }
+}

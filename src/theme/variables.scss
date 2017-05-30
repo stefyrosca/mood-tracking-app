@@ -31,15 +31,34 @@ $colors: (
   dark:       #222
 );
 
-// take the red pill
+//red theme
 $red-background: #fff6f6;
-$red-light: #ffa99c;
-$red-dark: #74000e;
-// take the blue pill
-$blue-background: #f6f6ff;
-$blue-light: #53e1ff;
-$blue-dark: #0034a7;
+$red-light: #e74c3c;
+$red-dark: #c0392b;
 
+//blue theme
+$blue-background: #f6f6ff;
+$blue-light: #3498ca;
+$blue-dark: #2980b9;
+
+//purple theme
+$purple-background: #f9e5ff;
+$purple-light: #9b59b6;
+$purple-dark: #8e44ad;
+//orange theme
+$orange-background: #d3c39b;
+$orange-light: #e67e22;
+$orange-dark: #d35400;
+
+//yellow theme
+$yellow-background: #feffc9;
+$yellow-light: #f1c40f;
+$yellow-dark: #f39c12;
+
+//green theme
+$green-background: #afccb1;
+$green-light: #2ecc71;
+$green-dark: #27ae60;
 
 
 // App iOS Variables
@@ -74,6 +93,10 @@ $blue-dark: #0034a7;
 
 @import "blue.theme";
 @import "red.theme";
+@import "yellow.theme";
+@import "purple.theme";
+@import "green.theme";
+@import "orange.theme";
 
 
 // Fonts

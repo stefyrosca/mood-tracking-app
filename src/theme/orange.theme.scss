@@ -1,0 +1,17 @@
+.orange-theme {
+  h1, h2, h3, h4, h5, h6,
+  .toolbar-title {
+    color: $orange-dark;
+  }
+  .toolbar-background {
+    background-color: $orange-light;
+  }
+  ion-content {
+    background-color: lighten($orange-background, 10%);
+  }
+  ion-list {
+    .item {
+      background-color: darken($orange-background, 1.5%);
+    }
+  }
+}

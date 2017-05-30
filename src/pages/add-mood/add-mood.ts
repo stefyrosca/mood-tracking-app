@@ -125,10 +125,14 @@ export class AddMood {
       user: this.user.id,
       timestamp: new Date()
     };
+    this.loadingController.create({content: "Saving..."});
     this.moodService.postMood(mood, (m) => {
-        this.navCtrl.setRoot(UserProfile)
+        console.log('yey!', m);
+        this.navCtrl.pop();
+        this.loadingController.dismiss();
       },
       (error) => {
+        this.loadingController.dismiss();
         throw error
       });
     // .then(result => this.navCtrl.setRoot(UserProfile))

@@ -1,0 +1,17 @@
+.purple-theme {
+  h1, h2, h3, h4, h5, h6,
+  .toolbar-title {
+    color: $purple-dark;
+  }
+  .toolbar-background {
+    background-color: lighten($purple-light, 10%);
+  }
+  ion-content {
+    background-color: $purple-background;
+  }
+  ion-list {
+    .item {
+      background-color: darken($purple-background, 1.5%);
+    }
+  }
+}

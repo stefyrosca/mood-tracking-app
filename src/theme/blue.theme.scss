@@ -4,7 +4,7 @@
     color: $blue-dark;
   }
   .toolbar-background {
-    background-color: $blue-light;
+    background-color: lighten($blue-light, 10%);
   }
   ion-content {
     background-color: $blue-background;

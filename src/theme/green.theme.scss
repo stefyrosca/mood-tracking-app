@@ -1,0 +1,17 @@
+.green-theme {
+  h1, h2, h3, h4, h5, h6,
+  .toolbar-title {
+    color: $green-dark;
+  }
+  .toolbar-background {
+    background-color: lighten($green-light, 10%);
+  }
+  ion-content {
+    background-color: $green-background;
+  }
+  ion-list {
+    .item {
+      background-color: darken($green-background, 1.5%);
+    }
+  }
+}

@@ -19,7 +19,11 @@ export class SettingsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService) {
     this.availableThemes = [
       {className: "red-theme", display: "Red"},
-      {className: "blue-theme", display: "Blue"}
+      {className: "blue-theme", display: "Blue"},
+      {className: "orange-theme", display: "Orange"},
+      {className: "purple-theme", display: "Purple"},
+      {className: "green-theme", display: "Green"},
+      {className: "yellow-theme", display: "Yellow"}
     ];
   }
 
