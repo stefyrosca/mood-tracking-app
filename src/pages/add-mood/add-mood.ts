@@ -10,7 +10,6 @@ import {CreateUserComponent} from "../auth/create-user/create-user";
 import {HttpErrors} from "../../shared/storage";
 import {EmotionTypes} from "../../model/emotion-types";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
-import {ApiAiService} from "../../services/api.ai-service";
 import {MediaPlugin, MediaObject} from '@ionic-native/media';
 import {File, FileError} from '@ionic-native/file';
 import {CustomLoadingController} from "../../services/loading-controller";
@@ -31,6 +30,10 @@ export class AddMood {
     body: MediaObject
   } = {title: null, body: null};
   private filePath;
+  private inputType: {
+    title: 'type' | 'recording',
+    body: 'type' | 'recording'
+  } = {title: 'type', body: 'type'};
 
   MediaSuccessStatus = {
     MEDIA_NONE: 0,
@@ -49,8 +52,8 @@ export class AddMood {
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
               private moodService: MoodService, private userService: UserService,
-              private apiAiService: ApiAiService, private media: MediaPlugin,
-              private nativeFile: File, private loadingController: CustomLoadingController) {
+              private media: MediaPlugin, private nativeFile: File,
+              private loadingController: CustomLoadingController) {
     this.fileStatus = {
       title: {
         status: this.MediaSuccessStatus.MEDIA_NONE,

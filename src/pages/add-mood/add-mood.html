@@ -12,28 +12,69 @@
     <ion-title> How do you feel today?</ion-title>
   </div>
   <ion-list>
-    <ion-item>
-      <ion-label floating>Title</ion-label>
-      <ion-input [(ngModel)]="title"></ion-input>
-    </ion-item>
-    <button ion-button icon-left clear small [attr.recording]="fileStatus.title.recording" (click)="record('title')">
-      <ion-icon name="mic"></ion-icon>
-    </button>
-    <button ion-button icon-left clear small
-            disabled="{{fileStatus.title.recording}}"
-            [attr.playing]="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.title.recording"
-            (click)="play('title')">
-      <ion-icon name="play"
-                *ngIf="fileStatus.title.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.title.recording">
-      </ion-icon>
-      <ion-icon name="pause"
-                *ngIf="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.title.recording">
-      </ion-icon>
-    </button>
-    <ion-item>
-      <ion-label floating>Mood</ion-label>
-      <ion-textarea [(ngModel)]="body" rows="6" maxlength="250"></ion-textarea>
-    </ion-item>
+    <ion-segment [(ngModel)]="inputType.title">
+      <ion-segment-button value="type">
+        Type
+      </ion-segment-button>
+      <ion-segment-button value="record">
+        Record
+      </ion-segment-button>
+    </ion-segment>
+    <ion-list [ngSwitch]="inputType.title">
+      <h6>Title</h6>
+      <ion-item *ngSwitchCase="'type'">
+        <ion-input [(ngModel)]="title"></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'record'">
+        <button ion-button icon-left clear small [attr.recording]="fileStatus.title.recording" class="record-button"
+                (click)="record('title')">
+          <ion-icon name="mic"></ion-icon>
+        </button>
+        <button ion-button icon-left clear small class="record-button"
+                disabled="{{fileStatus.title.recording}}"
+                [attr.playing]="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.title.recording"
+                (click)="play('title')">
+          <ion-icon name="play"
+                    *ngIf="fileStatus.title.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.title.recording">
+          </ion-icon>
+          <ion-icon name="pause"
+                    *ngIf="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.title.recording">
+          </ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+    <ion-segment [(ngModel)]="inputType.body">
+      <ion-segment-button value="type">
+        Type
+      </ion-segment-button>
+      <ion-segment-button value="record">
+        Record
+      </ion-segment-button>
+    </ion-segment>
+    <ion-list [ngSwitch]="inputType.body">
+        <h6>Mood</h6>
+      <ion-item *ngSwitchCase="'type'">
+        <ion-textarea [(ngModel)]="body" rows="6" maxlength="250"></ion-textarea>
+      </ion-item>
+      <ion-item *ngSwitchCase="'record'">
+        <button ion-button icon-left clear small [attr.recording]="fileStatus.body.recording"   class="record-button"
+                (click)="record('body')">
+          <ion-icon name="mic"></ion-icon>
+        </button>
+        <button ion-button icon-left clear small class="record-button"
+                disabled="{{fileStatus.body.recording}}"
+                [attr.playing]="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.body.recording"
+                (click)="play('body')">
+          <ion-icon name="play"
+                    *ngIf="fileStatus.body.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.body.recording">
+          </ion-icon>
+          <ion-icon name="pause"
+                    *ngIf="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.body.recording">
+          </ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+
     <ion-item no-lines>
       <ion-label item-right>{{body.length}}/250</ion-label>
     </ion-item>

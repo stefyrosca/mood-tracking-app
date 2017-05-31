@@ -14,4 +14,16 @@
       background-color: darken($red-background, 1.5%);
     }
   }
+  ion-segment {
+    .segment-button {
+      color: $green-dark;
+      border-color: $green-dark;
+    }
+    .segment-button.segment-activated {
+      border-color: $green-dark;
+    }
+  }
+  .submit-button {
+    background-color: $green-dark;
+  }
 }

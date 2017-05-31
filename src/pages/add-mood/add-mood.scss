@@ -4,7 +4,7 @@ add-mood {
     height: 40px;
   }
   [selected=true] {
-    border: solid 1px #32db64;
+    border: solid 1px $green-dark;
   }
   [recording=true], [playing=true] {
     color: color($colors, danger)
@@ -12,5 +12,8 @@ add-mood {
   [recording=false], [playing=false] {
     color: color($colors, primary)
   }
-
+  h6 {
+    text-align: center;
+    padding: 0;
+  }
 }
