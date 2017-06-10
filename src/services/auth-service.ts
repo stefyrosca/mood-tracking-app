@@ -3,11 +3,14 @@ import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {TOKEN, USER} from "../shared/storage";
 import { NativeStorage } from '@ionic-native/native-storage';
+import {Transfer, FileUploadResult, FileTransferError} from "ionic-native";
+// import { Transfer, TransferObject, FileUploadResult } from 'ionic-native/transfer';
 
 @Injectable()
 export class AuthService {
   token: string = null;
   user: any = null;
+  transfer: Transfer = null;
 
   constructor(private http: Http, private storage: NativeStorage) {
     this.getLocalUser();
@@ -22,7 +25,9 @@ export class AuthService {
     if (!options)
       return {headers: commonHeaders};
     if (options.headers)
-      options.headers = Object.assign(options.headers, commonHeaders)
+      options.headers = Object.assign({}, commonHeaders, options.headers);
+    else
+      options.headers = commonHeaders;
     return options;
 
   }
@@ -33,6 +38,17 @@ export class AuthService {
 
   post(url: string, body: any, options?: any): Observable<Response> {
     return this.http.post(url, body, this.mergeOptions(options));
+  }
+
+  postFile(fileUrl: string, url: string, uploadOptions?: any): Observable<FileUploadResult | FileTransferError> {
+    let options = this.mergeOptions(uploadOptions);
+    delete options.headers['Content-Type'];
+    console.log('options to send');
+    console.log(JSON.stringify(options));
+    if (this.transfer == null)
+      this.transfer = new Transfer();
+    return Observable.fromPromise(this.transfer.upload(fileUrl, url, options));
+    // return this.http.post(url, body, this.mergeOptions(options));
   }
 
   put(url: string, body: any, options ?: any): Observable<Response> {

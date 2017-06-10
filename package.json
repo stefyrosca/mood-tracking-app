@@ -22,6 +22,7 @@
     "@ionic-native/media": "^3.9.2",
     "@ionic-native/media-capture": "^3.9.2",
     "@ionic-native/native-storage": "^3.9.2",
+    "@ionic-native/transfer": "^3.12.1",
     "@ionic/storage": "2.0.0",
     "@types/isomorphic-fetch": "0.0.33",
     "api-ai-javascript": "^2.0.0-beta.16",

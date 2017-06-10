@@ -1,17 +1,11 @@
 import {Component} from "@angular/core/src/metadata/directives";
 import {MoodService} from "../../services/mood-service";
-import {ResourceTypes} from "../../model/resource-types";
 import {UserService} from "../../services/user-service";
-import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
-import {NavController, NavParams, Platform, LoadingController} from "ionic-angular";
-import {UserProfile} from "../user-profile/user-profile";
-import {CreateUserComponent} from "../auth/create-user/create-user";
-import {HttpErrors} from "../../shared/storage";
+import {NavController, NavParams} from "ionic-angular";
 import {EmotionTypes} from "../../model/emotion-types";
-import {AuthenticationComponent} from "../auth/authentication/authentication";
-import {MediaPlugin, MediaObject} from '@ionic-native/media';
-import {File, FileError} from '@ionic-native/file';
+import {MediaPlugin, MediaObject} from "@ionic-native/media";
+import {File} from "@ionic-native/file";
 import {CustomLoadingController} from "../../services/loading-controller";
 
 @Component({
@@ -31,8 +25,8 @@ export class AddMood {
   } = {title: null, body: null};
   private filePath;
   private inputType: {
-    title: 'type' | 'recording',
-    body: 'type' | 'recording'
+    title: 'type' | 'record',
+    body: 'type' | 'record'
   } = {title: 'type', body: 'type'};
 
   MediaSuccessStatus = {
@@ -77,14 +71,12 @@ export class AddMood {
       .then((entry) => {
         this.filePath = this.nativeFile.externalDataDirectory + folderName;
         this._createFiles(()=>this.loadingController.dismiss(), ()=>this.loadingController.dismiss());
-        // this.loadingController.dismiss()
       })
       .catch((error) => {
-        if (error.code == 12)
+        if (error.code == 12) // folder already exists, so it's fine
           this.filePath = this.nativeFile.externalDataDirectory + folderName;
-        console.log('ERROR!!!', error);
+        console.error('ERROR!!!', error);
         this._createFiles(()=>this.loadingController.dismiss(), ()=>this.loadingController.dismiss());
-        // this.loadingController.dismiss()
       });
   }
 
@@ -93,9 +85,6 @@ export class AddMood {
     promises.push(this.nativeFile.createFile(this.filePath, 'title.mp3', true));
     promises.push(this.nativeFile.createFile(this.filePath, 'body.mp3', true));
     Promise.all(promises).then((results) => {
-      console.log('results', results);
-      console.log('filePath', this.filePath + "title.mp3")
-      console.log('filePath', this.filePath + "body.mp3")
       callback && callback();
     }).catch(error);
   }
@@ -114,7 +103,6 @@ export class AddMood {
       this.fileStatus[filename].status = error.code;
       this.fileStatus[filename].error = true;
     };
-    console.log('why not??', this.filePath + filename + ".mp3");
     this.files[filename] = this.media.create(this.filePath + filename + ".mp3", onStatusUpdate, onSuccess, onError);
   }
 
@@ -147,7 +135,7 @@ export class AddMood {
   }
 
   play(filename: "title" | "body") {
-    let file = this.files[filename];
+    let file: MediaObject = this.files[filename];
     let fileStatus = this.fileStatus[filename];
     if (!fileStatus.error && !fileStatus.recording) {
       if (fileStatus.status == this.MediaSuccessStatus.MEDIA_NONE || this.MediaSuccessStatus.MEDIA_PAUSED || this.MediaSuccessStatus.MEDIA_STOPPED) {
@@ -166,10 +154,7 @@ export class AddMood {
     try {
       let currentFileStatus = this.fileStatus[filename];
       if (currentFileStatus.recording) {
-        currentFileStatus.recording = false;
-        let file = this.files[filename];
-        file.stopRecord();
-        console.log('after stop record', this.fileStatus);
+        this.stopRecording(filename);
       } else {
         currentFileStatus.recording = true;
         this.createAudioFile(filename);
@@ -183,6 +168,29 @@ export class AddMood {
       console.log('some error on recording', error);
       throw error;
     }
+  }
+
+  stopRecording(filename: "title" | "body") {
+    let currentFileStatus = this.fileStatus[filename];
+    currentFileStatus.recording = false;
+    let file: MediaObject = this.files[filename];
+    file.stopRecord();
+    console.log('after stop record', this.fileStatus);
+    this.moodService.uploadFile(this.filePath + "/" + filename + ".mp3", (response) => {
+        console.log('yeeey!!!', response);
+          if (filename == 'body')
+            this.body = response;
+        else
+          this.title = response;
+      }, (error) => console.log(JSON.stringify(error)));
+    // this.loadingController.create({content: 'Wait please ...'});
+    // this.moodService.speechToText(file, (response) => {
+    //   console.log('yeeey!!!', response);
+    //     if (filename == 'body')
+    //       this.body = response;
+    //   else
+    //     this.title = response;
+    // }, (error) => console.log(JSON.stringify(error)));
   }
 
   ngOnDestroy() {

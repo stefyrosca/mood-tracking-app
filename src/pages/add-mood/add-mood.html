@@ -8,111 +8,111 @@
 </ion-header>
 
 <ion-content>
-  <div style="padding-top: 30px; text-align: center">
+  <ion-card-header>
     <ion-title> How do you feel today?</ion-title>
-  </div>
+  </ion-card-header>
   <ion-list>
-    <ion-segment [(ngModel)]="inputType.title">
-      <ion-segment-button value="type">
-        Type
-      </ion-segment-button>
-      <ion-segment-button value="record">
-        Record
-      </ion-segment-button>
-    </ion-segment>
-    <ion-list [ngSwitch]="inputType.title">
-      <h6>Title</h6>
-      <ion-item *ngSwitchCase="'type'">
-        <ion-input [(ngModel)]="title"></ion-input>
-      </ion-item>
-      <ion-item *ngSwitchCase="'record'">
-        <button ion-button icon-left clear small [attr.recording]="fileStatus.title.recording" class="record-button"
-                (click)="record('title')">
-          <ion-icon name="mic"></ion-icon>
-        </button>
-        <button ion-button icon-left clear small class="record-button"
-                disabled="{{fileStatus.title.recording}}"
-                [attr.playing]="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.title.recording"
-                (click)="play('title')">
-          <ion-icon name="play"
-                    *ngIf="fileStatus.title.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.title.recording">
-          </ion-icon>
-          <ion-icon name="pause"
-                    *ngIf="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.title.recording">
-          </ion-icon>
-        </button>
-      </ion-item>
-    </ion-list>
-    <ion-segment [(ngModel)]="inputType.body">
-      <ion-segment-button value="type">
-        Type
-      </ion-segment-button>
-      <ion-segment-button value="record">
-        Record
-      </ion-segment-button>
-    </ion-segment>
-    <ion-list [ngSwitch]="inputType.body">
-        <h6>Mood</h6>
-      <ion-item *ngSwitchCase="'type'">
-        <ion-textarea [(ngModel)]="body" rows="6" maxlength="250"></ion-textarea>
-      </ion-item>
-      <ion-item *ngSwitchCase="'record'">
-        <button ion-button icon-left clear small [attr.recording]="fileStatus.body.recording"   class="record-button"
-                (click)="record('body')">
-          <ion-icon name="mic"></ion-icon>
-        </button>
-        <button ion-button icon-left clear small class="record-button"
-                disabled="{{fileStatus.body.recording}}"
-                [attr.playing]="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.body.recording"
-                (click)="play('body')">
-          <ion-icon name="play"
-                    *ngIf="fileStatus.body.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.body.recording">
-          </ion-icon>
-          <ion-icon name="pause"
-                    *ngIf="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.body.recording">
-          </ion-icon>
-        </button>
-      </ion-item>
-    </ion-list>
+
+    <!-- type title -->
+    <ion-item no-lines>
+      <ion-label>Title</ion-label>
+      <ion-toggle *ngIf="inputType.title == 'type'" item-end checked="false"
+                  (ionChange)="inputType.title = 'record'"></ion-toggle>
+      <ion-toggle *ngIf="inputType.title == 'record'" item-end checked="true"
+                  (ionChange)="inputType.title = 'type'"></ion-toggle>
+    </ion-item>
+    <ion-item *ngIf="inputType.title == 'type'" >
+      <ion-input placeholder="Enter title here..." [(ngModel)]="title"></ion-input>
+    </ion-item>
+
+    <!-- record title -->
+    <ion-item *ngIf="inputType.title == 'record'">
+      <button ion-button item-left icon-left clear small [attr.recording]="fileStatus.title.recording"
+                 class="record-button"
+                 (click)="record('title')">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+      <button ion-button item-left icon-left clear small class="record-button"
+                 [attr.playing]="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.title.recording"
+                 (click)="play('title')">
+        <ion-icon name="play"
+                  *ngIf="fileStatus.title.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.title.recording">
+        </ion-icon>
+        <ion-icon name="pause"
+                  *ngIf="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.title.recording">
+        </ion-icon>
+      </button>
+    </ion-item>
 
     <ion-item no-lines>
-      <ion-label item-right>{{body.length}}/250</ion-label>
+      <ion-label>Mood</ion-label>
+      <ion-toggle *ngIf="inputType.body == 'type'" item-end checked="false"
+                  (ionChange)="inputType.body = 'record'"></ion-toggle>
+      <ion-toggle *ngIf="inputType.body == 'record'" item-end checked="true"
+                  (ionChange)="inputType.body = 'type'"></ion-toggle>
     </ion-item>
-    <ion-grid>
-      <ion-row>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.HAPPY ? true : false"
-                 (click)="selectEmotion(EmotionTypes.HAPPY)">
-          <ion-img src="assets/img/emotions/happy.png"></ion-img>
-        </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.SAD ? true : false"
-                 (click)="selectEmotion(EmotionTypes.SAD)">
-          <ion-img src="assets/img/emotions/sad.png"></ion-img>
-        </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.BORED ? true : false"
-                 (click)="selectEmotion(EmotionTypes.BORED)">
-          <ion-img src="assets/img/emotions/bored.png"></ion-img>
-        </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.EXCITED ? true : false"
-                 (click)="selectEmotion(EmotionTypes.EXCITED)">
-          <ion-img src="assets/img/emotions/excited.png"></ion-img>
-        </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.WORRIED ? true : false"
-                 (click)="selectEmotion(EmotionTypes.WORRIED)">
-          <ion-img src="assets/img/emotions/worried.png"></ion-img>
-        </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.ANGRY ? true : false"
-                 (click)="selectEmotion(EmotionTypes.ANGRY)">
-          <ion-img src="assets/img/emotions/angry.png"></ion-img>
-        </ion-col>
-        <ion-col [attr.selected]="selectedEmotion==EmotionTypes.CRYING ? true : false"
-                 (click)="selectEmotion(EmotionTypes.CRYING)">
-          <ion-img src="assets/img/emotions/crying.png"></ion-img>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <button ion-button class="submit-button" [disabled]="body == '' || title == '' || selectedEmotion == null"
-            (click)="postMood()">
-      Submit
-    </button>
+    <!-- type body -->
+    <ion-item no-lines *ngIf="inputType.body == 'type'">
+      <ion-textarea placeholder="Enter mood here..." [(ngModel)]="body" rows="6" maxlength="250"></ion-textarea>
+    </ion-item>
+    <ion-item no-lines *ngIf="inputType.body == 'type'">
+      <ion-label item-end>{{body.length}}/250</ion-label>
+    </ion-item>
+
+    <!-- record body -->
+    <ion-item no-lines *ngIf="inputType.body == 'record'">
+      <button ion-button icon-left clear small [attr.recording]="fileStatus.body.recording" class="record-button"
+                 (click)="record('body')">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+      <button ion-button icon-left clear small class="record-button"
+                 [attr.playing]="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.body.recording"
+                 (click)="play('body')">
+        <ion-icon name="play"
+                  *ngIf="fileStatus.body.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.body.recording">
+        </ion-icon>
+        <ion-icon name="pause"
+                  *ngIf="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.body.recording">
+        </ion-icon>
+      </button>
+    </ion-item>
   </ion-list>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col [attr.selected]="selectedEmotion==EmotionTypes.HAPPY ? true : false"
+               (click)="selectEmotion(EmotionTypes.HAPPY)">
+        <ion-img src="assets/img/emotions/happy.png"></ion-img>
+      </ion-col>
+      <ion-col [attr.selected]="selectedEmotion==EmotionTypes.SAD ? true : false"
+               (click)="selectEmotion(EmotionTypes.SAD)">
+        <ion-img src="assets/img/emotions/sad.png"></ion-img>
+      </ion-col>
+      <!--<ion-col [attr.selected]="selectedEmotion==EmotionTypes.BORED ? true : false"-->
+               <!--(click)="selectEmotion(EmotionTypes.BORED)">-->
+        <!--<ion-img src="assets/img/emotions/bored.png"></ion-img>-->
+      <!--</ion-col>-->
+      <ion-col [attr.selected]="selectedEmotion==EmotionTypes.EXCITED ? true : false"
+               (click)="selectEmotion(EmotionTypes.EXCITED)">
+        <ion-img src="assets/img/emotions/excited.png"></ion-img>
+      </ion-col>
+      <!--<ion-col [attr.selected]="selectedEmotion==EmotionTypes.WORRIED ? true : false"-->
+               <!--(click)="selectEmotion(EmotionTypes.WORRIED)">-->
+        <!--<ion-img src="assets/img/emotions/worried.png"></ion-img>-->
+      <!--</ion-col>-->
+      <ion-col [attr.selected]="selectedEmotion==EmotionTypes.ANGRY ? true : false"
+               (click)="selectEmotion(EmotionTypes.ANGRY)">
+        <ion-img src="assets/img/emotions/angry.png"></ion-img>
+      </ion-col>
+      <ion-col [attr.selected]="selectedEmotion==EmotionTypes.CRYING ? true : false"
+               (click)="selectEmotion(EmotionTypes.CRYING)">
+        <ion-img src="assets/img/emotions/crying.png"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <button ion-button class="submit-button" [disabled]="body == '' || title == '' || selectedEmotion == null"
+          (click)="postMood()">
+    Submit
+  </button>
+
 </ion-content>

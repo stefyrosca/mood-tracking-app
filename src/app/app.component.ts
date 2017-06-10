@@ -7,6 +7,7 @@ import {AuthenticationComponent} from "../pages/auth/authentication/authenticati
 import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 import {SettingsPage} from "../pages/settings/settings";
 import {UserService} from "../services/user-service";
+import {AddMood} from "../pages/add-mood/add-mood";
 
 @Component({
   templateUrl: 'app.html'

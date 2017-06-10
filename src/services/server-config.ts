@@ -15,4 +15,4 @@ class ServerConfig {
   }
 }
 
-export const serverConfig = new ServerConfig("http", "localhost", "3000");
+export const serverConfig = new ServerConfig("http", "192.168.0.105", "3000");

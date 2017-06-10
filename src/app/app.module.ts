@@ -19,11 +19,11 @@ import {ErrorController} from "../services/error-controller";
 import {AuthService} from "../services/auth-service";
 import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 import {SettingsPage} from "../pages/settings/settings";
-import {ApiAiService} from "../services/api.ai-service";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {MediaObject, MediaPlugin} from "@ionic-native/media";
 import {CustomLoadingController} from "../services/loading-controller";
 import {File} from "@ionic-native/file"
+import {Transfer} from "ionic-native";
 
 @NgModule({
   declarations: [
@@ -61,8 +61,8 @@ import {File} from "@ionic-native/file"
   providers: [{
     provide: ErrorHandler,
     useClass: ErrorController
-  }, MenuController, AlertController, ErrorController, File,
-    MoodService, CommentService, UserService, AuthService, ApiAiService, NativeStorage, MediaPlugin, CustomLoadingController]
+  }, MenuController, AlertController, ErrorController, File, Transfer, NativeStorage, MediaPlugin,
+    MoodService, CommentService, UserService, AuthService, CustomLoadingController]
 })
 export class AppModule {
 }

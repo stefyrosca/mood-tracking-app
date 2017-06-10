@@ -1,16 +1,12 @@
 import {Injectable} from "@angular/core";
-import {Http} from "@angular/http";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
 import {Mood} from "../model/mood";
-import {ResourceTypes} from "../model/resource-types";
-import {Observable} from "rxjs";
 import {CommentService} from "./comment-service";
-import {TOKEN} from "../shared/storage";
-import {Storage} from "@ionic/storage";
 import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
+import {MediaObject} from "@ionic-native/media";
 
 
 @Injectable()
@@ -57,5 +53,19 @@ export class MoodService {
       .subscribe(next, error);
   }
 
+  public speechToText(recording: MediaObject, next: (response)=>any, error: (error)=>any) {
+    return this.authHttp.post(this.url + '/Speech', {file: recording, otherThing: 'bla'}, {headers: {['Content-Type']: 'audio/mp4'}})
+      .map(response => response.json())
+      .subscribe(next, error);
+  }
+
+  public uploadFile(filePath: string, next: (result)=>any, error: (error)=>any) {
+    let options = {
+      fileName: filePath.split("/").pop(),
+      mimeType: 'audio/mp4'
+    };
+    return this.authHttp.postFile(filePath, this.url + '/Speech', options)
+      .subscribe(next, error);
+  }
 
 }
