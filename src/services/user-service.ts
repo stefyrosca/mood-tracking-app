@@ -2,45 +2,77 @@ import {Injectable} from "@angular/core";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
-import {User} from "../model/user";
-import {LOCAL_USER_ID} from "../shared/storage";
+import {User, defaultUserPreference, UserPreference} from "../model/user";
 import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
+import {CustomLoadingController} from "./loading-controller";
+import {BehaviorSubject, Observable} from "rxjs";
 
-const defaultUserPreferences = {
-  theme: "red-theme"
-};
 
 @Injectable()
 export class UserService {
-  private user = null;
-  private userPreferences: any = defaultUserPreferences;
+  userPreferences: UserPreference = defaultUserPreference;
   private url = serverConfig.getBaseUrl();
+  private subscription: BehaviorSubject<UserPreference>;
 
-  constructor(private authHttp: AuthService) {
+  constructor(private authHttp: AuthService, private loadingController: CustomLoadingController) {
   }
 
   createUser(user: User, next: (user)=>any, error: (error: any)=>any) {
     return this.authHttp.post(this.url + "/auth/signup", user)
       .map(result => result.json())
       .subscribe(
-      (result: any) => {
-        this.authHttp.setLocalUser(result.user, result.token);
-        next(result);
-      },
-      error
-    );
+        (result: any) => {
+          this.authHttp.setLocalUser(result.user, result.token);
+          next(result);
+        },
+        error
+      );
   }
 
-  getUserPreferences() {
-    return this.userPreferences;
+  async getUserPreferences(): Promise<UserPreference> {
+    console.log('getUserPreferences', this.userPreferences);
+    if (!this.userPreferences) {
+      await this.getLocalUser().then((user: User) => {
+        this.userPreferences = user.preferences;
+        this.subscription.next(this.userPreferences);
+        return Promise.resolve(this.userPreferences);
+      });
+    }
+    return Promise.resolve(this.userPreferences);
   }
 
-  setUserPreference(key: string, value: any) {
+  async setUserPreference(key: string, value: any, callback?: (userPreferences: UserPreference)=>void) {
+    this.loadingController.create({content: 'Wait please...'});
     this.userPreferences[key] = value;
+    let user = await this.authHttp.getLocalUser();
+    let updatedUser: User = Object.assign({}, user, {preferences: this.userPreferences});
+    this.updateUser(updatedUser, (user: User) => {
+      this.userPreferences = user.preferences;
+      this.subscription.next(this.userPreferences);
+      this.loadingController.dismiss();
+      console.log('before callback', user);
+      callback && callback(user.preferences);
+    }, (error) => {
+      console.log('set user preference error', error)
+      this.loadingController.dismiss();
+      throw error;
+    });
   }
 
-  getLocalUser() {
+  updateUser(user: User, next: (user: any)=>any, error: (err: any) => any) {
+    return this.authHttp.put(this.url + "/User/" + user.id, user)
+      .map(result => result.json())
+      .subscribe(
+        (result: any) => {
+          this.authHttp.setLocalUser(result);
+          next(result);
+        },
+        error
+      );
+  }
+
+  getLocalUser(): Promise<User> {
     return this.authHttp.getLocalUser();
   }
 
@@ -55,4 +87,9 @@ export class UserService {
       );
   }
 
+  subscribe() {
+    if (!this.subscription)
+      this.subscription = new BehaviorSubject(this.userPreferences);
+    return this.subscription;
+  }
 }

@@ -62,7 +62,7 @@ export class MoodService {
   public uploadFile(filePath: string, next: (result)=>any, error: (error)=>any) {
     let options = {
       fileName: filePath.split("/").pop(),
-      mimeType: 'audio/mp4'
+      mimeType: 'audio/aac'
     };
     return this.authHttp.postFile(filePath, this.url + '/Speech', options)
       .subscribe(next, error);

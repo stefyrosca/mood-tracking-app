@@ -8,6 +8,8 @@ import {MediaPlugin, MediaObject} from "@ionic-native/media";
 import {File} from "@ionic-native/file";
 import {CustomLoadingController} from "../../services/loading-controller";
 
+const extension = ".aac";
+
 @Component({
   selector: 'add-mood',
   templateUrl: 'add-mood.html'
@@ -82,8 +84,8 @@ export class AddMood {
 
   private _createFiles(callback, error) {
     let promises = [];
-    promises.push(this.nativeFile.createFile(this.filePath, 'title.mp3', true));
-    promises.push(this.nativeFile.createFile(this.filePath, 'body.mp3', true));
+    promises.push(this.nativeFile.createFile(this.filePath, 'title' + extension, true));
+    promises.push(this.nativeFile.createFile(this.filePath, 'body' + extension, true));
     Promise.all(promises).then((results) => {
       callback && callback();
     }).catch(error);
@@ -103,7 +105,8 @@ export class AddMood {
       this.fileStatus[filename].status = error.code;
       this.fileStatus[filename].error = true;
     };
-    this.files[filename] = this.media.create(this.filePath + filename + ".mp3", onStatusUpdate, onSuccess, onError);
+
+    this.files[filename] = this.media.create(this.filePath + filename + extension, onStatusUpdate, onSuccess, onError);
   }
 
   postMood() {
@@ -176,7 +179,7 @@ export class AddMood {
     let file: MediaObject = this.files[filename];
     file.stopRecord();
     console.log('after stop record', this.fileStatus);
-    this.moodService.uploadFile(this.filePath + "/" + filename + ".mp3", (response) => {
+    this.moodService.uploadFile(this.filePath + "/" + filename + extension, (response) => {
         console.log('yeeey!!!', response);
           if (filename == 'body')
             this.body = response;

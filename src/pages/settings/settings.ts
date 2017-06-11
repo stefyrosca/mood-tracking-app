@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {UserService} from "../../services/user-service";
+import {UserPreference, defaultUserPreference} from "../../model/user";
 
 /*
  Generated class for the Settings page.
@@ -14,7 +15,7 @@ import {UserService} from "../../services/user-service";
 })
 export class SettingsPage {
   private availableThemes;
-  private userPreferences;
+  private userPreferences: UserPreference = defaultUserPreference;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService) {
     this.availableThemes = [
@@ -28,12 +29,20 @@ export class SettingsPage {
   }
 
   ngOnInit() {
-    this.userPreferences = this.userService.getUserPreferences();
+    // this.userPreferences = this.userService.getUserPreferences();
+    this.userService.getUserPreferences()
+      .then((userPreferences: UserPreference) => {
+        this.userPreferences = userPreferences
+        console.log('this.userPreferences ', this.userPreferences )
+      });
   }
 
-  setTheme(theme) {
-    this.userService.setUserPreference("theme", theme);
+  changePreference(key: string, value: any) {
+    new Promise((resolve) =>
+      this.userService.setUserPreference(key, value, resolve)
+    ).then((userPreferences: UserPreference) => {
+      console.log('callback', userPreferences)
+      this.userPreferences = userPreferences
+    });
   }
-
-
 }

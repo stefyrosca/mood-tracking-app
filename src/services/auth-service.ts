@@ -1,15 +1,16 @@
-import {RequestOptionsArgs, Headers, Http, Response} from "@angular/http";
+import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {TOKEN, USER} from "../shared/storage";
-import { NativeStorage } from '@ionic-native/native-storage';
+import {NativeStorage} from "@ionic-native/native-storage";
 import {Transfer, FileUploadResult, FileTransferError} from "ionic-native";
+import {User} from "../model/user";
 // import { Transfer, TransferObject, FileUploadResult } from 'ionic-native/transfer';
 
 @Injectable()
 export class AuthService {
   token: string = null;
-  user: any = null;
+  user: User = null;
   transfer: Transfer = null;
 
   constructor(private http: Http, private storage: NativeStorage) {
@@ -59,14 +60,18 @@ export class AuthService {
     return this.http.delete(url, this.mergeOptions(options));
   }
 
-  setLocalUser(user: any, token: string) {
-    this.token = token;
-    this.user = user;
-    this.storage.setItem(TOKEN, token);
-    this.storage.setItem(USER, user);
+  setLocalUser(user?: User, token?: string) {
+    if (user) {
+      this.user = user;
+      this.storage.setItem(USER, user);
+    }
+    if (token) {
+      this.token = token;
+      this.storage.setItem(TOKEN, token);
+    }
   }
 
-  getLocalUser() {
+  getLocalUser(): Promise<User> {
     if (this.user == null) {
       this.storage.getItem(TOKEN).then(token => {
         console.log('get token!', token);

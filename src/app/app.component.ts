@@ -8,6 +8,8 @@ import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 import {SettingsPage} from "../pages/settings/settings";
 import {UserService} from "../services/user-service";
 import {AddMood} from "../pages/add-mood/add-mood";
+import {defaultUserPreference, UserPreference} from "../model/user";
+import {Observable, BehaviorSubject} from "rxjs";
 
 @Component({
   templateUrl: 'app.html'
@@ -17,9 +19,10 @@ export class MyApp {
 
   rootPage: any = UserProfile;
   pages: Array<{title: string, component: any}>;
-  private userPreferences:any;
+  private userPreferences: any;
 
   constructor(public platform: Platform, public menu: MenuController, private userService: UserService) {
+    this.userPreferences = defaultUserPreference;
     this.initializeApp();
     // set our app's pages
     this.pages = [
@@ -28,21 +31,28 @@ export class MyApp {
       {title: 'Settings', component: SettingsPage},
       {title: 'Logout', component: AuthenticationComponent}
     ];
-    this.userPreferences = this.userService.getUserPreferences();
   }
 
   ngOnInit() {
 
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
-
+  async initializeApp() {
+    await this.platform.ready();
+    // .then(() => {
+    // Okay, so the platform is ready and our plugins are available.
+    // Here you can do any higher level native things you might need.
+    let subject = this.userService.subscribe();
+    subject.subscribe((result: UserPreference)=> {
+      console.log('hm ok', result);
+      this.userPreferences = result;
     });
+    this.userPreferences = this.userService.getUserPreferences();
+
+    StatusBar.styleDefault();
+    Splashscreen.hide();
+
+    // });
   }
 
   openPage(page) {
