@@ -3,13 +3,11 @@ import {AddMood} from "../add-mood/add-mood";
 import {NavParams, NavController, LoadingController} from "ionic-angular";
 import {UserService} from "../../services/user-service";
 import {MoodService} from "../../services/mood-service";
-import {LocalUser} from "../../model/user";
 import {Mood} from "../../model/mood";
 import {HttpErrors} from "../../shared/storage";
 import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
-import {UserActions} from "../../shared/utils";
-import {MoodDisplayOptions, AllowedActions, defaultOptions} from "../../shared/mood-display-options";
+import {MoodDisplayOptions, defaultOptions} from "../../shared/mood-display-options";
 
 
 declare var cordova: any;
@@ -36,9 +34,7 @@ export class UserProfile {
     this.moodListOptions = Object.assign({}, defaultOptions, options);
   }
 
-  ionViewDidLoad() {
-    // let media = new MediaPlugin()
-    // console.log('wtf', cordova.plugins.diagnostic);
+  ngOnInit() {
     cordova.plugins && cordova.plugins.diagnostic && cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
       if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
         console.log("Microphone use is authorized");
@@ -55,7 +51,7 @@ export class UserProfile {
           this.getMoods(this.currentUser.id);
         },
       ).catch(error =>
-      error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.warn('error', error));
+        error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.warn('error', error));
   }
 
   getMoods(userId: string) {

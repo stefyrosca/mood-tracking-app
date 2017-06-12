@@ -7,6 +7,7 @@ import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
 import {CustomLoadingController} from "./loading-controller";
 import {BehaviorSubject, Observable} from "rxjs";
+import {SENTIMENT_MAPPING} from "../shared/sentiment-mapping";
 
 
 @Injectable()
@@ -68,6 +69,13 @@ export class UserService {
         },
         error
       );
+  }
+
+  updateTheme(sentiment: string) {
+    if (this.userPreferences.allowThemeChange) {
+      let newTheme = SENTIMENT_MAPPING[sentiment];
+      this.setUserPreference('theme', newTheme);
+    }
   }
 
   getLocalUser(): Promise<User> {

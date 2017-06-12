@@ -122,6 +122,7 @@ export class AddMood {
     this.loadingController.create({content: "Saving..."});
     this.moodService.postMood(mood, (m) => {
         console.log('yey!', m);
+        this.userService.updateTheme(m.sentiment.outputLabel);
         this.navCtrl.pop();
         this.loadingController.dismiss();
       },
@@ -180,12 +181,11 @@ export class AddMood {
     file.stopRecord();
     console.log('after stop record', this.fileStatus);
     this.moodService.uploadFile(this.filePath + "/" + filename + extension, (response) => {
-        console.log('yeeey!!!', response);
-          if (filename == 'body')
-            this.body = response;
-        else
-          this.title = response;
-      }, (error) => console.log(JSON.stringify(error)));
+      if (filename == 'body')
+        this.body = response;
+      else
+        this.title = response;
+    }, (error) => console.log(JSON.stringify(error)));
     // this.loadingController.create({content: 'Wait please ...'});
     // this.moodService.speechToText(file, (response) => {
     //   console.log('yeeey!!!', response);

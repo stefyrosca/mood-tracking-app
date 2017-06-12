@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {UserService} from "../../services/user-service";
 import {UserPreference, defaultUserPreference} from "../../model/user";
+import {availableThemes} from "../../shared/sentiment-mapping";
 
 /*
  Generated class for the Settings page.
@@ -18,14 +19,7 @@ export class SettingsPage {
   private userPreferences: UserPreference = defaultUserPreference;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserService) {
-    this.availableThemes = [
-      {className: "red-theme", display: "Red"},
-      {className: "blue-theme", display: "Blue"},
-      {className: "orange-theme", display: "Orange"},
-      {className: "purple-theme", display: "Purple"},
-      {className: "green-theme", display: "Green"},
-      {className: "yellow-theme", display: "Yellow"}
-    ];
+    this.availableThemes = availableThemes;
   }
 
   ngOnInit() {
