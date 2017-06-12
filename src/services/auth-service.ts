@@ -44,8 +44,6 @@ export class AuthService {
   postFile(fileUrl: string, url: string, uploadOptions?: any): Observable<FileUploadResult | FileTransferError> {
     let options = this.mergeOptions(uploadOptions);
     delete options.headers['Content-Type'];
-    console.log('options to send');
-    console.log(JSON.stringify(options));
     if (this.transfer == null)
       this.transfer = new Transfer();
     return Observable.fromPromise(this.transfer.upload(fileUrl, url, options));

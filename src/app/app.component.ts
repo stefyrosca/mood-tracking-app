@@ -42,12 +42,9 @@ export class MyApp {
     // .then(() => {
     // Okay, so the platform is ready and our plugins are available.
     // Here you can do any higher level native things you might need.
+    this.userPreferences = await this.userService.getUserPreferences();
     let subject = this.userService.subscribe();
-    subject.subscribe((result: UserPreference)=> {
-      console.log('hm ok', result);
-      this.userPreferences = result;
-    });
-    this.userPreferences = this.userService.getUserPreferences();
+    subject.subscribe((result: UserPreference)=> this.userPreferences = result);
 
     StatusBar.styleDefault();
     Splashscreen.hide();

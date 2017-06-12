@@ -12,7 +12,7 @@
   <ion-list>
     <ion-item>
       <ion-label>Theme</ion-label>
-      <ion-select (ionChange)="changePreference('theme', $event)" ngmodel="userPreferences.theme" >
+      <ion-select (ionChange)="changePreference('theme', $event)" [ngModel]="userPreferences.theme" >
         <ion-option *ngFor='let theme of availableThemes'
                     [value]="theme.className"
                     [selected]="theme.className == userPreferences.theme"
@@ -23,7 +23,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Allow theme change</ion-label>
-      <ion-toggle item-end checked="userPreferences.allowThemeChange"
+      <ion-toggle item-end checked="{{userPreferences.allowThemeChange}}"
                   (ionChange)="changePreference('allowThemeChange', $event.checked)"></ion-toggle>
     </ion-item>
   </ion-list>

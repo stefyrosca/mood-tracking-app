@@ -31,18 +31,12 @@ export class SettingsPage {
   ngOnInit() {
     // this.userPreferences = this.userService.getUserPreferences();
     this.userService.getUserPreferences()
-      .then((userPreferences: UserPreference) => {
-        this.userPreferences = userPreferences
-        console.log('this.userPreferences ', this.userPreferences )
-      });
+      .then((userPreferences: UserPreference) => this.userPreferences = userPreferences);
   }
 
   changePreference(key: string, value: any) {
     new Promise((resolve) =>
       this.userService.setUserPreference(key, value, resolve)
-    ).then((userPreferences: UserPreference) => {
-      console.log('callback', userPreferences)
-      this.userPreferences = userPreferences
-    });
+    ).then((userPreferences: UserPreference) => this.userPreferences = userPreferences);
   }
 }

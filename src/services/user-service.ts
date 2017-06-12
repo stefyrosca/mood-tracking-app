@@ -31,7 +31,6 @@ export class UserService {
   }
 
   async getUserPreferences(): Promise<UserPreference> {
-    console.log('getUserPreferences', this.userPreferences);
     if (!this.userPreferences) {
       await this.getLocalUser().then((user: User) => {
         this.userPreferences = user.preferences;
@@ -51,7 +50,6 @@ export class UserService {
       this.userPreferences = user.preferences;
       this.subscription.next(this.userPreferences);
       this.loadingController.dismiss();
-      console.log('before callback', user);
       callback && callback(user.preferences);
     }, (error) => {
       console.log('set user preference error', error)
