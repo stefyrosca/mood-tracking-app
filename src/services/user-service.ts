@@ -12,9 +12,9 @@ import {SENTIMENT_MAPPING} from "../shared/sentiment-mapping";
 
 @Injectable()
 export class UserService {
-  userPreferences: UserPreference = defaultUserPreference;
+  userPreferences: UserPreference = null;
   private url = serverConfig.getBaseUrl();
-  private subscription: BehaviorSubject<UserPreference>;
+  private subscription: BehaviorSubject<UserPreference> = new BehaviorSubject(this.userPreferences);
 
   constructor(private authHttp: AuthService, private loadingController: CustomLoadingController) {
   }
@@ -33,11 +33,9 @@ export class UserService {
 
   async getUserPreferences(): Promise<UserPreference> {
     if (!this.userPreferences) {
-      await this.getLocalUser().then((user: User) => {
-        this.userPreferences = user.preferences;
-        this.subscription.next(this.userPreferences);
-        return Promise.resolve(this.userPreferences);
-      });
+      let user: User = await this.getLocalUser();
+      this.userPreferences = user.preferences;
+      this.subscription.next(this.userPreferences);
     }
     return Promise.resolve(this.userPreferences);
   }
@@ -94,8 +92,6 @@ export class UserService {
   }
 
   subscribe() {
-    if (!this.subscription)
-      this.subscription = new BehaviorSubject(this.userPreferences);
     return this.subscription;
   }
 }
