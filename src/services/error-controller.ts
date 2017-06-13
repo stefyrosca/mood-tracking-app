@@ -52,12 +52,12 @@ export class ErrorController implements ErrorHandler {
     this.setAlert(customMessage.title, body);
   }
 
-  setAlert(title, subtitle, buttons = ['OK']) {
+  setAlert(title:string, subtitle:string, buttons: any[] = ['OK']): Promise<any> {
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subtitle,
       buttons: buttons
     });
-    alert.present();
+    return alert.present();
   }
 }

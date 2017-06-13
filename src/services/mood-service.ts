@@ -49,7 +49,7 @@ export class MoodService {
   }
 
   public deleteMood(mood: Mood, next: ()=>any, error: (error)=>any) {
-    return this.authHttp.put(this.url + '/Mood/' + mood._id, mood)
+    return this.authHttp.delete(this.url + '/Mood/' + mood._id)
       .subscribe(next, error);
   }
 

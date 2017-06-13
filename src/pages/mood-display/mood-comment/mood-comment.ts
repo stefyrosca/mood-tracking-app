@@ -10,6 +10,7 @@ import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {MoodService} from "../../../services/mood-service";
 import {formatTimestamp} from '../../../shared/utils'
 import {UserProfile} from "../../user-profile/user-profile";
+import {ErrorController} from "../../../services/error-controller";
 
 
 @Component({
@@ -27,7 +28,8 @@ export class MoodComment {
               public navParams: NavParams,
               private commentService: CommentService,
               private userService: UserService,
-              private moodService: MoodService,) {
+              private moodService: MoodService,
+              private errorController: ErrorController) {
     // this.userService.getLocalUser().subscribe(
     //   (user: LocalUser) => this.user = user,
     //   error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error)
@@ -67,8 +69,13 @@ export class MoodComment {
       }, error => console.log('no comment', error));
   }
 
-  deleteMood() {
-    this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=>console.log('error'));
+  async deleteMood() {
+    let buttons = [{
+      text: 'YES', handler: ()=> {
+        this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=>console.log('error'));
+      }
+    }, {text: 'NO'}];
+    this.errorController.setAlert('Warning', 'Are you sure you want to delete this?', buttons);
   }
 
   navigateToUser(user: any) {
