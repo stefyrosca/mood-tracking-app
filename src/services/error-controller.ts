@@ -34,7 +34,8 @@ const CustomMessages = {
 @Injectable()
 export class ErrorController implements ErrorHandler {
 
-  constructor(private alertCtrl: AlertController) {}
+  constructor(private alertCtrl: AlertController) {
+  }
 
   handleError(error) {
     console.log('error', error);
@@ -49,10 +50,15 @@ export class ErrorController implements ErrorHandler {
     if (!customMessage)
       customMessage = CustomMessages[HttpErrors.UNKNOWN];
     let body = error.message ? error.message : customMessage.body;
+    if (typeof body == 'object')
+      if (body.message)
+        body = body.message;
+      else
+        body = JSON.stringify(body);
     this.setAlert(customMessage.title, body);
   }
 
-  setAlert(title:string, subtitle:string, buttons: any[] = ['OK']): Promise<any> {
+  setAlert(title: string, subtitle: string, buttons: any[] = ['OK']): Promise<any> {
     let alert = this.alertCtrl.create({
       title: title,
       subTitle: subtitle,

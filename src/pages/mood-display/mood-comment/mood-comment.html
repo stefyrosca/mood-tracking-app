@@ -4,8 +4,10 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Comment</ion-title>
-    <ion-buttons visible="false" end>
-      <button ion-button (click)="deleteMood()">
+    <ion-buttons end>
+      <button ion-button
+              *ngIf="(user && mood && mood.user) && (mood.user.id ? mood.user.id == user.id : mood.user == user.id)"
+              (click)="deleteMood()">
         <ion-icon name="trash"></ion-icon>
       </button>
     </ion-buttons>
