@@ -72,7 +72,9 @@ export class MoodComment {
   async deleteMood() {
     let buttons = [{
       text: 'YES', handler: ()=> {
-        this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=>console.log('error'));
+        this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=> {
+          throw error
+        });
       }
     }, {text: 'NO'}];
     this.errorController.setAlert('Warning', 'Are you sure you want to delete this?', buttons);
