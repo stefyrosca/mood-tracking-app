@@ -1,7 +1,7 @@
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
-import {TOKEN, USER} from "../shared/storage";
+import {TOKEN, USER, HttpErrors} from "../shared/storage";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {Transfer, FileUploadResult, FileTransferError} from "ionic-native";
 import {User} from "../model/user";
@@ -81,7 +81,7 @@ export class AuthService {
             this.user = user;
             return Promise.resolve(this.user);
           }
-          else return Promise.reject('Not logged in');
+          else return Promise.reject({status: HttpErrors.UNAUTHORIZED, message: 'Not logged in'});
         });
     }
     return Promise.resolve(this.user);

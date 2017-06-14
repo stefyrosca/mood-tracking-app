@@ -2,7 +2,8 @@ import {ResourceTypes} from "./resource-types";
 
 export const defaultUserPreference: UserPreference = {
   theme: "red-theme",
-  allowThemeChange: true
+  allowThemeChange: true,
+  automaticDetectMood: true
 };
 
 export class User {
@@ -30,4 +31,5 @@ export class LocalUser extends User {
 export class UserPreference {
   public theme: string;
   public allowThemeChange: boolean;
+  public automaticDetectMood: boolean;
 }

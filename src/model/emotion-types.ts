@@ -1,9 +1,8 @@
 export const EmotionTypes = {
   SAD: "sad",
   HAPPY: "happy",
-  ANGRY: "angry",
+  NEUTRAL: "neutral",
   BORED: "bored",
   EXCITED: "excited",
-  CRYING: "crying",
-  WORRIED: "worried"
+  DEPRESSED: "depressed"
 }

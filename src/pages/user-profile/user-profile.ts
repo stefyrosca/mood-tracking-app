@@ -35,13 +35,7 @@ export class UserProfile {
   }
 
   ngOnInit() {
-    cordova.plugins && cordova.plugins.diagnostic && cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
-      if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
-        console.log("Microphone use is authorized");
-      }
-    }, function (error) {
-      console.error(error);
-    });
+   this.checkMicrophonePermissions();
     this.currentUser = this.navParams.get("user");
     this.userService.getLocalUser()
       .then((user: any) => {
@@ -50,8 +44,22 @@ export class UserProfile {
             this.currentUser = this.myUser;
           this.getMoods(this.currentUser.id);
         },
-      ).catch(error =>
-        error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.warn('error', error));
+      ).catch(error => {
+      if (error.status == HttpErrors.UNAUTHORIZED)
+        this.navCtrl.setRoot(CreateUserComponent)
+      else
+        throw error.message
+    });
+  }
+
+  checkMicrophonePermissions() {
+    cordova.plugins && cordova.plugins.diagnostic && cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
+      if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+        console.log("Microphone use is authorized");
+      }
+    }, function (error) {
+      console.error(error);
+    });
   }
 
   getMoods(userId: string) {

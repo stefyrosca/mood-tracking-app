@@ -7,6 +7,7 @@ import {EmotionTypes} from "../../model/emotion-types";
 import {MediaPlugin, MediaObject} from "@ionic-native/media";
 import {File} from "@ionic-native/file";
 import {CustomLoadingController} from "../../services/loading-controller";
+import {User} from "../../model/user";
 
 const extension = ".aac";
 
@@ -17,8 +18,8 @@ const extension = ".aac";
 export class AddMood {
   private title: string = "";
   private body: string = "";
-  private user;
-  private selectedEmotion = null;//EmotionTypes.ANGRY;
+  private user: User;
+  private selectedEmotion = null;//EmotionTypes.NEUTRAL;
   private EmotionTypes = EmotionTypes;
   private fileStatus: any;
   private files: {
