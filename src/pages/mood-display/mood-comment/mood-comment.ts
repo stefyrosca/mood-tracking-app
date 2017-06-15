@@ -19,6 +19,7 @@ import {ErrorController} from "../../../services/error-controller";
 export class MoodComment {
 
   private mood: Mood;
+  private formattedMood: {[id: string]: {data: Mood, liked: boolean}};
   private comments: any[] = [];
   private currentCommentText: string = '';
   private user: User = null;
@@ -29,22 +30,30 @@ export class MoodComment {
               private userService: UserService,
               private moodService: MoodService,
               private errorController: ErrorController) {
-    // this.userService.getLocalUser().subscribe(
-    //   (user: LocalUser) => this.user = user,
-    //   error => error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(CreateUserComponent) : console.log('error', error)
-    // );
+
   }
 
   formatTimestamp(timestamp) {
     return formatTimestamp(timestamp);
   }
 
-  ionViewDidLoad() {
+  formatMood() {
+    return {
+      [this.mood.id]: {
+        data: this.mood,
+        liked: this.mood.likes.find(userId => this.user.id == userId) !== undefined
+      }
+    }
+  }
+
+  ngOnInit() {
     this.mood = this.navParams.get("mood");
     this.userService.getLocalUser()
-      .then((user: any) => this.user = user)
+      .then((user: any) => {
+        this.user = user;
+        this.formattedMood = this.formatMood();
+      })
       .catch(error => this.navCtrl.setRoot(CreateUserComponent));
-
     this.commentService.getCommentsByPost(this.mood._id).subscribe(
       comment => this.comments.push(comment),
       error => console.log('error', error)
@@ -64,6 +73,8 @@ export class MoodComment {
       .subscribe(result => {
         comment.user = this.user;
         this.comments.push(comment);
+        this.mood.comments.push(comment);
+        this.formatMood();
         this.currentCommentText = '';
       }, error => console.log('no comment', error));
   }

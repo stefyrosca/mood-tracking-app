@@ -16,7 +16,7 @@
 
 <ion-content>
   <ion-list padding>
-    <mood-view [mood]="mood"></mood-view>
+    <mood-list [moods]="formattedMood"></mood-list>
     <ion-card text-wrap *ngFor="let item of comments">
       <!-- comment view -->
       <ion-card-content>

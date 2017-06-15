@@ -9,6 +9,7 @@ export class Mood {
   emotion: any; // ? img id
   recording?: any;
   user: string | User;
-  // resourceType: string = ResourceTypes.MOOD;
+  resourceType: string = ResourceTypes.MOOD;
   timestamp: Date;
+  comments?: any[]; // only when displaying the mood
 }

@@ -31,7 +31,9 @@ export class MoodList {
     this.moods = {};
   }
 
-  getMoodList() {
+  getMoodList(): Mood[] {
+    if (!this.moods)
+      return [];
     return Object.keys(this.moods).map(id => this.moods[id].data);
   }
 
