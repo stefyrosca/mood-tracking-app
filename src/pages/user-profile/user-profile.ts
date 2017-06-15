@@ -8,6 +8,8 @@ import {HttpErrors} from "../../shared/storage";
 import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 import {MoodDisplayOptions, defaultOptions} from "../../shared/mood-display-options";
+import {AuthenticationComponent} from "../auth/authentication/authentication";
+import {AuthService} from "../../services/auth-service";
 
 
 declare var cordova: any;
@@ -25,7 +27,7 @@ export class UserProfile {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private userService: UserService, private moodService: MoodService,
-              private loader: LoadingController) {
+              private loader: LoadingController, private authService: AuthService) {
     let options = {
       userProfile: {
         allowRedirect: false
@@ -34,22 +36,25 @@ export class UserProfile {
     this.moodListOptions = Object.assign({}, defaultOptions, options);
   }
 
-  ngOnInit() {
-   this.checkMicrophonePermissions();
+  ionViewDidLoad() {
+    this.checkMicrophonePermissions();
     this.currentUser = this.navParams.get("user");
-    this.userService.getLocalUser()
+    this.authService.getLocalUser()
       .then((user: any) => {
           this.myUser = user;
           if (!this.currentUser)
             this.currentUser = this.myUser;
           this.getMoods(this.currentUser.id);
         },
-      ).catch(error => {
-      if (error.status == HttpErrors.UNAUTHORIZED)
-        this.navCtrl.setRoot(CreateUserComponent)
-      else
-        throw error.message
-    });
+      )
+      .catch(error => {
+        if (error.status == HttpErrors.UNAUTHORIZED)
+          this.navCtrl.setRoot(AuthenticationComponent)
+        else {
+          console.log('on else ...?', error);
+          throw error.message
+        }
+      });
   }
 
   checkMicrophonePermissions() {
@@ -63,6 +68,7 @@ export class UserProfile {
   }
 
   getMoods(userId: string) {
+    console.log('get moods')
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });

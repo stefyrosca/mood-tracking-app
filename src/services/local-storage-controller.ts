@@ -11,7 +11,9 @@ export class LocalStorageController {
     let map: any = {};
     resources.forEach(resource => map[resource.id] = resource);
     let oldMap: any;
-    oldMap = await this.storage.getItem(resourceType);
+    try {
+      oldMap = await this.storage.getItem(resourceType);
+    } catch (err) {}
     if (oldMap)
       map = Object.assign({map, oldMap});
     await this.storage.setItem(resourceType, map);

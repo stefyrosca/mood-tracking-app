@@ -39,7 +39,7 @@ export class MoodComment {
     return formatTimestamp(timestamp);
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     this.mood = this.navParams.get("mood");
     this.userService.getLocalUser()
       .then((user: any) => this.user = user)

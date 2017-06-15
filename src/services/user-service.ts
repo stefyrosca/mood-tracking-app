@@ -51,7 +51,7 @@ export class UserService {
       this.loadingController.dismiss();
       callback && callback(user.preferences);
     }, (error) => {
-      console.log('set user preference error', error)
+      console.log('set user preference error', error);
       this.loadingController.dismiss();
       throw error;
     });
@@ -83,8 +83,10 @@ export class UserService {
   login(user: User, next: (result)=>any, error: (error: any)=>any) {
     return this.authHttp.post(this.url + "/auth/login", user)
       .map(result => result.json())
-      .subscribe((result) => {
+      .subscribe((result: any) => {
           this.authHttp.setLocalUser(result.user, result.token);
+          this.userPreferences = result.user.preferences;
+          this.subscription.next(this.userPreferences);
           next(result);
         }
         , error

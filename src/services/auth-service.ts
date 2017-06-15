@@ -14,7 +14,7 @@ export class AuthService {
   transfer: Transfer = null;
 
   constructor(private http: Http, private storage: NativeStorage) {
-    this.getLocalUser();
+    // this.getLocalUser();
   }
 
   mergeOptions(options: any) {
@@ -71,18 +71,24 @@ export class AuthService {
 
   getLocalUser(): Promise<User> {
     if (this.user == null) {
+      let success: boolean = true;
+      const reason = {status: HttpErrors.UNAUTHORIZED, message: 'Not logged in'};
       this.storage.getItem(TOKEN).then(token => {
         console.log('get token!', token);
         this.token = token
-      });
+      }).catch(error => success = false);
+      if (!success)
+        {
+          return Promise.reject(reason);
+        }
       return this.storage.getItem(USER)
         .then(user => {
           if (user) {
             this.user = user;
             return Promise.resolve(this.user);
           }
-          else return Promise.reject({status: HttpErrors.UNAUTHORIZED, message: 'Not logged in'});
-        });
+          else return Promise.reject(reason);
+        }).catch(error => Promise.reject(reason));
     }
     return Promise.resolve(this.user);
   }

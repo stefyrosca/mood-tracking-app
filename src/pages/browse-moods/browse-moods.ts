@@ -42,7 +42,9 @@ export class BrowseMoods {
           this.user = user;
           this.getAllMoods();
         })
-        .catch(error => this.navCtrl.setRoot(AuthenticationComponent));
+        .catch(error => {
+          this.navCtrl.setRoot(AuthenticationComponent)
+        });
     } catch (error) {
       error.status == HttpErrors.NOT_FOUND ? this.navCtrl.setRoot(AuthenticationComponent) : console.log('error', error)
     }
@@ -89,5 +91,9 @@ export class BrowseMoods {
         () => {
           loadingIndicator.dismiss()
         });
+  }
+
+  ngOnDestroy() {
+    this.moods = {};
   }
 }

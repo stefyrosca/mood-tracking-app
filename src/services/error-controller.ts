@@ -44,7 +44,7 @@ export class ErrorController implements ErrorHandler {
       status = error.status;
       error = error.json();
     } catch (e) {
-      console.log('not .json', e)
+      console.log('not .json')
     }
     let customMessage = CustomMessages[status];
     if (!customMessage)

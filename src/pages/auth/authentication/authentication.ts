@@ -13,11 +13,11 @@ export class AuthenticationComponent {
   private signup = CreateUserComponent;
   private login = LoginComponent;
 
-  constructor(private storage: NativeStorage) {}
-
-  ngOnInit() {
-    this.storage.remove(TOKEN);
-    this.storage.remove(USER);
+  constructor(private storage: NativeStorage) {
   }
+
+  ionViewDidLoad() {
+    this.storage.clear().then(()=>{}).catch((err)=>{})
+  };
 
 }
