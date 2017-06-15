@@ -15,7 +15,7 @@ export class MoodView {
   private timestamp: string;
   private UserActions: any = UserActions;
 
-  constructor(private config: Config) {
+  constructor() {
   }
 
   ngOnInit() {

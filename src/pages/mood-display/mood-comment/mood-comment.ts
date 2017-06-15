@@ -10,6 +10,7 @@ import {MoodService} from "../../../services/mood-service";
 import {formatTimestamp} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
 import {ErrorController} from "../../../services/error-controller";
+import {MoodDisplayOptions, defaultOptions, AllowedActions} from "../../../shared/mood-display-options";
 
 
 @Component({
@@ -20,6 +21,7 @@ export class MoodComment {
 
   private mood: Mood;
   private formattedMood: {[id: string]: {data: Mood, liked: boolean}};
+  private moodDisplayOptions: MoodDisplayOptions;
   private comments: any[] = [];
   private currentCommentText: string = '';
   private user: User = null;
@@ -30,7 +32,16 @@ export class MoodComment {
               private userService: UserService,
               private moodService: MoodService,
               private errorController: ErrorController) {
-
+    const displayOptions = {
+      comment: {
+        allowRedirect: false
+      },
+      userProfile: {
+        allowRedirect: true,
+        action: AllowedActions.REPLACE
+      }
+    };
+    this.moodDisplayOptions = Object.assign({}, defaultOptions, displayOptions);
   }
 
   formatTimestamp(timestamp) {

@@ -8,7 +8,7 @@ import {UserActions} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
 import {CustomLoadingController} from "../../../services/loading-controller";
 import {User} from "../../../model/user";
-import {MoodDisplayOptions, AllowedActions} from "../../../shared/mood-display-options";
+import {MoodDisplayOptions, AllowedActions, defaultOptions} from "../../../shared/mood-display-options";
 
 @Component({
   selector: 'mood-list',
@@ -29,6 +29,7 @@ export class MoodList {
               private userService: UserService,
               public loadingController: CustomLoadingController) {
     this.moods = {};
+    this.options = defaultOptions;
   }
 
   getMoodList(): Mood[] {
@@ -48,7 +49,9 @@ export class MoodList {
   ngOnDestroy() {
   }
 
-  onNotify(event) {
+  async onNotify(event) {
+    if (!this.user)
+      this.user = await this.userService.getLocalUser();
     switch (event.message) {
       case UserActions.COMMENT: {
         let commentOptions = this.options.comment;
