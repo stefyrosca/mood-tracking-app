@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {Mood} from "../../../model/mood";
-import {NavParams, NavController} from "ionic-angular";
+import {NavParams, NavController, LoadingController} from "ionic-angular";
 import {CommentService} from "../../../services/comment-service";
 import {Comment} from "../../../model/comment";
 import {UserService} from "../../../services/user-service";
@@ -11,6 +11,7 @@ import {formatTimestamp} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
 import {ErrorController} from "../../../services/error-controller";
 import {MoodDisplayOptions, defaultOptions, AllowedActions} from "../../../shared/mood-display-options";
+import {CustomLoadingController} from "../../../services/loading-controller";
 
 
 @Component({
@@ -31,7 +32,8 @@ export class MoodComment {
               private commentService: CommentService,
               private userService: UserService,
               private moodService: MoodService,
-              private errorController: ErrorController) {
+              private errorController: ErrorController,
+              private loadingController: CustomLoadingController) {
     const displayOptions = {
       comment: {
         allowRedirect: false
@@ -65,9 +67,14 @@ export class MoodComment {
         this.formattedMood = this.formatMood();
       })
       .catch(error => this.navCtrl.setRoot(CreateUserComponent));
+    this.loadingController.create({content: 'Wait please ...'});
     this.commentService.getCommentsByPost(this.mood._id).subscribe(
       comment => this.comments.push(comment),
-      error => console.log('error', error)
+      error => {
+        this.loadingController.dismiss();
+        throw error
+      },
+      () => this.loadingController.dismiss()
     )
   }
 
@@ -79,6 +86,7 @@ export class MoodComment {
       timestamp: new Date()
     };
     console.log('post comment', comment);
+    this.loadingController.create({content: 'Wait please...'});
     this.commentService
       .addCommentToPost(comment)
       .subscribe(result => {
@@ -87,14 +95,19 @@ export class MoodComment {
         this.mood.comments.push(comment);
         this.formatMood();
         this.currentCommentText = '';
-      }, error => console.log('no comment', error));
+      }, error => {
+        this.loadingController.dismiss();
+        throw error;
+      }, () => this.loadingController.dismiss());
   }
 
   async deleteMood() {
     let buttons = [{
       text: 'YES', handler: ()=> {
-        this.moodService.deleteMood(this.mood, ()=>console.log('ok, deleted'), (error)=> {
-          throw error
+        this.loadingController.create({content: 'Wait please...'});
+        this.moodService.deleteMood(this.mood, ()=> this.loadingController.dismiss(), (error)=> {
+          this.loadingController.dismiss();
+          throw error;
         });
       }
     }, {text: 'NO'}];
