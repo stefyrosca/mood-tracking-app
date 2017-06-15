@@ -24,6 +24,7 @@ import {MediaObject, MediaPlugin} from "@ionic-native/media";
 import {CustomLoadingController} from "../services/loading-controller";
 import {File} from "@ionic-native/file"
 import {Transfer} from "ionic-native";
+import {LocalStorageController} from "../services/local-storage-controller";
 
 @NgModule({
   declarations: [
@@ -62,7 +63,7 @@ import {Transfer} from "ionic-native";
     provide: ErrorHandler,
     useClass: ErrorController
   }, MenuController, AlertController, ErrorController, File, Transfer, NativeStorage, MediaPlugin,
-    MoodService, CommentService, UserService, AuthService, CustomLoadingController]
+    MoodService, CommentService, UserService, AuthService, CustomLoadingController, LocalStorageController]
 })
 export class AppModule {
 }

@@ -20,14 +20,6 @@ export class User {
   }
 }
 
-export class LocalUser extends User {
-  userId: string;
-
-  constructor() {
-    super();
-  }
-}
-
 export class UserPreference {
   public theme: string;
   public allowThemeChange: boolean;

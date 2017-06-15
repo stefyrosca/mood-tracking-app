@@ -7,6 +7,9 @@ import {CommentService} from "./comment-service";
 import {AuthService} from "./auth-service";
 import {serverConfig} from "./server-config";
 import {MediaObject} from "@ionic-native/media";
+import {LocalStorageController} from "./local-storage-controller";
+import {ResourceTypes} from "../model/resource-types";
+import {Observable} from "rxjs";
 
 
 @Injectable()
@@ -15,46 +18,70 @@ export class MoodService {
   private TOKEN: string = null;
 
 
-  constructor(private authHttp: AuthService, private commentService: CommentService) {
+  constructor(private authHttp: AuthService, private localStorageController: LocalStorageController) {
   }
 
-  public getAll(next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+  public async getAll(next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+    let newMoods = [];
     return this.authHttp.get(this.url + '/Mood')
       .map(result => result.json())
       .flatMap(mood => mood)
-      .subscribe(next, error, done);
+      .subscribe((mood) => {
+        newMoods.push(mood);
+        next && next(mood);
+      }, error, () => {
+        if (newMoods.length > 0)
+          this.localStorageController.updateStorage(ResourceTypes.MOOD, newMoods);
+        done && done();
+      });
   }
 
   public postMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
     return this.authHttp.post(this.url + '/Mood', mood)
-      .subscribe(mood => {
-        mood = mood.json();
-        next(mood);
+      .subscribe(result => {
+        result = result.json();
+        this.localStorageController.updateStorage(ResourceTypes.MOOD, [result]);
+        next(result);
       }, error);
   }
 
   public getMoodsByUser(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+    let newMoods = [];
     return this.authHttp.get(this.url + '/Mood?user=' + userId)
       .map(result => result.json())
       .flatMap(mood => mood)
-      .subscribe(next, error, done);
+      .subscribe((mood) => {
+        newMoods.push(mood);
+        next && next(mood);
+      }, error, () => {
+        if (newMoods.length > 0)
+          this.localStorageController.updateStorage(ResourceTypes.MOOD, newMoods);
+        done && done();
+      });
   }
 
   public putMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
     return this.authHttp.put(this.url + '/Mood/' + mood._id, mood)
-      .subscribe(mood => {
-        mood = mood.json();
-        next(mood);
+      .subscribe(result => {
+        result = result.json();
+        this.localStorageController.updateStorage(ResourceTypes.MOOD, [result]);
+        next(result);
       }, error);
   }
 
   public deleteMood(mood: Mood, next: ()=>any, error: (error)=>any) {
     return this.authHttp.delete(this.url + '/Mood/' + mood._id)
-      .subscribe(next, error);
+      .subscribe((result) => {
+        this.localStorageController.removeFromStorage(ResourceTypes.MOOD, [mood]);
+        next && next();
+      }, error);
   }
 
   public speechToText(recording: MediaObject, next: (response)=>any, error: (error)=>any) {
-    return this.authHttp.post(this.url + '/Speech', {file: recording, otherThing: 'bla'}, {headers: {['Content-Type']: 'audio/mp4'}})
+    return this.authHttp.post(this.url + '/Speech', {
+      file: recording,
+      otherThing: 'bla'
+    }, {headers: {['Content-Type']: 'audio/mp4'}})
       .map(response => response.json())
       .subscribe(next, error);
   }

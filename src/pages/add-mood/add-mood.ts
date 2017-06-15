@@ -89,7 +89,10 @@ export class AddMood {
     promises.push(this.nativeFile.createFile(this.filePath, 'body' + extension, true));
     Promise.all(promises).then((results) => {
       callback && callback();
-    }).catch(error);
+    }).catch((err) => {
+      console.log('err!!', err);
+      error && error(err);
+    });
   }
 
   createAudioFile(filename: "title" | "body") {

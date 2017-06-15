@@ -7,6 +7,9 @@ import {AuthenticationComponent} from "../auth/authentication/authentication";
 import {HttpErrors} from "../../shared/storage";
 import {User} from "../../model/user";
 import {MoodDisplayOptions, defaultOptions, AllowedActions} from "../../shared/mood-display-options";
+import {LocalStorageController} from "../../services/local-storage-controller";
+import {ResourceTypes} from "../../model/resource-types";
+import {Observable} from "rxjs";
 @Component({
   selector: 'browse-moods',
   templateUrl: 'browse-moods.html',
@@ -20,7 +23,8 @@ export class BrowseMoods {
               public navParams: NavParams,
               private moodService: MoodService,
               private userService: UserService,
-              public loader: LoadingController) {
+              public loader: LoadingController,
+              public localStorageController: LocalStorageController) {
     this.moods = {};
     let options = {
       userProfile: {
@@ -51,14 +55,15 @@ export class BrowseMoods {
     });
     loadingIndicator.present();
     this.moodService.getAll(
-      (result: any) =>
+      (result: Mood) => {
         this.moods[result.id] = {
           data: result,
           liked: result.likes.find(userId => this.user.id == userId) !== undefined
-        },
+        }
+      },
       (error) => {
         console.log('error', error);
-        loadingIndicator.dismiss();
+        this.getLocalData(loadingIndicator);
         throw error;
       },
       () => {
@@ -67,4 +72,22 @@ export class BrowseMoods {
     )
   }
 
+  getLocalData(loadingIndicator) {
+    Observable
+      .fromPromise(this.localStorageController.getFromStorage(ResourceTypes.MOOD))
+      .flatMap(mood => mood)
+      .subscribe((result: Mood) => {
+          this.moods[result.id] = {
+            data: result,
+            liked: result.likes.find(userId => this.user.id == userId) !== undefined
+          }
+        },
+        (error) => {
+          loadingIndicator.dismiss();
+          throw error;
+        },
+        () => {
+          loadingIndicator.dismiss()
+        });
+  }
 }

@@ -92,24 +92,4 @@ export class MoodList {
     }
   }
 
-  getAllMoods() {
-    this.loadingController.create({
-      content: 'Getting latest entries...',
-    });
-    this.moodService.getAll(
-      (result: any) =>
-        this.moods[result.id] = {
-          data: result,
-          liked: result.likes.find(userId => this.user.id == userId) !== undefined
-        },
-      (error) => {
-        this.loadingController.dismiss();
-        throw error;
-      },
-      () => {
-        this.loadingController.dismiss();
-      }
-    )
-  }
-
 }

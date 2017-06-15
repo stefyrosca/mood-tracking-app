@@ -1,14 +1,13 @@
-import {Component, Input} from "@angular/core";
+import {Component} from "@angular/core";
 import {Mood} from "../../../model/mood";
 import {NavParams, NavController} from "ionic-angular";
 import {CommentService} from "../../../services/comment-service";
 import {Comment} from "../../../model/comment";
 import {UserService} from "../../../services/user-service";
-import {LocalUser, User} from "../../../model/user";
-import {HttpErrors} from "../../../shared/storage";
+import {User} from "../../../model/user";
 import {CreateUserComponent} from "../../auth/create-user/create-user";
 import {MoodService} from "../../../services/mood-service";
-import {formatTimestamp} from '../../../shared/utils'
+import {formatTimestamp} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
 import {ErrorController} from "../../../services/error-controller";
 

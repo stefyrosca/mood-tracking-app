@@ -2,6 +2,7 @@ import {ResourceTypes} from "./resource-types";
 import {User} from "./user";
 export class Mood {
   _id?: string;
+  id?: string;
   title: string;
   body: string;
   likes?: string[];
