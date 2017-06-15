@@ -15,7 +15,7 @@ export class LocalStorageController {
       oldMap = await this.storage.getItem(resourceType);
     } catch (err) {}
     if (oldMap)
-      map = Object.assign({map, oldMap});
+      map = Object.assign({}, map, oldMap);
     await this.storage.setItem(resourceType, map);
   }
 
