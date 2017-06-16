@@ -77,15 +77,6 @@ export class MoodService {
       }, error);
   }
 
-  public speechToText(recording: MediaObject, next: (response)=>any, error: (error)=>any) {
-    return this.authHttp.post(this.url + '/Speech', {
-      file: recording,
-      otherThing: 'bla'
-    }, {headers: {['Content-Type']: 'audio/mp4'}})
-      .map(response => response.json())
-      .subscribe(next, error);
-  }
-
   public uploadFile(filePath: string, next: (result)=>any, error: (error)=>any) {
     let options = {
       fileName: filePath.split("/").pop(),

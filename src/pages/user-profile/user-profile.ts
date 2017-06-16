@@ -72,7 +72,6 @@ export class UserProfile {
   }
 
   getMoods(userId: string) {
-    console.log('get moods')
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
@@ -123,29 +122,7 @@ export class UserProfile {
     this.navCtrl.push(MoodComment, {mood, user: this.myUser});
   }
 
-  //
-  // notify(event) {
-  //   console.log('event', event)
-  //   switch (event.message) {
-  //     case UserActions.COMMENT: {
-  //       this.goToComments(event.payload.mood);
-  //       break;
-  //     }
-  //     case UserActions.USER: {
-  //       if (this.navCtrl.length() != 1)
-  //         this.navCtrl.pop();
-  //       this.navCtrl.push(UserProfile, {user: event.payload.user});
-  //       break;
-  //     }
-  //   }
-  // }
-
   getMoodList() {
     return Object.keys(this.moods).map(id => this.moods[id].data);
   }
-
-  ngOnDestroy() {
-    console.log('ngOnDestroy');
-  }
-
 }

@@ -7,6 +7,7 @@ import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 import {SettingsPage} from "../pages/settings/settings";
 import {UserService} from "../services/user-service";
 import {defaultUserPreference, UserPreference} from "../model/user";
+import {VoiceToTextController} from "../services/voice-to-text-controller";
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +20,8 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
   private userPreferences: any;
 
-  constructor(public platform: Platform, public menu: MenuController, private userService: UserService) {
+  constructor(public platform: Platform, public menu: MenuController,
+              private userService: UserService, private voiceToTextController: VoiceToTextController) {
     this.userPreferences = defaultUserPreference;
     this.initializeApp();
     // set our app's pages
@@ -52,6 +54,7 @@ export class MyApp {
           else
             this.userPreferences = defaultUserPreference;
         });
+        this.voiceToTextController.init();
         Splashscreen.hide();
       });
   };

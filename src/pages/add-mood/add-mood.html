@@ -27,21 +27,13 @@
 
     <!-- record title -->
     <ion-item *ngIf="inputType.title == 'record'">
-      <button ion-button item-left icon-left clear small [attr.recording]="fileStatus.title.recording"
+      <button ion-button item-left icon-left clear small [attr.recording]="recordingStatus.title"
               class="record-button"
               (click)="record('title')">
         <ion-icon name="mic"></ion-icon>
       </button>
-      <button ion-button item-left icon-left clear small class="record-button"
-              [attr.playing]="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.title.recording"
-              (click)="play('title')">
-        <ion-icon name="play"
-                  *ngIf="fileStatus.title.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.title.recording">
-        </ion-icon>
-        <ion-icon name="pause"
-                  *ngIf="fileStatus.title.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.title.recording">
-        </ion-icon>
-      </button>
+      <ion-label *ngIf="recordingStatus.title == true">Recording ...</ion-label>
+      <ion-label *ngIf="recordingStatus.title == false">Not recording ...</ion-label>
     </ion-item>
 
     <ion-item no-lines>
@@ -61,20 +53,13 @@
 
     <!-- record body -->
     <ion-item no-lines *ngIf="inputType.body == 'record'">
-      <button ion-button icon-left clear small [attr.recording]="fileStatus.body.recording" class="record-button"
+      <button ion-button item-left icon-left clear small [attr.recording]="recordingStatus.body"
+              class="record-button"
               (click)="record('body')">
         <ion-icon name="mic"></ion-icon>
       </button>
-      <button ion-button icon-left clear small class="record-button"
-              [attr.playing]="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING && !fileStatus.body.recording"
-              (click)="play('body')">
-        <ion-icon name="play"
-                  *ngIf="fileStatus.body.status!=MediaSuccessStatus.MEDIA_RUNNING || fileStatus.body.recording">
-        </ion-icon>
-        <ion-icon name="pause"
-                  *ngIf="fileStatus.body.status==MediaSuccessStatus.MEDIA_RUNNING  && !fileStatus.body.recording">
-        </ion-icon>
-      </button>
+      <ion-label *ngIf="recordingStatus.body == true">Recording ...</ion-label>
+      <ion-label *ngIf="recordingStatus.body == false">Not recording ...</ion-label>
     </ion-item>
   </ion-list>
 

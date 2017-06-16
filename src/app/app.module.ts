@@ -25,6 +25,7 @@ import {CustomLoadingController} from "../services/loading-controller";
 import {File} from "@ionic-native/file"
 import {Transfer} from "ionic-native";
 import {LocalStorageController} from "../services/local-storage-controller";
+import {VoiceToTextController} from "../services/voice-to-text-controller";
 
 @NgModule({
   declarations: [
@@ -62,7 +63,7 @@ import {LocalStorageController} from "../services/local-storage-controller";
   providers: [{
     provide: ErrorHandler,
     useClass: ErrorController
-  }, MenuController, AlertController, ErrorController, File, Transfer, NativeStorage, MediaPlugin,
+  }, MenuController, AlertController, ErrorController, File, Transfer, NativeStorage, MediaPlugin, VoiceToTextController,
     MoodService, CommentService, UserService, AuthService, CustomLoadingController, LocalStorageController]
 })
 export class AppModule {
