@@ -24,10 +24,11 @@ declare var cordova: any;
 })
 export class UserProfile {
 
-  moods: {[id: string]: {data: Mood, liked: boolean}} = {};
+  private moods: {[id: string]: {data: Mood, liked: boolean}} = {};
   private myUser;
   private currentUser;
   private moodListOptions: MoodDisplayOptions;
+  private pagination = {page: 1, count: 4};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private localStorageController: LocalStorageController,
               private userService: UserService, private moodService: MoodService,
@@ -38,6 +39,16 @@ export class UserProfile {
       }
     };
     this.moodListOptions = Object.assign({}, defaultOptions, options);
+  }
+
+  nextPage(infiniteScroll) {
+    this.getMoods(this.currentUser.id, (shouldFetch)=> {
+      if (shouldFetch)
+        infiniteScroll.complete();
+      else {
+        infiniteScroll.enable(false);
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -71,25 +82,32 @@ export class UserProfile {
     });
   }
 
-  getMoods(userId: string) {
+  getMoods(userId: string, doneCallback?: (shouldFetch: boolean)=>void) {
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
     loadingIndicator.present();
+    let moodCount = 0;
     this.moodService.getMoodsByUser(userId,
-      (result: any) =>
+      (result: any) => {
+        moodCount++;
         this.moods[result.id] = {
           data: result,
           liked: result.likes.find(userId => this.myUser.id == userId) !== undefined
-        },
+        }
+      },
       (error) => {
         console.log('error', error);
         this.getLocalData(loadingIndicator);
         throw error;
       },
       () => {
-        loadingIndicator.dismiss()
-      }
+        doneCallback && doneCallback(moodCount == this.pagination.count);
+        this.pagination.page++;
+        loadingIndicator.dismiss();
+      },
+      this.pagination.page,
+      this.pagination.count
     )
   }
 

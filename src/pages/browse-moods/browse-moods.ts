@@ -18,6 +18,7 @@ export class BrowseMoods {
   private moods: {[id: string]: {data: Mood, liked: boolean}};
   private user: User;
   private moodListOptions: MoodDisplayOptions;
+  private pagination = {page: 1, count: 4};
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -50,14 +51,25 @@ export class BrowseMoods {
     }
   }
 
+  nextPage(infiniteScroll) {
+    this.getAllMoods((shouldFetch)=> {
+      if (shouldFetch)
+        infiniteScroll.complete();
+      else {
+        infiniteScroll.enable(false);
+      }
+    });
+  }
 
-  getAllMoods() {
+  getAllMoods(doneCallback? :(shouldFetch: boolean) => void) {
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
+    let moodCount = 0;
     loadingIndicator.present();
-    this.moodService.getAll(
+    this.moodService.getMoods(
       (result: Mood) => {
+        moodCount++;
         this.moods[result.id] = {
           data: result,
           liked: result.likes.find(userId => this.user.id == userId) !== undefined
@@ -69,8 +81,12 @@ export class BrowseMoods {
         throw error;
       },
       () => {
+        doneCallback && doneCallback(moodCount == this.pagination.count);
+        this.pagination.page++;
         loadingIndicator.dismiss()
-      }
+      },
+      this.pagination.page,
+      this.pagination.count
     )
   }
 

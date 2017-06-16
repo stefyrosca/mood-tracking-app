@@ -21,9 +21,14 @@ export class MoodService {
   constructor(private authHttp: AuthService, private localStorageController: LocalStorageController) {
   }
 
-  public async getAll(next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+  public async getMoods(next: (mood)=>any, error: (error)=>any, done?: ()=>void,
+                        page?: number, count?: number) {
     let newMoods = [];
-    return this.authHttp.get(this.url + '/Mood')
+    let url = this.url + '/Mood';
+    if (page && count) {
+      url = url + "?page=" + page + "&count=" + count;
+    }
+    return this.authHttp.get(url)
       .map(result => result.json())
       .flatMap(mood => mood)
       .subscribe((mood) => {
@@ -45,9 +50,14 @@ export class MoodService {
       }, error);
   }
 
-  public getMoodsByUser(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+  public getMoodsByUser(userId: string, next: (mood)=>any, error: (error)=>any, done?: ()=>void,
+                        page?: number, count?: number) {
     let newMoods = [];
-    return this.authHttp.get(this.url + '/Mood?user=' + userId)
+    let url = this.url + '/Mood?user=' + userId;
+    if (page && count) {
+      url = url + "&page=" + page + "&count=" + count;
+    }
+    return this.authHttp.get(url)
       .map(result => result.json())
       .flatMap(mood => mood)
       .subscribe((mood) => {

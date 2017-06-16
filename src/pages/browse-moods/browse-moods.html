@@ -13,4 +13,7 @@
     [user]="user"
     [options]="moodListOptions"
   ></mood-list>
+  <ion-infinite-scroll (ionInfinite)="nextPage($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

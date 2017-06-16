@@ -13,6 +13,10 @@
     [user]="myUser"
     [options]="moodListOptions"
   ></mood-list>
+
+  <ion-infinite-scroll (ionInfinite)="nextPage($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
   <ion-fab bottom right *ngIf="myUser && myUser.id == currentUser.id">
     <button ion-fab (click)="goToAddMood()">
       <ion-icon name="add"></ion-icon>
