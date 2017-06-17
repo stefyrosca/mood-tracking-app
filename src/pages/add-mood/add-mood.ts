@@ -2,13 +2,14 @@ import {Component} from "@angular/core/src/metadata/directives";
 import {MoodService} from "../../services/mood-service";
 import {UserService} from "../../services/user-service";
 import {Mood} from "../../model/mood";
-import {NavController, NavParams, ToastController} from "ionic-angular";
+import {NavController, NavParams, ToastController, Platform} from "ionic-angular";
 import {EmotionTypes} from "../../model/emotion-types";
 import {MediaPlugin} from "@ionic-native/media";
 import {File} from "@ionic-native/file";
 import {CustomLoadingController} from "../../services/loading-controller";
 import {User} from "../../model/user";
 import {VoiceToTextController} from "../../services/voice-to-text-controller";
+import {UserProfile} from "../user-profile/user-profile";
 
 @Component({
   selector: 'add-mood',
@@ -41,7 +42,7 @@ export class AddMood {
   };
   private recordingStatus: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams,
+  constructor(private navCtrl: NavController, private navParams: NavParams, private platform: Platform,
               private moodService: MoodService, private userService: UserService,
               private toastCtrl: ToastController, private voiceToTextController: VoiceToTextController,
               private loadingController: CustomLoadingController) {
@@ -53,6 +54,10 @@ export class AddMood {
 
   ngOnInit() {
     this.user = this.navParams.get('user');
+  }
+
+  shouldAllowRecording() {
+    return !this.platform.is('windows') && !this.platform.is('core');
   }
 
   postMood() {
@@ -69,12 +74,12 @@ export class AddMood {
     this.moodService.postMood(mood, (m) => {
         console.log('yey!', m);
         this.userService.updateTheme(m.sentiment.outputLabel);
-        this.navCtrl.pop();
+        this.navCtrl.setRoot(UserProfile, {newMood: m.mood, user: this.user});
         this.loadingController.dismiss();
       },
       (error) => {
         this.loadingController.dismiss();
-        throw error
+        throw error;
       });
     // .then(result => this.navCtrl.setRoot(UserProfile))
     // .catch(error => console.log('error on post', error));

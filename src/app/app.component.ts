@@ -50,11 +50,12 @@ export class MyApp {
         let subject = this.userService.subscribe();
         subject.subscribe((result: UserPreference)=> {
           if (result)
-            this.userPreferences = result
+            this.userPreferences = result;
           else
             this.userPreferences = defaultUserPreference;
         });
-        this.voiceToTextController.init();
+        if (!this.platform.is('windows') && !this.platform.is('core'))
+          this.voiceToTextController.init();
         Splashscreen.hide();
       });
   };

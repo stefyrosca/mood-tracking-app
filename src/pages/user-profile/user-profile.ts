@@ -57,17 +57,25 @@ export class UserProfile {
     this.authService.getLocalUser()
       .then((user: any) => {
           this.myUser = user;
+          const newMood = this.navParams.get('newMood');
+          if (newMood) {
+            this.moods[newMood.id] = {
+              data: newMood,
+              liked: newMood.likes.find(userId => this.myUser.id == userId) !== undefined
+            }
+          }
           if (!this.currentUser)
             this.currentUser = this.myUser;
-          this.getMoods(this.currentUser.id);
+          if (Object.keys(this.moods).length == 0)
+            this.getMoods(this.currentUser.id);
         },
       )
       .catch(error => {
         if (error.status == HttpErrors.UNAUTHORIZED)
-          this.navCtrl.setRoot(AuthenticationComponent)
+          this.navCtrl.setRoot(AuthenticationComponent);
         else {
           console.log('on else ...?', error);
-          throw error.message
+          throw error;
         }
       });
   }
@@ -142,5 +150,9 @@ export class UserProfile {
 
   getMoodList() {
     return Object.keys(this.moods).map(id => this.moods[id].data);
+  }
+
+  ngOnDestroy() {
+    this.moods = {};
   }
 }
