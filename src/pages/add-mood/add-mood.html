@@ -16,12 +16,10 @@
     <!-- type title -->
     <ion-item no-lines>
       <ion-label>Title</ion-label>
-      <div *ngIf="shouldAllowRecording()">
-        <ion-toggle *ngIf="inputType.title == 'type'" item-end checked="false"
-                    (ionChange)="inputType.title = 'record'"></ion-toggle>
-        <ion-toggle *ngIf="inputType.title == 'record'" item-end checked="true"
-                    (ionChange)="inputType.title = 'type'"></ion-toggle>
-      </div>
+      <ion-toggle *ngIf="isAvailableRecording() && inputType.title == 'type'" item-end checked="false"
+                  (ionChange)="inputType.title = 'record'"></ion-toggle>
+      <ion-toggle *ngIf="isAvailableRecording() && inputType.title == 'record'" item-end checked="true"
+                  (ionChange)="inputType.title = 'type'"></ion-toggle>
     </ion-item>
     <ion-item *ngIf="inputType.title == 'type'">
       <ion-input placeholder="Enter title here..." [(ngModel)]="title"></ion-input>
@@ -40,12 +38,10 @@
 
     <ion-item no-lines>
       <ion-label>Mood</ion-label>
-      <div *ngIf="shouldAllowRecording()">
-        <ion-toggle *ngIf="inputType.body == 'type'" item-end checked="false"
-                    (ionChange)="inputType.body = 'record'"></ion-toggle>
-        <ion-toggle *ngIf="inputType.body == 'record'" item-end checked="true"
-                    (ionChange)="inputType.body = 'type'"></ion-toggle>
-      </div>
+      <ion-toggle *ngIf="isAvailableRecording() && inputType.body == 'type'" item-end checked="false"
+                  (ionChange)="inputType.body = 'record'"></ion-toggle>
+      <ion-toggle *ngIf="isAvailableRecording() && inputType.body == 'record'" item-end checked="true"
+                  (ionChange)="inputType.body = 'type'"></ion-toggle>
     </ion-item>
     <!-- type body -->
     <ion-item no-lines *ngIf="inputType.body == 'type'">

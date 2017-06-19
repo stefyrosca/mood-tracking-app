@@ -40,8 +40,6 @@ export class LocalStorageController {
         this.storage.remove(resourceType);
       else {
         let data = await this.storage.getItem(resourceType);
-        console.log('data', data);
-        console.log('to be removed', resources)
         resources.forEach(resource => {
           if (data[resource.id])
             delete data[resource.id];

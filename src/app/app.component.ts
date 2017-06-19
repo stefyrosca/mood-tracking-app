@@ -54,8 +54,7 @@ export class MyApp {
           else
             this.userPreferences = defaultUserPreference;
         });
-        if (!this.platform.is('windows') && !this.platform.is('core'))
-          this.voiceToTextController.init();
+        this.voiceToTextController.init();
         Splashscreen.hide();
       });
   };

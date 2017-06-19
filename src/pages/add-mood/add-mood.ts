@@ -11,6 +11,8 @@ import {User} from "../../model/user";
 import {VoiceToTextController} from "../../services/voice-to-text-controller";
 import {UserProfile} from "../user-profile/user-profile";
 
+declare var cordova: any;
+
 @Component({
   selector: 'add-mood',
   templateUrl: 'add-mood.html'
@@ -54,10 +56,23 @@ export class AddMood {
 
   ngOnInit() {
     this.user = this.navParams.get('user');
+    this.checkMicrophonePermissions();
   }
 
-  shouldAllowRecording() {
-    return !this.platform.is('windows') && !this.platform.is('core');
+  checkMicrophonePermissions() {
+    if (this.platform.is('cordova'))
+      cordova.plugins && cordova.plugins.diagnostic &&
+      cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
+        if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+          console.log("Microphone use is authorized");
+        }
+      }, function (error) {
+        console.log('error on michrophone authorization', error)
+      });
+  }
+
+  isAvailableRecording() {
+    return this.voiceToTextController.isAvailable();
   }
 
   postMood() {

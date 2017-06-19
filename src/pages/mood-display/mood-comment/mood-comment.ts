@@ -105,7 +105,10 @@ export class MoodComment {
     let buttons = [{
       text: 'YES', handler: ()=> {
         this.loadingController.create({content: 'Wait please...'});
-        this.moodService.deleteMood(this.mood, ()=> this.loadingController.dismiss(), (error)=> {
+        this.moodService.deleteMood(this.mood, ()=> {
+          this.loadingController.dismiss();
+          this.navCtrl.pop();
+        }, (error)=> {
           this.loadingController.dismiss();
           throw error;
         });

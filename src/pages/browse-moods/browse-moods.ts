@@ -1,6 +1,6 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {Mood} from "../../model/mood";
-import {LoadingController, NavParams, NavController} from "ionic-angular";
+import {LoadingController, NavParams, NavController, Content} from "ionic-angular";
 import {UserService} from "../../services/user-service";
 import {MoodService} from "../../services/mood-service";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
@@ -18,7 +18,9 @@ export class BrowseMoods {
   private moods: {[id: string]: {data: Mood, liked: boolean}};
   private user: User;
   private moodListOptions: MoodDisplayOptions;
-  private pagination = {page: 1, count: 4};
+  private pagination = {page: 1, count: 10};
+  private infiniteScroll: any;
+  @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -52,6 +54,7 @@ export class BrowseMoods {
   }
 
   nextPage(infiniteScroll) {
+    this.infiniteScroll = infiniteScroll;
     this.getAllMoods((shouldFetch)=> {
       if (shouldFetch)
         infiniteScroll.complete();
@@ -61,7 +64,15 @@ export class BrowseMoods {
     });
   }
 
-  getAllMoods(doneCallback? :(shouldFetch: boolean) => void) {
+  refresh() {
+    this.pagination = {page: 1, count: 10};
+    this.content.scrollToTop();
+    this.moods = {};
+    this.infiniteScroll && this.infiniteScroll.enable(true);
+    this.getAllMoods();
+  }
+
+  getAllMoods(doneCallback?: (shouldFetch: boolean) => void) {
     let loadingIndicator = this.loader.create({
       content: 'Getting latest entries...',
     });
@@ -111,5 +122,6 @@ export class BrowseMoods {
 
   ngOnDestroy() {
     this.moods = {};
+    this.pagination = {page: 1, count: 10};
   }
 }

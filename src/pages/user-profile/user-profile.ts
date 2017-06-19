@@ -1,6 +1,6 @@
 import {Component} from "@angular/core/src/metadata/directives";
 import {AddMood} from "../add-mood/add-mood";
-import {NavParams, NavController, LoadingController} from "ionic-angular";
+import {NavParams, NavController, LoadingController, Content, InfiniteScroll} from "ionic-angular";
 import {UserService} from "../../services/user-service";
 import {MoodService} from "../../services/mood-service";
 import {Mood} from "../../model/mood";
@@ -14,9 +14,9 @@ import {LocalStorageController} from "../../services/local-storage-controller";
 import {Observable} from "rxjs";
 import {ResourceTypes} from "../../model/resource-types";
 import {User} from "../../model/user";
+import {ViewChild} from "@angular/core";
 
 
-declare var cordova: any;
 
 @Component({
   selector: "user-profile",
@@ -28,7 +28,9 @@ export class UserProfile {
   private myUser;
   private currentUser;
   private moodListOptions: MoodDisplayOptions;
-  private pagination = {page: 1, count: 4};
+  private pagination = {page: 1, count: 10};
+  private infiniteScroll: InfiniteScroll;
+  @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private localStorageController: LocalStorageController,
               private userService: UserService, private moodService: MoodService,
@@ -41,7 +43,8 @@ export class UserProfile {
     this.moodListOptions = Object.assign({}, defaultOptions, options);
   }
 
-  nextPage(infiniteScroll) {
+  nextPage(infiniteScroll: InfiniteScroll) {
+    this.infiniteScroll = infiniteScroll;
     this.getMoods(this.currentUser.id, (shouldFetch)=> {
       if (shouldFetch)
         infiniteScroll.complete();
@@ -51,8 +54,15 @@ export class UserProfile {
     });
   }
 
+  refresh() {
+    this.pagination = {page: 1, count: 10};
+    this.infiniteScroll && this.infiniteScroll.enable(true);
+    this.content.scrollToTop();
+    this.moods = {};
+    this.getMoods(this.currentUser.id);
+  }
+
   ionViewDidLoad() {
-    this.checkMicrophonePermissions();
     this.currentUser = this.navParams.get("user");
     this.authService.getLocalUser()
       .then((user: any) => {
@@ -78,16 +88,6 @@ export class UserProfile {
           throw error;
         }
       });
-  }
-
-  checkMicrophonePermissions() {
-    cordova.plugins && cordova.plugins.diagnostic && cordova.plugins.diagnostic.requestMicrophoneAuthorization(function (status) {
-      if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED) {
-        console.log("Microphone use is authorized");
-      }
-    }, function (error) {
-      console.error(error);
-    });
   }
 
   getMoods(userId: string, doneCallback?: (shouldFetch: boolean)=>void) {
@@ -154,5 +154,6 @@ export class UserProfile {
 
   ngOnDestroy() {
     this.moods = {};
+    this.pagination = {page: 1, count: 10};
   }
 }
