@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, ElementRef} from "@angular/core";
 import {UserService} from "../../providers/user-service";
 import {User} from "../../model/user";
 import {NavController} from "ionic-angular";
@@ -20,8 +20,8 @@ export class StatisticsComponent {
   private customChart;
   private customChartType: string;
   private availableChartTypes: any[];
-  @ViewChild('chart') canvas;
-  @ViewChild('customChart') dateCanvas;
+  @ViewChild('chart') canvas: ElementRef;
+  @ViewChild('customChart') customCanvas: ElementRef;
   private allMoods: Mood[];
   private startDate: string;
   private endDate: string;
@@ -47,7 +47,7 @@ export class StatisticsComponent {
   ionViewWillEnter() {
     this.startDate = moment().subtract(1, 'week').format();
     this.endDate = moment().format();
-    this.customChartType = AVAILABLE_CHARTS.HORIZONTAL_BAR;
+    this.customChartType = AVAILABLE_CHARTS.PIE;
   }
 
 
@@ -64,7 +64,7 @@ export class StatisticsComponent {
       this.allMoods.push(mood);
     }, (error) => console.log('WTF', error), () => {
       this.addGeneralChart();
-      this.addCustomChart(AVAILABLE_CHARTS.HORIZONTAL_BAR);
+      this.addCustomChart();
     });
   }
 
@@ -75,8 +75,13 @@ export class StatisticsComponent {
       let timestamp = moment(mood.timestamp);
       return timestamp.isBetween(startDate, endDate, null, "[]");
     });
+    if (this.customChart) {
+      let context = this.customCanvas.nativeElement.getContext('2d');
+      context.clearRect(0, 0, this.customCanvas.nativeElement.width, this.customCanvas.nativeElement.height);
+      this.customChart = null;
+    }
     let data = getDataForChart(chartType ? chartType : this.customChartType, moods);
-    this.customChart = new Chart(this.dateCanvas.nativeElement, data);
+    this.customChart = new Chart(this.customCanvas.nativeElement, data);
   }
 
 }
