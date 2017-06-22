@@ -26,6 +26,7 @@
     "@ionic/storage": "2.0.0",
     "@types/isomorphic-fetch": "0.0.33",
     "api-ai-javascript": "^2.0.0-beta.16",
+    "chart.js": "^2.6.0",
     "cordova-plugin-apiai": "^1.7.4",
     "cordova.plugins.diagnostic": "^3.6.2",
     "ionic-angular": "2.0.1",

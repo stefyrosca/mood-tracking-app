@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {UserService} from "../../services/user-service";
+import {UserService} from "../../providers/user-service";
 import {UserPreference, defaultUserPreference} from "../../model/user";
 import {availableThemes} from "../../shared/sentiment-mapping";
 

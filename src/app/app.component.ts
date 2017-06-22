@@ -5,9 +5,10 @@ import {UserProfile} from "../pages/user-profile/user-profile";
 import {AuthenticationComponent} from "../pages/auth/authentication/authentication";
 import {BrowseMoods} from "../pages/browse-moods/browse-moods";
 import {SettingsPage} from "../pages/settings/settings";
-import {UserService} from "../services/user-service";
+import {UserService} from "../providers/user-service";
 import {defaultUserPreference, UserPreference} from "../model/user";
-import {VoiceToTextController} from "../services/voice-to-text-controller";
+import {VoiceToTextController} from "../providers/voice-to-text-controller";
+import {StatisticsComponent} from "../pages/statistics/statistics";
 
 @Component({
   templateUrl: 'app.html'
@@ -29,6 +30,7 @@ export class MyApp {
       {title: 'Browse', component: BrowseMoods},
       {title: 'User profile', component: UserProfile},
       {title: 'Settings', component: SettingsPage},
+      {title: 'Statistics', component: StatisticsComponent},
       {title: 'Logout', component: AuthenticationComponent}
     ];
   }

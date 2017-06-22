@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Statistics</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <canvas #chart></canvas>
+  </div>
+  <ion-list>
+    <ion-item>
+      <ion-label>Start date</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="startDate" (ionChange)="addCustomChart()"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>End date</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="endDate" (ionChange)="addCustomChart()"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Chart type</ion-label>
+      <ion-select [(ngModel)]="customChartType" (ionChange)="addCustomChart()">
+        <ion-option *ngFor='let type of availableChartTypes'
+                    [value]="type.key"
+                    [selected]="type.key == customChartType"
+        >
+          {{type.display}}
+        </ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <div>
+    <canvas #customChart></canvas>
+  </div>
+</ion-content>

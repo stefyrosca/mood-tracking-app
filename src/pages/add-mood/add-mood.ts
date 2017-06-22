@@ -1,14 +1,14 @@
 import {Component} from "@angular/core/src/metadata/directives";
-import {MoodService} from "../../services/mood-service";
-import {UserService} from "../../services/user-service";
+import {MoodService} from "../../providers/mood-service";
+import {UserService} from "../../providers/user-service";
 import {Mood} from "../../model/mood";
 import {NavController, NavParams, ToastController, Platform} from "ionic-angular";
 import {EmotionTypes} from "../../model/emotion-types";
 import {MediaPlugin} from "@ionic-native/media";
 import {File} from "@ionic-native/file";
-import {CustomLoadingController} from "../../services/loading-controller";
+import {CustomLoadingController} from "../../providers/loading-controller";
 import {User} from "../../model/user";
-import {VoiceToTextController} from "../../services/voice-to-text-controller";
+import {VoiceToTextController} from "../../providers/voice-to-text-controller";
 import {UserProfile} from "../user-profile/user-profile";
 
 declare var cordova: any;

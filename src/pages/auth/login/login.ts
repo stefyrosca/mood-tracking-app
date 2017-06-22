@@ -1,10 +1,10 @@
 import {MenuController, NavParams, NavController} from "ionic-angular";
-import {UserService} from "../../../services/user-service";
+import {UserService} from "../../../providers/user-service";
 import {Component} from "@angular/core/src/metadata/directives";
 import {User} from "../../../model/user";
-import {ErrorController} from "../../../services/error-controller";
+import {ErrorController} from "../../../providers/error-controller";
 import {UserProfile} from "../../user-profile/user-profile";
-import {CustomLoadingController} from "../../../services/loading-controller";
+import {CustomLoadingController} from "../../../providers/loading-controller";
 
 @Component({
   selector: 'login',

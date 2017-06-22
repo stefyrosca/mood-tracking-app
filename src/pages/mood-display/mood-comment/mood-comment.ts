@@ -1,17 +1,17 @@
 import {Component} from "@angular/core";
 import {Mood} from "../../../model/mood";
 import {NavParams, NavController, LoadingController} from "ionic-angular";
-import {CommentService} from "../../../services/comment-service";
+import {CommentService} from "../../../providers/comment-service";
 import {Comment} from "../../../model/comment";
-import {UserService} from "../../../services/user-service";
+import {UserService} from "../../../providers/user-service";
 import {User} from "../../../model/user";
 import {CreateUserComponent} from "../../auth/create-user/create-user";
-import {MoodService} from "../../../services/mood-service";
+import {MoodService} from "../../../providers/mood-service";
 import {formatTimestamp} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
-import {ErrorController} from "../../../services/error-controller";
+import {ErrorController} from "../../../providers/error-controller";
 import {MoodDisplayOptions, defaultOptions, AllowedActions} from "../../../shared/mood-display-options";
-import {CustomLoadingController} from "../../../services/loading-controller";
+import {CustomLoadingController} from "../../../providers/loading-controller";
 
 
 @Component({

@@ -1,10 +1,10 @@
 import {Component} from "@angular/core/src/metadata/directives";
-import {UserService} from "../../../services/user-service";
+import {UserService} from "../../../providers/user-service";
 import {MenuController, NavController, NavParams} from "ionic-angular";
 import {User} from "../../../model/user";
-import {ErrorController} from "../../../services/error-controller";
+import {ErrorController} from "../../../providers/error-controller";
 import {BrowseMoods} from "../../browse-moods/browse-moods";
-import {CustomLoadingController} from "../../../services/loading-controller";
+import {CustomLoadingController} from "../../../providers/loading-controller";
 
 @Component({
   selector: 'create-user',

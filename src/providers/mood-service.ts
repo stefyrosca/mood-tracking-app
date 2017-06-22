@@ -70,6 +70,22 @@ export class MoodService {
       });
   }
 
+  public getMoodsForStatistics(userId: string, params: any = {}, next: (mood)=>any, error: (error)=>any, done?: ()=>void) {
+    let url = this.url + '/Statistics?user=' + userId;
+    if (params) {
+      let keys = Object.keys(params);
+      for (let i = 0; i < keys.length; i++) {
+        url += `&${keys[i]}=${params[keys[i]]}`
+      }
+    }
+    return this.authHttp.get(url)
+      .map(result => result.json())
+      .flatMap(mood => mood)
+      .subscribe((mood) => {
+        next && next(mood);
+      }, error, done);
+  }
+
   public putMood(mood: Mood, next: (mood)=>any, error: (error)=>any) {
     return this.authHttp.put(this.url + '/Mood/' + mood._id, mood)
       .subscribe(result => {

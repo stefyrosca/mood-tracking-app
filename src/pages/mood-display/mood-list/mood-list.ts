@@ -1,12 +1,12 @@
 import {Component, Input} from "@angular/core";
 import {NavParams, NavController} from "ionic-angular";
 import {Mood} from "../../../model/mood";
-import {MoodService} from "../../../services/mood-service";
+import {MoodService} from "../../../providers/mood-service";
 import {MoodComment} from "../mood-comment/mood-comment";
-import {UserService} from "../../../services/user-service";
+import {UserService} from "../../../providers/user-service";
 import {UserActions} from "../../../shared/utils";
 import {UserProfile} from "../../user-profile/user-profile";
-import {CustomLoadingController} from "../../../services/loading-controller";
+import {CustomLoadingController} from "../../../providers/loading-controller";
 import {User} from "../../../model/user";
 import {MoodDisplayOptions, AllowedActions, defaultOptions} from "../../../shared/mood-display-options";
 

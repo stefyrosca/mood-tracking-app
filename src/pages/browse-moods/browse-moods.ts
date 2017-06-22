@@ -1,13 +1,13 @@
 import {Component, ViewChild} from "@angular/core";
 import {Mood} from "../../model/mood";
 import {LoadingController, NavParams, NavController, Content} from "ionic-angular";
-import {UserService} from "../../services/user-service";
-import {MoodService} from "../../services/mood-service";
+import {UserService} from "../../providers/user-service";
+import {MoodService} from "../../providers/mood-service";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
 import {HttpErrors} from "../../shared/storage";
 import {User} from "../../model/user";
 import {MoodDisplayOptions, defaultOptions, AllowedActions} from "../../shared/mood-display-options";
-import {LocalStorageController} from "../../services/local-storage-controller";
+import {LocalStorageController} from "../../providers/local-storage-controller";
 import {ResourceTypes} from "../../model/resource-types";
 import {Observable} from "rxjs";
 @Component({
@@ -88,6 +88,7 @@ export class BrowseMoods {
       },
       (error) => {
         console.log('error', error);
+        doneCallback && doneCallback(false);
         this.getLocalData(loadingIndicator);
         throw error;
       },

@@ -1,16 +1,16 @@
 import {Component} from "@angular/core/src/metadata/directives";
 import {AddMood} from "../add-mood/add-mood";
 import {NavParams, NavController, LoadingController, Content, InfiniteScroll} from "ionic-angular";
-import {UserService} from "../../services/user-service";
-import {MoodService} from "../../services/mood-service";
+import {UserService} from "../../providers/user-service";
+import {MoodService} from "../../providers/mood-service";
 import {Mood} from "../../model/mood";
 import {HttpErrors} from "../../shared/storage";
 import {CreateUserComponent} from "../auth/create-user/create-user";
 import {MoodComment} from "../mood-display/mood-comment/mood-comment";
 import {MoodDisplayOptions, defaultOptions} from "../../shared/mood-display-options";
 import {AuthenticationComponent} from "../auth/authentication/authentication";
-import {AuthService} from "../../services/auth-service";
-import {LocalStorageController} from "../../services/local-storage-controller";
+import {AuthService} from "../../providers/auth-service";
+import {LocalStorageController} from "../../providers/local-storage-controller";
 import {Observable} from "rxjs";
 import {ResourceTypes} from "../../model/resource-types";
 import {User} from "../../model/user";
@@ -106,6 +106,7 @@ export class UserProfile {
       },
       (error) => {
         console.log('error', error);
+        doneCallback && doneCallback(false);
         this.getLocalData(loadingIndicator);
         throw error;
       },
