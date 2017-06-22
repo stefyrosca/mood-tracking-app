@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-// import {ApiAIPlugin} from 'cordova-plugin-apiai/www/ApiAiPlugin'
+// import {ApiAIPlugin} from 'cordova-plugin-apiai'
 
 declare var ApiAIPlugin: any;
 

@@ -57,10 +57,10 @@ export class StatisticsComponent {
   }
 
   private getMoods() {
-    let startDate = moment().subtract(2, 'week').toDate();
-    let endDate = moment().toDate();
+    // let startDate = moment().subtract(2, 'week').toDate();
+    // let endDate = moment().toDate();
     this.allMoods = [];
-    this.moodService.getMoodsForStatistics(this.user.id, {startDate, endDate}, (mood) => {
+    this.moodService.getMoodsForStatistics(this.user.id, {}, (mood) => {
       this.allMoods.push(mood);
     }, (error) => console.log('WTF', error), () => {
       this.addGeneralChart();
@@ -82,6 +82,10 @@ export class StatisticsComponent {
     }
     let data = getDataForChart(chartType ? chartType : this.customChartType, moods);
     this.customChart = new Chart(this.customCanvas.nativeElement, data);
+  }
+
+  ngOnDestroy() {
+    this.allMoods = [];
   }
 
 }

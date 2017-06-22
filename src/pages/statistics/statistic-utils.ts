@@ -10,7 +10,7 @@ export const AVAILABLE_CHART_DISPLAY_NAMES = {
   [AVAILABLE_CHARTS.HORIZONTAL_BAR]: 'Horizontal bar',
   [AVAILABLE_CHARTS.PIE]: 'Pie',
   [AVAILABLE_CHARTS.DOUGHNUT]: 'Doughnut'
-}
+};
 
 export function getDataForChart(chartType: string, moods: Mood[]) {
   let data = null;
@@ -35,20 +35,26 @@ export function getDataForChart(chartType: string, moods: Mood[]) {
             label: '# of Moods',
             data: chartData,
             backgroundColor: backgroundColors,
-            borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
+            // borderColor: [
+            //   'rgba(255,99,132,1)',
+            //   'rgba(54, 162, 235, 1)',
+            //   'rgba(255, 206, 86, 1)',
+            //   'rgba(75, 192, 192, 1)',
+            //   'rgba(153, 102, 255, 1)',
+            //   'rgba(255, 159, 64, 1)'
+            // ],
             borderWidth: 1
           }]
         },
         options: {
+          events: [],
           scales: {
             yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }],
+            xAxes: [{
               ticks: {
                 beginAtZero: true
               }
@@ -68,15 +74,18 @@ export function getDataForChart(chartType: string, moods: Mood[]) {
             label: '# of Moods',
             data: chartData,
             backgroundColor: backgroundColors,
-            hoverBackgroundColor: [
-              "#FF6384",
-              "#36A2EB",
-              "#FFCE56",
-              "#FF6384",
-              "#36A2EB",
-              "#FFCE56"
-            ]
+            // hoverBackgroundColor: [
+            //   "#FF6384",
+            //   "#36A2EB",
+            //   "#FFCE56",
+            //   "#FF6384",
+            //   "#36A2EB",
+            //   "#FFCE56"
+            // ]
           }]
+        },
+        options: {
+          events: []
         }
       };
       break;
