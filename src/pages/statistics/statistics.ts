@@ -47,7 +47,7 @@ export class StatisticsComponent {
   ionViewWillEnter() {
     this.startDate = moment().subtract(1, 'week').format();
     this.endDate = moment().format();
-    this.customChartType = AVAILABLE_CHARTS.PIE;
+    this.customChartType = AVAILABLE_CHARTS.HORIZONTAL_BAR;
   }
 
 
