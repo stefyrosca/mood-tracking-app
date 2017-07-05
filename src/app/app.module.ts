@@ -27,6 +27,8 @@ import {Transfer} from "ionic-native";
 import {LocalStorageController} from "../providers/local-storage-controller";
 import {VoiceToTextController} from "../providers/voice-to-text-controller";
 import {StatisticsComponent} from "../pages/statistics/statistics";
+import {ReportService} from "../providers/report-service";
+import {FileOpener} from "@ionic-native/file-opener";
 
 @NgModule({
   declarations: [
@@ -66,8 +68,8 @@ import {StatisticsComponent} from "../pages/statistics/statistics";
   providers: [{
     provide: ErrorHandler,
     useClass: ErrorController
-  }, MenuController, AlertController, ErrorController, File, Transfer, NativeStorage, MediaPlugin, VoiceToTextController,
-    MoodService, CommentService, UserService, AuthService, CustomLoadingController, LocalStorageController]
+  }, MenuController, AlertController, ErrorController, File, Transfer, NativeStorage, MediaPlugin, FileOpener, VoiceToTextController,
+    MoodService, CommentService, UserService, AuthService, CustomLoadingController, LocalStorageController, ReportService]
 })
 export class AppModule {
 }

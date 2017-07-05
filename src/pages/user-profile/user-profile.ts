@@ -17,7 +17,6 @@ import {User} from "../../model/user";
 import {ViewChild} from "@angular/core";
 
 
-
 @Component({
   selector: "user-profile",
   templateUrl: "user-profile.html"
@@ -76,8 +75,7 @@ export class UserProfile {
           }
           if (!this.currentUser)
             this.currentUser = this.myUser;
-          if (Object.keys(this.moods).length == 0)
-            this.getMoods(this.currentUser.id);
+          this.getMoods(this.currentUser.id);
         },
       )
       .catch(error => {
